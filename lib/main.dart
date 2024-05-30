@@ -1,6 +1,10 @@
+import 'package:coffee_start/config/routes/routes.dart';
+import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDependencies();
   runApp(const MainApp());
 }
 
@@ -10,11 +14,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRoutes.onGenerateRoutes,
     );
   }
 }
