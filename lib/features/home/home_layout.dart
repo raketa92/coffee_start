@@ -1,4 +1,6 @@
 import 'package:coffee_start/features/categories/presentation/pages/categories.dart';
+import 'package:coffee_start/features/products/presentation/pages/new_products_list.dart';
+import 'package:coffee_start/features/products/presentation/pages/popular_products_list.dart';
 import 'package:flutter/material.dart';
 
 class HomeLayout extends StatefulWidget {
@@ -15,12 +17,16 @@ class _HomeLayoutState extends State<HomeLayout> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Categories(
-            selectedCategory: _selectedCategory,
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Categories(
+              selectedCategory: _selectedCategory,
+            ),
+            const PopularProductsList(),
+            const NewProductsList(),
+          ],
+        ),
       ),
     );
   }

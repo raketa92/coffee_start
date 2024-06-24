@@ -26,7 +26,7 @@ class RemoteCategoryBloc
       emit(RemoteCategoryError(dataState.error!));
     } else {
       emit(RemoteCategoryError(DioException(
-          error: "onGetProducts Unhandled case",
+          error: "onGetCategories Unhandled case",
           requestOptions: RequestOptions(path: 'categories'))));
     }
   }

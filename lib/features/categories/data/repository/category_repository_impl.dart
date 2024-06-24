@@ -18,7 +18,6 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<DataState<List<CategoryEntity>>> getCategories() async {
     try {
       final httpResponse = await _categoriesApiService.getCategories();
-      print(httpResponse.data);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data);
       } else {
