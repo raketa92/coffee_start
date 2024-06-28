@@ -8,10 +8,12 @@ import 'package:coffee_start/features/products/data/repository/product_repositor
 import 'package:coffee_start/features/products/domain/repository/product_repository.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_new_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_popular_products.dart';
+import 'package:coffee_start/features/products/domain/usecases/get_product.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_products_by_category.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/popular_products/remote_popular_products_bloc.dart';
+import 'package:coffee_start/features/products/presentation/bloc/remote/product_details/remote_product_details_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_category/remote_products_by_category_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/remote_product_bloc.dart';
 import 'package:dio/dio.dart';
@@ -35,6 +37,8 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<RemoteNewProductsBloc>(() => RemoteNewProductsBloc(sl()));
   sl.registerFactory<RemoteProductsByCategoryBloc>(
       () => RemoteProductsByCategoryBloc(sl()));
+  sl.registerFactory<RemoteProductDetailsBloc>(
+      () => RemoteProductDetailsBloc(sl()));
 
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
   sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
@@ -43,4 +47,5 @@ Future<void> initializeDependencies() async {
       GetPopularProductsUseCase(sl()));
   sl.registerSingleton<GetProductsByCategoryUseCase>(
       GetProductsByCategoryUseCase(sl()));
+  sl.registerSingleton<GetProductUseCase>(GetProductUseCase(sl()));
 }

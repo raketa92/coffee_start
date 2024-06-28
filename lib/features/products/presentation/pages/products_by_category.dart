@@ -67,16 +67,23 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
               childAspectRatio: 3 / 4),
           itemCount: state.products.length,
           itemBuilder: (context, index) {
-            final image = state.products[index].image;
+            final product = state.products[index];
+            final image = product.image;
             final imageUrl = '$apiBaseUrl/$image';
-            final name = state.products[index].name;
-            final price = state.products[index].price;
+            final name = product.name;
+            final price = product.price;
             return Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
-                child: ProductBlock(
-                  imageUrl: imageUrl,
-                  name: name,
-                  price: price,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/product_details',
+                        arguments: product.id);
+                  },
+                  child: ProductBlock(
+                    imageUrl: imageUrl,
+                    name: name,
+                    price: price,
+                  ),
                 ));
           }),
     );

@@ -1,4 +1,5 @@
 import 'package:coffee_start/features/home/home.dart';
+import 'package:coffee_start/features/products/presentation/pages/product_details.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_by_category.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,10 @@ class AppRoutes {
           categoryId: categoryId,
           categoryName: categoryName,
         ));
+
+      case "/product_details":
+        final int productId = settings.arguments as int;
+        return _materialRoute(ProductDetails(productId: productId));
 
       default:
         return _materialRoute(const HomePage());
