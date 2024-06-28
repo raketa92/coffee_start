@@ -9,8 +9,10 @@ import 'package:coffee_start/features/products/domain/repository/product_reposit
 import 'package:coffee_start/features/products/domain/usecases/get_new_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_popular_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_products.dart';
+import 'package:coffee_start/features/products/domain/usecases/get_products_by_category.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/popular_products/remote_popular_products_bloc.dart';
+import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_category/remote_products_by_category_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/remote_product_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -21,18 +23,24 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<Dio>(Dio());
 
   sl.registerSingleton<CategoriesApiService>(CategoriesApiService(sl()));
-  sl.registerSingleton<CategoryRepository>(CategoryRepositoryImpl());
-  sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
-  sl.registerFactory<RemoteCategoryBloc>(() => RemoteCategoryBloc(sl()));
-
   sl.registerSingleton<ProductsApiService>(ProductsApiService(sl()));
+
   sl.registerSingleton<ProductRepository>(ProductRepositoryImpl());
-  sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
+  sl.registerSingleton<CategoryRepository>(CategoryRepositoryImpl());
+
+  sl.registerFactory<RemoteCategoryBloc>(() => RemoteCategoryBloc(sl()));
   sl.registerFactory<RemoteProductBloc>(() => RemoteProductBloc(sl()));
   sl.registerFactory<RemotePopularProductsBloc>(
       () => RemotePopularProductsBloc(sl()));
   sl.registerFactory<RemoteNewProductsBloc>(() => RemoteNewProductsBloc(sl()));
+  sl.registerFactory<RemoteProductsByCategoryBloc>(
+      () => RemoteProductsByCategoryBloc(sl()));
+
+  sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
+  sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
   sl.registerSingleton<GetNewProductsUseCase>(GetNewProductsUseCase(sl()));
   sl.registerSingleton<GetPopularProductsUseCase>(
       GetPopularProductsUseCase(sl()));
+  sl.registerSingleton<GetProductsByCategoryUseCase>(
+      GetProductsByCategoryUseCase(sl()));
 }

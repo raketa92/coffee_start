@@ -1,6 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coffee_start/core/cache/custom_cache_manager.dart';
 import 'package:coffee_start/core/constants/constants.dart';
+import 'package:coffee_start/core/widgets/product_block.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,11 @@ class NewProductsList extends StatelessWidget {
                 // final productId = state.products[index].id;
                 return Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: productBlock(imageUrl, name, price));
+                    child: ProductBlock(
+                      imageUrl: imageUrl,
+                      name: name,
+                      price: price,
+                    ));
                 // child: GestureDetector(
                 //     onTap: () {
                 //       Navigator.push(
@@ -60,55 +63,6 @@ class NewProductsList extends StatelessWidget {
                 //     },
                 //     child: productBlock(imageUrl, name, price)));
               },
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  productBlock(String imageUrl, String name, double price) {
-    return SizedBox(
-      width: 160,
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            child: CachedNetworkImage(
-              height: 160,
-              width: 160,
-              imageUrl: imageUrl,
-              cacheManager: CustomCacheManager.getInstance(),
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 6),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    const Icon(Icons.favorite_border)
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      '\$ $price',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
-                )
-              ],
             ),
           )
         ],

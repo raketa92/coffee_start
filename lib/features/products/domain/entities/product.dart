@@ -21,4 +21,17 @@ class ProductEntity extends Equatable {
   @override
   List<Object?> get props =>
       [id, name, image, price, categoryId, rating, ingredients];
+
+  factory ProductEntity.fromJson(Map<String, dynamic> json) {
+    return ProductEntity(
+        id: json['id'],
+        name: json['name'],
+        image: json['image'],
+        price: json['price'].toDouble(),
+        categoryId: json['categoryId'].toInt(),
+        rating: json['rating'].toDouble(),
+        ingredients: json['ingredients'] != null
+            ? List<String>.from(json['ingredients'])
+            : []);
+  }
 }

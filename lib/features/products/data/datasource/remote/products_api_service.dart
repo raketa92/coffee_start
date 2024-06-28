@@ -1,4 +1,5 @@
 import 'package:coffee_start/features/products/data/models/product.dart';
+import 'package:coffee_start/features/products/data/models/products_by_category.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -16,4 +17,8 @@ abstract class ProductsApiService {
 
   @GET('/products-popular')
   Future<HttpResponse<List<ProductModel>>> getPopularProducts();
+
+  @GET('/products-by-category/{categoryId}')
+  Future<HttpResponse<ProductsByCategoryModel>> getProductsByCategory(
+      @Path("categoryId") int categoryId);
 }

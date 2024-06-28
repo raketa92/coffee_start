@@ -5,4 +5,5 @@ abstract class ProductRepository {
   Future<DataState<List<ProductEntity>>> getProducts();
   Future<DataState<List<ProductEntity>>> getNewProducts();
   Future<DataState<List<ProductEntity>>> getPopularProducts();
+  Future<DataState<List<ProductEntity>>> getProductsByCategory(int categoryId);
 }

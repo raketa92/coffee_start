@@ -35,22 +35,13 @@ class Categories extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Our Category',
               style: TextStyle(fontSize: 20),
             ),
-            GestureDetector(
-              onTap: () {
-                // onCategorySelected(null);
-              },
-              child: const Text(
-                'See All',
-                style: TextStyle(fontSize: 16),
-              ),
-            )
           ],
         ),
         const SizedBox(
@@ -68,7 +59,11 @@ class Categories extends StatelessWidget {
                   final imageUrl = '$apiBaseUrl/${category.iconUrl}';
                   return GestureDetector(
                     onTap: () {
-                      // onCategorySelected(category.id);
+                      Navigator.pushNamed(context, '/products_by_category',
+                          arguments: {
+                            'categoryId': category.id,
+                            'categoryName': category.name
+                          });
                     },
                     child: Padding(
                       padding: const EdgeInsets.only(

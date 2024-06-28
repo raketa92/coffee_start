@@ -1,8 +1,8 @@
+import 'package:coffee_start/core/widgets/google_navbar.dart';
 import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
 import 'package:coffee_start/features/home/home_layout.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/popular_products/remote_popular_products_bloc.dart';
-import 'package:coffee_start/features/products/presentation/bloc/remote/remote_product_bloc.dart';
 import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
       appBar: _buildAppBar(context),
       drawer: _buildDrawer(),
       body: _buildBody(),
+      bottomNavigationBar: const GoogleBottomNavigation(),
     );
   }
 
