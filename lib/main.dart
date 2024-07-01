@@ -1,4 +1,4 @@
-import 'package:coffee_start/config/routes/routes.dart';
+import 'package:coffee_start/config/routes/app_routes.dart';
 import 'package:coffee_start/config/theme/app_theme.dart';
 import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/material.dart';

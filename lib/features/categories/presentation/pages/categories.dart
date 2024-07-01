@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_start/core/cache/custom_cache_manager.dart';
 import 'package:coffee_start/core/constants/constants.dart';
+import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class Categories extends StatelessWidget {
                   final imageUrl = '$apiBaseUrl/${category.iconUrl}';
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/products_by_category',
+                      Navigator.pushNamed(context, productsByCategoryRoute,
                           arguments: {
                             'categoryId': category.id,
                             'categoryName': category.name

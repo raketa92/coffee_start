@@ -1,4 +1,5 @@
 import 'package:coffee_start/features/shops/data/models/shop.dart';
+import 'package:coffee_start/features/shops/data/models/shop_products.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -11,6 +12,6 @@ abstract class ShopsApiService {
   @GET('/shops')
   Future<HttpResponse<List<ShopModel>>> getShops();
 
-  @GET('/shops/{shopId}')
-  Future<HttpResponse<ShopModel>> getShop(@Path("shopId") int shopId);
+  @GET('/shop-products/{shopId}')
+  Future<HttpResponse<ShopProductsModel>> getShop(@Path("shopId") int shopId);
 }

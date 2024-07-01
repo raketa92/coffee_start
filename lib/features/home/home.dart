@@ -1,3 +1,4 @@
+import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/core/widgets/google_navbar.dart';
 import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
 import 'package:coffee_start/features/home/home_layout.dart';
@@ -14,7 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      drawer: _buildDrawer(),
+      drawer: _buildDrawer(context),
       body: _buildBody(),
       bottomNavigationBar: const GoogleBottomNavigation(),
     );
@@ -30,27 +31,35 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _buildDrawer() {
+  _buildDrawer(BuildContext context) {
     return Drawer(
       child: ListView(
-        children: const [
-          ListTile(
-            leading: Icon(Icons.shopping_bag_outlined),
-            title: Text("Shops"),
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                shopsRoute,
+              );
+            },
+            child: const ListTile(
+              leading: Icon(Icons.shopping_bag_outlined),
+              title: Text("Shops"),
+            ),
           ),
-          ListTile(
+          const ListTile(
             leading: Icon(Icons.select_all_outlined),
             title: Text("Categories"),
           ),
-          ListTile(
+          const ListTile(
             leading: Icon(Icons.favorite_outline),
             title: Text("Favourites"),
           ),
-          ListTile(
+          const ListTile(
             leading: Icon(Icons.payment_outlined),
             title: Text("Cards"),
           ),
-          ListTile(
+          const ListTile(
             leading: Icon(Icons.location_on_outlined),
             title: Text("Addresses"),
           )

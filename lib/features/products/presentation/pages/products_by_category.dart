@@ -1,4 +1,5 @@
 import 'package:coffee_start/core/constants/constants.dart';
+import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/core/widgets/product_block.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_category/remote_products_by_category_bloc.dart';
 import 'package:coffee_start/injection_container.dart';
@@ -76,7 +77,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/product_details',
+                    Navigator.pushNamed(context, productDetailsRoute,
                         arguments: product.id);
                   },
                   child: ProductBlock(

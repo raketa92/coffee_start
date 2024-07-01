@@ -4,6 +4,7 @@ import 'package:coffee_start/core/api_service/api_service.dart';
 import 'package:coffee_start/core/resources/data_state.dart';
 import 'package:coffee_start/features/shops/data/datasource/shops_api_service.dart';
 import 'package:coffee_start/features/shops/domain/entities/shop.dart';
+import 'package:coffee_start/features/shops/domain/entities/shop_products.dart';
 import 'package:coffee_start/features/shops/domain/repository/shop_repository.dart';
 import 'package:dio/dio.dart';
 
@@ -12,7 +13,7 @@ class ShopRepositoryImpl implements ShopRepository {
   ShopRepositoryImpl() : _shopsApiService = ApiServiceFactory.shopApiService;
 
   @override
-  Future<DataState<ShopEntity>> getShop(int shopId) async {
+  Future<DataState<ShopProductsEntity>> getShop(int shopId) async {
     try {
       final httpResponse = await _shopsApiService.getShop(shopId);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
