@@ -5,12 +5,18 @@ import 'package:coffee_start/features/categories/domain/usecases/get_categories.
 import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
 import 'package:coffee_start/features/products/data/datasource/remote/products_api_service.dart';
 import 'package:coffee_start/features/products/data/repository/product_repository_impl.dart';
+import 'package:coffee_start/features/products/data/repository/product_repository_local_impl.dart';
 import 'package:coffee_start/features/products/domain/repository/product_repository.dart';
+import 'package:coffee_start/features/products/domain/repository/product_repository_local.dart';
+import 'package:coffee_start/features/products/domain/usecases/add_liked_product.dart';
+import 'package:coffee_start/features/products/domain/usecases/get_liked_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_new_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_popular_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_product.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_products_by_category.dart';
+import 'package:coffee_start/features/products/domain/usecases/remove_liked_product.dart';
+import 'package:coffee_start/features/products/presentation/bloc/local/liked_products/liked_products_local_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/popular_products/remote_popular_products_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/product_details/remote_product_details_bloc.dart';
@@ -25,10 +31,15 @@ import 'package:coffee_start/features/shops/presentation/bloc/remote/shop_detail
 import 'package:coffee_start/features/shops/presentation/bloc/remote/shops/remote_shops_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
+  final storage = HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
   sl.registerSingleton<Dio>(Dio());
 
   sl.registerSingleton<CategoriesApiService>(CategoriesApiService(sl()));
@@ -38,6 +49,8 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<ProductRepository>(ProductRepositoryImpl());
   sl.registerSingleton<CategoryRepository>(CategoryRepositoryImpl());
   sl.registerSingleton<ShopRepository>(ShopRepositoryImpl());
+  sl.registerSingleton<ProductRepositoryLocal>(
+      ProductRepositoryLocalImpl(storage: storage));
 
   sl.registerFactory<RemoteCategoryBloc>(() => RemoteCategoryBloc(sl()));
   sl.registerFactory<RemoteProductBloc>(() => RemoteProductBloc(sl()));
@@ -50,6 +63,8 @@ Future<void> initializeDependencies() async {
       () => RemoteProductDetailsBloc(sl()));
   sl.registerFactory<RemoteShopsBloc>(() => RemoteShopsBloc(sl()));
   sl.registerFactory<RemoteShopDetailsBloc>(() => RemoteShopDetailsBloc(sl()));
+  sl.registerFactory<LikedProductsLocalBloc>(
+      () => LikedProductsLocalBloc(sl(), sl(), sl()));
 
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
   sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
@@ -61,4 +76,8 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetProductUseCase>(GetProductUseCase(sl()));
   sl.registerSingleton<GetShopsUseCase>(GetShopsUseCase(sl()));
   sl.registerSingleton<GetShopDetailsUseCase>(GetShopDetailsUseCase(sl()));
+  sl.registerSingleton<AddLikedProductUseCase>(AddLikedProductUseCase(sl()));
+  sl.registerSingleton<GetLikedProductsUseCase>(GetLikedProductsUseCase(sl()));
+  sl.registerSingleton<RemoveLikedProductUseCase>(
+      RemoveLikedProductUseCase(sl()));
 }

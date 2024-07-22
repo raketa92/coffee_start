@@ -1,38 +1,33 @@
-import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/core/widgets/product_block.dart';
-import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_category/remote_products_by_category_bloc.dart';
+import 'package:coffee_start/features/products/presentation/bloc/local/liked_products/liked_products_local_bloc.dart';
 import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductsByCategory extends StatefulWidget {
-  final int categoryId;
-  final String categoryName;
-  const ProductsByCategory(
-      {super.key, required this.categoryId, required this.categoryName});
+class LikedProductsList extends StatefulWidget {
+  const LikedProductsList({super.key});
 
   @override
-  State<ProductsByCategory> createState() => _ProductsByCategoryState();
+  State<LikedProductsList> createState() => _LikedProductsListState();
 }
 
-class _ProductsByCategoryState extends State<ProductsByCategory> {
+class _LikedProductsListState extends State<LikedProductsList> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<RemoteProductsByCategoryBloc>()
-        ..add(GetProductsByCategory(widget.categoryId)),
-      child: BlocBuilder<RemoteProductsByCategoryBloc,
-          RemoteProductsByCategoryState>(builder: (context, state) {
-        if (state is RemoteProductsByCategoryLoading) {
+      create: (context) =>
+          sl<LikedProductsLocalBloc>()..add(const FetchLikedProducts()),
+      child: BlocBuilder<LikedProductsLocalBloc, LikedProductsLocalState>(
+          builder: (context, state) {
+        if (state is LikedProductsLoading) {
           return const Center(child: CupertinoActivityIndicator());
         }
-        if (state is RemoteProductsByCategoryError) {
+        if (state is LikedProductsError) {
           return const Center(child: Icon(Icons.refresh));
         }
-
-        if (state is RemoteProductsByCategoryLoaded) {
+        if (state is LikedProductsLoaded) {
           return productsView(state);
         }
 
@@ -41,10 +36,11 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
     );
   }
 
-  Widget productsView(RemoteProductsByCategoryLoaded state) {
+  Widget productsView(LikedProductsLoaded state) {
     return Scaffold(
-      appBar: _appBar(widget.categoryName),
+      appBar: _appBar("Liked"),
       body: _body(state),
+      // bottomNavigationBar: const GoogleBottomNavigation(),
     );
   }
 
@@ -57,7 +53,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
     );
   }
 
-  _body(RemoteProductsByCategoryLoaded state) {
+  _body(LikedProductsLoaded state) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: GridView.builder(
@@ -66,9 +62,9 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
               crossAxisSpacing: 2,
               mainAxisSpacing: 2,
               childAspectRatio: 3 / 4),
-          itemCount: state.products.length,
+          itemCount: state.likedProducts.length,
           itemBuilder: (context, index) {
-            final product = state.products[index];
+            final product = state.likedProducts[index];
             return Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: GestureDetector(

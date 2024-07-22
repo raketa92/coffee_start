@@ -1,6 +1,7 @@
 import 'package:coffee_start/features/home/home.dart';
 import 'package:coffee_start/features/products/presentation/pages/product_details.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_by_category.dart';
+import 'package:coffee_start/features/products/presentation/pages/products_liked.dart';
 import 'package:coffee_start/features/shops/presentation/pages/shop_details.dart';
 import 'package:coffee_start/features/shops/presentation/pages/shops_list.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,12 @@ class AppRoutes {
       case shopDetailsRoute:
         final int shopId = settings.arguments as int;
         return _materialRoute(ShopDetails(shopId: shopId));
+
+      case favouritesRoute:
+        return _materialRoute(const LikedProductsList());
+
+      case ordersRoute:
+        return _materialRoute(const Text("orders"));
 
       default:
         return _materialRoute(const HomePage());

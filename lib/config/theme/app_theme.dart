@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 ThemeData theme() {
   return ThemeData(
-      scaffoldBackgroundColor: Colors.white, appBarTheme: appBarTheme());
+      useMaterial3: false,
+      scaffoldBackgroundColor: Colors.white,
+      appBarTheme: appBarTheme());
 }
 
 AppBarTheme appBarTheme() {

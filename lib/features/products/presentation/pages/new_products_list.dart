@@ -1,5 +1,3 @@
-import 'package:coffee_start/core/constants/constants.dart';
-import 'package:coffee_start/core/widgets/product_block.dart';
 import 'package:coffee_start/core/widgets/product_list.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
 import 'package:flutter/cupertino.dart';

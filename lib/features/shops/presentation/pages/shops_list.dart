@@ -42,7 +42,7 @@ class _ShopsListState extends State<ShopsList> {
     return Scaffold(
       appBar: _appBar(),
       body: _body(state),
-      bottomNavigationBar: const GoogleBottomNavigation(),
+      // bottomNavigationBar: const GoogleBottomNavigation(),
     );
   }
 

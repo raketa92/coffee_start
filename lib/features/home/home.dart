@@ -1,15 +1,42 @@
 import 'package:coffee_start/core/constants/routes.dart';
+import 'package:coffee_start/core/widgets/bottom_navbar.dart';
 import 'package:coffee_start/core/widgets/google_navbar.dart';
-import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
 import 'package:coffee_start/features/home/home_layout.dart';
-import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
-import 'package:coffee_start/features/products/presentation/bloc/remote/popular_products/remote_popular_products_bloc.dart';
-import 'package:coffee_start/injection_container.dart';
+import 'package:coffee_start/features/products/presentation/pages/products_liked.dart';
+import 'package:coffee_start/features/shops/presentation/pages/shops_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<Widget> _screens() {
+    return [
+      const HomeLayout(),
+      const ShopsList(),
+      const LikedProductsList(),
+      const Text("orders"),
+    ];
+  }
+
+  final PageController _pageController = PageController();
+  int _selectedIndex = 0;
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _onItemTapped(int index) {
+    _pageController.jumpToPage(index);
+    _onPageChanged(index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +44,8 @@ class HomePage extends StatelessWidget {
       appBar: _buildAppBar(context),
       drawer: _buildDrawer(context),
       body: _buildBody(),
-      bottomNavigationBar: const GoogleBottomNavigation(),
+      bottomNavigationBar: GoogleBottomNavigation(
+          onItemTapped: _onItemTapped, selectedIndex: _selectedIndex),
     );
   }
 
@@ -48,14 +76,6 @@ class HomePage extends StatelessWidget {
             ),
           ),
           const ListTile(
-            leading: Icon(Icons.select_all_outlined),
-            title: Text("Categories"),
-          ),
-          const ListTile(
-            leading: Icon(Icons.favorite_outline),
-            title: Text("Favourites"),
-          ),
-          const ListTile(
             leading: Icon(Icons.payment_outlined),
             title: Text("Cards"),
           ),
@@ -69,22 +89,11 @@ class HomePage extends StatelessWidget {
   }
 
   _buildBody() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<RemoteCategoryBloc>(
-          create: (context) =>
-              sl<RemoteCategoryBloc>()..add(const GetCategories()),
-        ),
-        BlocProvider<RemoteNewProductsBloc>(
-          create: (context) =>
-              sl<RemoteNewProductsBloc>()..add(const GetNewProducts()),
-        ),
-        BlocProvider<RemotePopularProductsBloc>(
-          create: (context) =>
-              sl<RemotePopularProductsBloc>()..add(const GetPopularProducts()),
-        )
-      ],
-      child: const HomeLayout(),
+    return PageView(
+      controller: _pageController,
+      onPageChanged: _onPageChanged,
+      physics: const NeverScrollableScrollPhysics(),
+      children: _screens(),
     );
   }
 }

@@ -47,7 +47,7 @@ class _ShopDetailsState extends State<ShopDetails> {
     return Scaffold(
       appBar: _appBar(state.shop.name),
       body: _body(state),
-      bottomNavigationBar: const GoogleBottomNavigation(),
+      // bottomNavigationBar: const GoogleBottomNavigation(),
     );
   }
 
@@ -107,10 +107,6 @@ class _ShopDetailsState extends State<ShopDetails> {
                 itemCount: state.shop.products.length,
                 itemBuilder: (context, index) {
                   final product = state.shop.products[index];
-                  final image = product.image;
-                  final imageUrl = '$apiBaseUrl/$image';
-                  final name = product.name;
-                  final price = product.price;
                   return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: GestureDetector(
@@ -118,11 +114,7 @@ class _ShopDetailsState extends State<ShopDetails> {
                           Navigator.pushNamed(context, productDetailsRoute,
                               arguments: product.id);
                         },
-                        child: ProductBlock(
-                          imageUrl: imageUrl,
-                          name: name,
-                          price: price,
-                        ),
+                        child: ProductBlock(product: product),
                       ));
                 }),
           ),

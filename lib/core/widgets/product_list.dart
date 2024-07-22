@@ -1,4 +1,3 @@
-import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/core/widgets/product_block.dart';
 import 'package:coffee_start/features/products/domain/entities/product.dart';
@@ -19,10 +18,6 @@ class ProductList extends StatelessWidget {
         itemCount: productCount,
         itemBuilder: (context, index) {
           final product = products[index];
-          final image = product.image;
-          final imageUrl = '$apiBaseUrl/$image';
-          final name = product.name;
-          final price = product.price;
           return Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: GestureDetector(
@@ -31,9 +26,7 @@ class ProductList extends StatelessWidget {
                       arguments: product.id);
                 },
                 child: ProductBlock(
-                  imageUrl: imageUrl,
-                  name: name,
-                  price: price,
+                  product: product,
                 ),
               ));
         },

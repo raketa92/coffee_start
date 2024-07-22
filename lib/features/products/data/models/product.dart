@@ -12,14 +12,43 @@ class ProductModel extends ProductEntity {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-        id: int.parse(json['id']),
+        id: json['id'] is int ? json['id'] : int.parse(json['id']),
         name: json['name'],
         image: json['image'],
-        price: json['price'].toDouble(),
-        categoryId: json['categoryId'].toInt(),
-        rating: json['rating'].toDouble(),
+        price: json['price'] is String
+            ? double.parse(json['price'])
+            : json['price'].toDouble(),
+        categoryId: json['categoryId'] is int
+            ? json['categoryId']
+            : int.parse(json['categoryId']),
+        rating: json['rating'] is String
+            ? double.parse(json['rating'])
+            : json['rating'].toDouble(),
         ingredients: json['ingredients'] != null
             ? List<String>.from(json['ingredients'])
             : []);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'image': image,
+      'price': price.toString(),
+      'categoryId': categoryId,
+      'rating': rating.toString(),
+      'ingredients': ingredients
+    };
+  }
+
+  static ProductModel fromEntity(ProductEntity entity) {
+    return ProductModel(
+        id: entity.id,
+        name: entity.name,
+        image: entity.image,
+        price: entity.price,
+        categoryId: entity.categoryId,
+        rating: entity.rating,
+        ingredients: entity.ingredients);
   }
 }
