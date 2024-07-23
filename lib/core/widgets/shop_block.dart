@@ -42,7 +42,6 @@ class ShopBlock extends StatelessWidget {
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    const Icon(Icons.favorite_border)
                   ],
                 ),
                 const Row(

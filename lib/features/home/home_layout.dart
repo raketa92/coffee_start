@@ -21,27 +21,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<RemoteCategoryBloc>(
-          create: (context) =>
-              sl<RemoteCategoryBloc>()..add(const GetCategories()),
-        ),
-        BlocProvider<RemoteNewProductsBloc>(
-          create: (context) =>
-              sl<RemoteNewProductsBloc>()..add(const GetNewProducts()),
-        ),
-        BlocProvider<RemotePopularProductsBloc>(
-          create: (context) =>
-              sl<RemotePopularProductsBloc>()..add(const GetPopularProducts()),
-        ),
-        BlocProvider<LikedProductsLocalBloc>(
-          create: (context) =>
-              sl<LikedProductsLocalBloc>()..add(const FetchLikedProducts()),
-        )
-      ],
-      child: _homeBody(),
-    );
+    return _homeBody();
   }
 
   Widget _homeBody() {

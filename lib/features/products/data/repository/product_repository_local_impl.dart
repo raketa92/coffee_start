@@ -13,7 +13,7 @@ class ProductRepositoryLocalImpl implements ProductRepositoryLocal {
   @override
   Future<void> addLikedProduct(ProductEntity product) async {
     final likedProducts = await getLikedProducts();
-    likedProducts.add(product);
+    likedProducts.add(ProductModel.fromEntity(product));
     await _saveLikedProducts(likedProducts);
   }
 

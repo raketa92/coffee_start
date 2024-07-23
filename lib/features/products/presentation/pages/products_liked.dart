@@ -16,24 +16,20 @@ class LikedProductsList extends StatefulWidget {
 class _LikedProductsListState extends State<LikedProductsList> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          sl<LikedProductsLocalBloc>()..add(const FetchLikedProducts()),
-      child: BlocBuilder<LikedProductsLocalBloc, LikedProductsLocalState>(
-          builder: (context, state) {
-        if (state is LikedProductsLoading) {
-          return const Center(child: CupertinoActivityIndicator());
-        }
-        if (state is LikedProductsError) {
-          return const Center(child: Icon(Icons.refresh));
-        }
-        if (state is LikedProductsLoaded) {
-          return productsView(state);
-        }
+    return BlocBuilder<LikedProductsLocalBloc, LikedProductsLocalState>(
+        builder: (context, state) {
+      if (state is LikedProductsLoading) {
+        return const Center(child: CupertinoActivityIndicator());
+      }
+      if (state is LikedProductsError) {
+        return const Center(child: Icon(Icons.refresh));
+      }
+      if (state is LikedProductsLoaded) {
+        return productsView(state);
+      }
 
-        return Container();
-      }),
-    );
+      return Container();
+    });
   }
 
   Widget productsView(LikedProductsLoaded state) {

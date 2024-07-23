@@ -46,7 +46,8 @@ class ProductBlock extends StatelessWidget {
                         LikedProductsLocalState>(
                       builder: (likedProductContext, state) {
                         final isLiked = state is LikedProductsLoaded &&
-                            state.likedProducts.contains(product);
+                            state.likedProducts
+                                .any((element) => element.id == product.id);
                         return GestureDetector(
                             onTap: () {
                               if (isLiked) {
