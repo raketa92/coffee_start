@@ -1,3 +1,10 @@
+import 'package:coffee_start/features/cart/data/repository/cart_item_repository_local_impl.dart';
+import 'package:coffee_start/features/cart/domain/repository/cart_repository_local.dart';
+import 'package:coffee_start/features/cart/domain/usecases/add_to_cart.dart';
+import 'package:coffee_start/features/cart/domain/usecases/get_cart_items.dart';
+import 'package:coffee_start/features/cart/domain/usecases/remove_from_cart.dart';
+import 'package:coffee_start/features/cart/domain/usecases/save_cart_items.dart';
+import 'package:coffee_start/features/cart/presentation/bloc/local/cart_items/cart_items_local_bloc.dart';
 import 'package:coffee_start/features/categories/data/datasources/remote/categories_api_service.dart';
 import 'package:coffee_start/features/categories/data/repository/category_repository_impl.dart';
 import 'package:coffee_start/features/categories/domain/repository/category_repository.dart';
@@ -51,6 +58,8 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<ShopRepository>(ShopRepositoryImpl());
   sl.registerSingleton<ProductRepositoryLocal>(
       ProductRepositoryLocalImpl(storage: storage));
+  sl.registerSingleton<CartItemRepositoryLocal>(
+      CartItemRepositoryLocalImpl(storage: storage));
 
   sl.registerFactory<RemoteCategoryBloc>(() => RemoteCategoryBloc(sl()));
   sl.registerFactory<RemoteProductBloc>(() => RemoteProductBloc(sl()));
@@ -65,6 +74,8 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<RemoteShopDetailsBloc>(() => RemoteShopDetailsBloc(sl()));
   sl.registerFactory<LikedProductsLocalBloc>(
       () => LikedProductsLocalBloc(sl(), sl(), sl()));
+  sl.registerFactory<CartItemsLocalBloc>(
+      () => CartItemsLocalBloc(sl(), sl(), sl(), sl()));
 
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
   sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
@@ -80,4 +91,8 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetLikedProductsUseCase>(GetLikedProductsUseCase(sl()));
   sl.registerSingleton<RemoveLikedProductUseCase>(
       RemoveLikedProductUseCase(sl()));
+  sl.registerSingleton<AddToCartUseCase>(AddToCartUseCase(sl()));
+  sl.registerSingleton<GetCartItemsUseCase>(GetCartItemsUseCase(sl()));
+  sl.registerSingleton<RemoveFromCartUseCase>(RemoveFromCartUseCase(sl()));
+  sl.registerSingleton<SaveCartItemsUseCase>(SaveCartItemsUseCase(sl()));
 }

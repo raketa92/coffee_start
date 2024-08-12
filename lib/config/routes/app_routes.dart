@@ -1,3 +1,4 @@
+import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.dart';
 import 'package:coffee_start/features/home/home.dart';
 import 'package:coffee_start/features/products/presentation/pages/product_details.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_by_category.dart';
@@ -39,6 +40,9 @@ class AppRoutes {
 
       case ordersRoute:
         return _materialRoute(const Text("orders"));
+
+      case cartRoute:
+        return _materialRoute(const CartItemsList());
 
       default:
         return _materialRoute(const HomePage());

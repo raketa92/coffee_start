@@ -1,6 +1,5 @@
 import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/core/constants/routes.dart';
-import 'package:coffee_start/core/widgets/google_navbar.dart';
 import 'package:coffee_start/core/widgets/shop_block.dart';
 import 'package:coffee_start/features/shops/presentation/bloc/remote/shops/remote_shops_bloc.dart';
 import 'package:coffee_start/injection_container.dart';

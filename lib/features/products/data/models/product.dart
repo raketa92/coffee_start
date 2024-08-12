@@ -7,6 +7,7 @@ class ProductModel extends ProductEntity {
       required super.image,
       required super.price,
       required super.categoryId,
+      required super.shopId,
       required super.rating,
       required super.ingredients});
 
@@ -21,6 +22,8 @@ class ProductModel extends ProductEntity {
         categoryId: json['categoryId'] is int
             ? json['categoryId']
             : int.parse(json['categoryId']),
+        shopId:
+            json['shopId'] is int ? json['shopId'] : int.parse(json['shopId']),
         rating: json['rating'] is String
             ? double.parse(json['rating'])
             : json['rating'].toDouble(),
@@ -29,6 +32,7 @@ class ProductModel extends ProductEntity {
             : []);
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -36,6 +40,7 @@ class ProductModel extends ProductEntity {
       'image': image,
       'price': price.toString(),
       'categoryId': categoryId,
+      'shopId': shopId,
       'rating': rating.toString(),
       'ingredients': ingredients
     };
@@ -48,6 +53,7 @@ class ProductModel extends ProductEntity {
         image: entity.image,
         price: entity.price,
         categoryId: entity.categoryId,
+        shopId: entity.shopId,
         rating: entity.rating,
         ingredients: entity.ingredients);
   }

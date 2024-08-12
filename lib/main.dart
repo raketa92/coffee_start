@@ -1,6 +1,6 @@
 import 'package:coffee_start/config/routes/app_routes.dart';
 import 'package:coffee_start/config/theme/app_theme.dart';
-import 'package:coffee_start/core/widgets/persistent_bottom_navbar.dart';
+import 'package:coffee_start/features/cart/presentation/bloc/local/cart_items/cart_items_local_bloc.dart';
 import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/local/liked_products/liked_products_local_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
@@ -37,6 +37,10 @@ class MainApp extends StatelessWidget {
         BlocProvider<LikedProductsLocalBloc>(
           create: (context) =>
               sl<LikedProductsLocalBloc>()..add(const FetchLikedProducts()),
+        ),
+        BlocProvider<CartItemsLocalBloc>(
+          create: (context) =>
+              sl<CartItemsLocalBloc>()..add(const GetCartItems()),
         ),
       ],
       child: MaterialApp(

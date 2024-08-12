@@ -44,14 +44,14 @@ class ShopBlock extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(Icons.star_outline_outlined),
+                    const Icon(Icons.star_outline_outlined),
                     Text(
-                      '4.8 (56 reviews)',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      '$rating (56 reviews)',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ],
                 )

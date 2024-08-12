@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_start/core/cache/custom_cache_manager.dart';
 import 'package:coffee_start/core/constants/constants.dart';
+import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
+import 'package:coffee_start/features/cart/domain/usecases/cart_params.dart';
+import 'package:coffee_start/features/cart/presentation/bloc/local/cart_items/cart_items_local_bloc.dart';
 import 'package:coffee_start/features/products/domain/entities/product.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/product_details/remote_product_details_bloc.dart';
 import 'package:coffee_start/injection_container.dart';
@@ -48,18 +51,54 @@ class _ProductDetailsState extends State<ProductDetails> {
       floatingActionButton: Container(
         height: 65,
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              textStyle:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          onPressed: () {},
-          child: const Center(
-            child: Text(
-              'Add to Cart',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+        child: BlocBuilder<CartItemsLocalBloc, CartItemsLocalState>(
+          builder: (cartItemsLocalcontext, state) {
+            CartItemEntity? matchingCartItem;
+            bool isAdded = false;
+            if (state is CartItemsLocalLoaded) {
+              try {
+                matchingCartItem = state.cartItems.firstWhere((item) =>
+                    item.products.any(
+                        (itemProduct) => itemProduct.product.id == product.id));
+                isAdded = true;
+              } catch (e) {
+                matchingCartItem = null;
+                isAdded = false;
+              }
+            }
+            final buttonText = isAdded ? 'Remove from Cart' : 'Add to Cart';
+
+            return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  textStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+              onPressed: () {
+                if (isAdded && matchingCartItem != null) {
+                  final cartParams = CartParams(
+                      shopId: product.shopId,
+                      product: CartItemProductEntity(product: product));
+                  cartItemsLocalcontext
+                      .read<CartItemsLocalBloc>()
+                      .add(RemoveFromCart(cartParams));
+                } else {
+                  final newCartItemProduct =
+                      CartItemProductEntity(product: product);
+                  final cartParams = CartParams(
+                      shopId: product.shopId, product: newCartItemProduct);
+                  cartItemsLocalcontext
+                      .read<CartItemsLocalBloc>()
+                      .add(AddToCart(cartParams));
+                }
+              },
+              child: Center(
+                child: Text(
+                  buttonText,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+            );
+          },
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -85,6 +124,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     final imageUrl = '$apiBaseUrl/${product.image}';
     final name = product.name;
     final price = product.price;
+    final rating = product.rating;
     return Padding(
       padding: const EdgeInsets.all(16),
       child: SizedBox(
@@ -122,20 +162,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ),
                     ],
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Icon(Icons.star_outline_outlined),
-                      Icon(Icons.star_outline_outlined),
-                      Icon(Icons.star_outline_outlined),
-                      Icon(Icons.star_outline_outlined),
-                      Icon(Icons.star_outline_outlined),
-                      SizedBox(
+                      _buildRatingStars(rating),
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
-                        '4.8 (56 reviews)',
-                        style: TextStyle(
+                        '$rating (56 reviews)',
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ],
@@ -153,6 +189,36 @@ class _ProductDetailsState extends State<ProductDetails> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildRatingStars(double rating) {
+    List<Widget> stars = [];
+    int fullStars = rating.floor();
+    bool hasHalfStar = rating - fullStars >= 0.5;
+
+    for (int i = 0; i < fullStars; i++) {
+      stars.add(const Icon(
+        Icons.star,
+        color: Colors.yellow,
+      ));
+    }
+    if (hasHalfStar) {
+      stars.add(const Icon(
+        Icons.star_half,
+        color: Colors.yellow,
+      ));
+    }
+
+    while (stars.length < 5) {
+      stars.add(const Icon(
+        Icons.star_border,
+        color: Colors.yellow,
+      ));
+    }
+
+    return Row(
+      children: stars,
     );
   }
 }

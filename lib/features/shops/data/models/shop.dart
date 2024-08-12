@@ -9,7 +9,7 @@ class ShopModel extends ShopEntity {
 
   factory ShopModel.fromJson(Map<String, dynamic> json) {
     return ShopModel(
-        id: int.parse(json['id']),
+        id: json['id'] is int ? json['id'] : int.parse(json['id']),
         image: json['image'],
         name: json['name'],
         rating: json['rating']);

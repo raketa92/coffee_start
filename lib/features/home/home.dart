@@ -1,10 +1,9 @@
 import 'package:coffee_start/core/constants/routes.dart';
-import 'package:coffee_start/core/widgets/bottom_navbar.dart';
 import 'package:coffee_start/core/widgets/google_navbar.dart';
+import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.dart';
 import 'package:coffee_start/features/home/home_layout.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_liked.dart';
 import 'package:coffee_start/features/shops/presentation/pages/shops_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,7 +19,7 @@ class _HomePageState extends State<HomePage> {
       const HomeLayout(),
       const ShopsList(),
       const LikedProductsList(),
-      const Text("orders"),
+      const CartItemsList(),
     ];
   }
 
@@ -72,7 +71,7 @@ class _HomePageState extends State<HomePage> {
             },
             child: const ListTile(
               leading: Icon(Icons.shopping_bag_outlined),
-              title: Text("Shops"),
+              title: Text("Orders"),
             ),
           ),
           const ListTile(

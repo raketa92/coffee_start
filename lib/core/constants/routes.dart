@@ -5,3 +5,4 @@ const String shopsRoute = '/shops';
 const String shopDetailsRoute = '/shop_details';
 const String favouritesRoute = '/favourites';
 const String ordersRoute = '/orders';
+const String cartRoute = '/cart';
