@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_start/core/cache/custom_cache_manager.dart';
 import 'package:coffee_start/core/constants/constants.dart';
+import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:coffee_start/features/cart/domain/usecases/cart_params.dart';
 import 'package:coffee_start/features/cart/presentation/bloc/local/cart_items/cart_items_local_bloc.dart';
@@ -60,7 +61,7 @@ class _CartItemsListState extends State<CartItemsList> {
               children: [
                 _shopHeader(shopId),
                 _productList(products, cartItem),
-                _shopTotalPriceAndCheckout(cartItemTotalPrice),
+                _shopTotalPriceAndCheckout(cartItemTotalPrice, shopId),
                 const Divider(
                   thickness: 1,
                 ),
@@ -191,7 +192,7 @@ class _CartItemsListState extends State<CartItemsList> {
     );
   }
 
-  Widget _shopTotalPriceAndCheckout(double totalPrice) {
+  Widget _shopTotalPriceAndCheckout(double totalPrice, int shopId) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -200,7 +201,7 @@ class _CartItemsListState extends State<CartItemsList> {
           Text('Total: $totalPrice TMT', style: const TextStyle(fontSize: 16)),
           ElevatedButton(
             onPressed: () {
-              // Implement checkout functionality here
+              Navigator.pushNamed(context, checkoutRoute, arguments: shopId);
             },
             child: const Text('Checkout'),
           ),

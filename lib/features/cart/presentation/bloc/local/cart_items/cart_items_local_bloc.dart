@@ -28,6 +28,7 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
     on<RemoveFromCart>(onRemoveFromCart);
     on<IncreaseQuantity>(onIncreaseQuantity);
     on<DecreaseQuantity>(onDecreaseQuantity);
+    on<GetCartItemByShop>(onGetCartItemByShop);
   }
 
   @override
@@ -156,6 +157,30 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
 
       await _saveCartItemsUseCase(params: updatedCartItems);
       emit(currentState.copyWith(cartItems: updatedCartItems));
+    }
+  }
+
+  Future<FutureOr<void>> onGetCartItemByShop(
+      GetCartItemByShop event, Emitter<CartItemsLocalState> emit) async {
+    if (state is! CartItemsLocalLoaded) {
+      emit(CartItemsLocalLoading());
+      try {
+        final data = await _getCartItemsUseCase();
+        emit(CartItemsLocalLoaded(cartItems: data));
+      } catch (e) {
+        emit(CartItemsLocalError(message: e.toString()));
+      }
+    }
+    if (state is CartItemsLocalLoaded) {
+      final currentState = state as CartItemsLocalLoaded;
+      final result = currentState.cartItems
+          .where((element) => element.shopId == event.shopId)
+          .firstOrNull;
+      if (result != null) {
+        emit(CartItemLocalLoaded(cartItem: result));
+      } else {
+        emit(const CartItemsLocalError(message: "cart item by shop not found"));
+      }
     }
   }
 }

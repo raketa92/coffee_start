@@ -1,5 +1,6 @@
 import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.dart';
 import 'package:coffee_start/features/home/home.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout_stepper.dart';
 import 'package:coffee_start/features/products/presentation/pages/product_details.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_by_category.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_liked.dart';
@@ -43,6 +44,10 @@ class AppRoutes {
 
       case cartRoute:
         return _materialRoute(const CartItemsList());
+
+      case checkoutRoute:
+        final int shopId = settings.arguments as int;
+        return _materialRoute(CheckoutStepper(shopId: shopId));
 
       default:
         return _materialRoute(const HomePage());

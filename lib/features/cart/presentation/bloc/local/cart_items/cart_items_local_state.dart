@@ -22,6 +22,17 @@ final class CartItemsLocalLoaded extends CartItemsLocalState {
   List<Object> get props => [cartItems];
 }
 
+final class CartItemLocalLoaded extends CartItemsLocalState {
+  final CartItemEntity cartItem;
+  const CartItemLocalLoaded({required this.cartItem});
+
+  CartItemLocalLoaded copyWith({required CartItemEntity cartItem}) =>
+      CartItemLocalLoaded(cartItem: cartItem);
+
+  @override
+  List<Object> get props => [cartItem];
+}
+
 class CartItemsLocalError extends CartItemsLocalState {
   final String message;
   const CartItemsLocalError({required this.message});

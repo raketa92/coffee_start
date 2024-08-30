@@ -11,6 +11,11 @@ class GetCartItems extends CartItemsLocalEvent {
   const GetCartItems();
 }
 
+class GetCartItemByShop extends CartItemsLocalEvent {
+  final int shopId;
+  const GetCartItemByShop(this.shopId);
+}
+
 class AddToCart extends CartItemsLocalEvent {
   final CartParams cartParams;
   const AddToCart(this.cartParams);

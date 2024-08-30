@@ -1,3 +1,10 @@
+import 'package:coffee_start/features/card/data/repository/card_repository_local_impl.dart';
+import 'package:coffee_start/features/card/domain/repository/card_repository_local.dart';
+import 'package:coffee_start/features/card/domain/usecases/add_card.dart';
+import 'package:coffee_start/features/card/domain/usecases/get_cards.dart';
+import 'package:coffee_start/features/card/domain/usecases/remove_card.dart';
+import 'package:coffee_start/features/card/domain/usecases/update_card.dart';
+import 'package:coffee_start/features/card/presentation/bloc/local/card/card_local_bloc.dart';
 import 'package:coffee_start/features/cart/data/repository/cart_item_repository_local_impl.dart';
 import 'package:coffee_start/features/cart/domain/repository/cart_repository_local.dart';
 import 'package:coffee_start/features/cart/domain/usecases/add_to_cart.dart';
@@ -60,6 +67,8 @@ Future<void> initializeDependencies() async {
       ProductRepositoryLocalImpl(storage: storage));
   sl.registerSingleton<CartItemRepositoryLocal>(
       CartItemRepositoryLocalImpl(storage: storage));
+  sl.registerSingleton<CardRepositoryLocal>(
+      CardRepositoryLocalImpl(storage: storage));
 
   sl.registerFactory<RemoteCategoryBloc>(() => RemoteCategoryBloc(sl()));
   sl.registerFactory<RemoteProductBloc>(() => RemoteProductBloc(sl()));
@@ -76,6 +85,8 @@ Future<void> initializeDependencies() async {
       () => LikedProductsLocalBloc(sl(), sl(), sl()));
   sl.registerFactory<CartItemsLocalBloc>(
       () => CartItemsLocalBloc(sl(), sl(), sl(), sl()));
+  sl.registerFactory<CardLocalBloc>(
+      () => CardLocalBloc(sl(), sl(), sl(), sl()));
 
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
   sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
@@ -95,4 +106,8 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetCartItemsUseCase>(GetCartItemsUseCase(sl()));
   sl.registerSingleton<RemoveFromCartUseCase>(RemoveFromCartUseCase(sl()));
   sl.registerSingleton<SaveCartItemsUseCase>(SaveCartItemsUseCase(sl()));
+  sl.registerSingleton<AddCardUseCase>(AddCardUseCase(sl()));
+  sl.registerSingleton<UpdateCardUseCase>(UpdateCardUseCase(sl()));
+  sl.registerSingleton<RemoveCardUseCase>(RemoveCardUseCase(sl()));
+  sl.registerSingleton<GetCardsUseCase>(GetCardsUseCase(sl()));
 }
