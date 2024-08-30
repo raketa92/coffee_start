@@ -5,14 +5,16 @@ class CardModel extends CardEntity {
       {required super.cardNumber,
       required super.year,
       required super.month,
-      required super.name});
+      required super.name,
+      required super.cvv});
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
     return CardModel(
         cardNumber: json['cardNumber'],
         year: json['year'],
         month: json['month'],
-        name: json['name']);
+        name: json['name'],
+        cvv: json['cvv']);
   }
 
   @override
@@ -22,6 +24,7 @@ class CardModel extends CardEntity {
       'year': year,
       'month': month,
       'name': name,
+      'cvv': cvv
     };
   }
 
@@ -30,11 +33,12 @@ class CardModel extends CardEntity {
         cardNumber: entity.cardNumber,
         year: entity.year,
         month: entity.month,
-        name: entity.name);
+        name: entity.name,
+        cvv: entity.cvv);
   }
 
   CardEntity toEntity() {
     return CardEntity(
-        cardNumber: cardNumber, year: year, month: month, name: name);
+        cardNumber: cardNumber, year: year, month: month, name: name, cvv: cvv);
   }
 }
