@@ -1,7 +1,7 @@
 import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/core/widgets/card_dropdown.dart';
 import 'package:coffee_start/features/card/domain/entities/card.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_stepper.dart';
+import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -120,12 +120,31 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
   }
 
   Widget cardOptions() {
-    return CardsDropdownButton(
-        card: widget.checkoutData.card,
-        onCardSelected: (CardEntity card) {
-          setState(() {
-            widget.checkoutData.card = card;
-          });
-        });
+    return FormField<CardEntity>(validator: (value) {
+      if (_paymentMethod == PaymentMethods.card &&
+          widget.checkoutData.card == null) {
+        return 'Please select a card';
+      }
+      return null;
+    }, builder: (FormFieldState<CardEntity> state) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CardsDropdownButton(
+              card: widget.checkoutData.card,
+              onCardSelected: (CardEntity card) {
+                setState(() {
+                  widget.checkoutData.card = card;
+                });
+                widget.formKey.currentState!.validate();
+              }),
+          if (state.hasError)
+            Text(
+              state.errorText ?? '',
+              style: const TextStyle(color: Colors.red),
+            )
+        ],
+      );
+    });
   }
 }

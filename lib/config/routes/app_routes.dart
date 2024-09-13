@@ -1,5 +1,5 @@
 import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.dart';
-import 'package:coffee_start/features/home/home.dart';
+import 'package:coffee_start/features/home/main_layout.dart';
 import 'package:coffee_start/features/orders/presentation/pages/checkout_stepper.dart';
 import 'package:coffee_start/features/products/presentation/pages/product_details.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_by_category.dart';
@@ -14,7 +14,7 @@ class AppRoutes {
   static Route onGenerateRoutes(RouteSettings settings) {
     switch (settings.name) {
       case homeRoute:
-        return _materialRoute(const HomePage());
+        return _materialRoute(const MainLayout());
 
       case productsByCategoryRoute:
         final arguments = settings.arguments as Map<String, dynamic>;
@@ -49,8 +49,11 @@ class AppRoutes {
         final int shopId = settings.arguments as int;
         return _materialRoute(CheckoutStepper(shopId: shopId));
 
+      // case orderCompleteRoute:
+      //   return _materialRoute(const OrderCompletePage());
+
       default:
-        return _materialRoute(const HomePage());
+        return _materialRoute(const MainLayout());
     }
   }
 

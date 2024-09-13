@@ -16,7 +16,7 @@ class OrderModel extends OrderEntity {
         .toList();
 
     return OrderModel(
-        id: int.parse(json['id']),
+        id: (json['id']),
         totalPrice: json['image'],
         shopName: json['name'],
         rating: json['rating'],

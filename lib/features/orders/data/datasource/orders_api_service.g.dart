@@ -19,20 +19,20 @@ class _OrdersApiService implements OrdersApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<List<OrderModel>>> getOrders() async {
+  Future<retrofit.HttpResponse<List<OrderModel>>> getOrders() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<HttpResponse<List<OrderModel>>>(Options(
+        _setStreamType<retrofit.HttpResponse<List<OrderModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/orders',
+              '/order',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -44,7 +44,74 @@ class _OrdersApiService implements OrdersApiService {
     var value = _result.data!
         .map((dynamic i) => OrderModel.fromJson(i as Map<String, dynamic>))
         .toList();
-    final httpResponse = HttpResponse(value, _result);
+    final httpResponse = retrofit.HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<retrofit.HttpResponse<String>> createOrder(
+      CheckoutData checkoutData) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{
+      r'Content-Type': 'application/json',
+      r'Custom-Header': 'your_custom_value',
+    };
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(checkoutData.toJson());
+    final _result = await _dio
+        .fetch<String>(_setStreamType<retrofit.HttpResponse<String>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/json',
+    )
+            .compose(
+              _dio.options,
+              '/order',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = _result.data!;
+    final httpResponse = retrofit.HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<retrofit.HttpResponse<bool>> payOrder(
+    CardEntity cardEntity,
+    String orderId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(cardEntity.toJson());
+    final _result = await _dio
+        .fetch<bool>(_setStreamType<retrofit.HttpResponse<bool>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/order/pay',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = _result.data!;
+    final httpResponse = retrofit.HttpResponse(value, _result);
     return httpResponse;
   }
 

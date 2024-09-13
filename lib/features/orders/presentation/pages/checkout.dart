@@ -3,7 +3,7 @@ import 'package:coffee_start/core/cache/custom_cache_manager.dart';
 import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:coffee_start/features/cart/presentation/bloc/local/cart_items/cart_items_local_bloc.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_stepper.dart';
+import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

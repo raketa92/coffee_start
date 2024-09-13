@@ -1,5 +1,5 @@
 import 'package:coffee_start/features/card/domain/entities/card.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_stepper.dart';
+import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:flutter/material.dart';
 
 class SummaryForm extends StatelessWidget {
@@ -28,7 +28,7 @@ class SummaryForm extends StatelessWidget {
       ],
       const SizedBox(height: 20),
       orderDetailRow(
-          "Total Price:", "${checkoutData.totalPrice.toStringAsFixed(2)} TMT"),
+          "Total Price:", "${checkoutData.totalPrice!.toStringAsFixed(2)} TMT"),
     ]);
   }
 

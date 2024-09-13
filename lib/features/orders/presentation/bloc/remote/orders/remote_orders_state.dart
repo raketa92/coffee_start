@@ -26,3 +26,13 @@ final class RemoteOrdersError extends RemoteOrdersState {
   @override
   List<Object> get props => [error];
 }
+
+final class OrderCreated extends RemoteOrdersState {
+  final String orderId;
+  const OrderCreated(this.orderId);
+}
+
+final class OrderPaid extends RemoteOrdersState {
+  final bool paid;
+  const OrderPaid(this.paid);
+}

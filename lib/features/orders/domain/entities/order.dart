@@ -2,7 +2,7 @@ import 'package:coffee_start/features/products/domain/entities/product.dart';
 import 'package:equatable/equatable.dart';
 
 class OrderEntity extends Equatable {
-  final int id;
+  final String id;
   final String shopName;
   final double rating;
   final double totalPrice;

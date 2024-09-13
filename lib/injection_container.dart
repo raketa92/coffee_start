@@ -17,6 +17,13 @@ import 'package:coffee_start/features/categories/data/repository/category_reposi
 import 'package:coffee_start/features/categories/domain/repository/category_repository.dart';
 import 'package:coffee_start/features/categories/domain/usecases/get_categories.dart';
 import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
+import 'package:coffee_start/features/orders/data/datasource/orders_api_service.dart';
+import 'package:coffee_start/features/orders/data/repository/orders_repository_impl.dart';
+import 'package:coffee_start/features/orders/domain/repository/order_repository.dart';
+import 'package:coffee_start/features/orders/domain/usecases/create_order.dart';
+import 'package:coffee_start/features/orders/domain/usecases/get_orders.dart';
+import 'package:coffee_start/features/orders/domain/usecases/pay_order.dart';
+import 'package:coffee_start/features/orders/presentation/bloc/remote/orders/remote_orders_bloc.dart';
 import 'package:coffee_start/features/products/data/datasource/remote/products_api_service.dart';
 import 'package:coffee_start/features/products/data/repository/product_repository_impl.dart';
 import 'package:coffee_start/features/products/data/repository/product_repository_local_impl.dart';
@@ -59,6 +66,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<CategoriesApiService>(CategoriesApiService(sl()));
   sl.registerSingleton<ProductsApiService>(ProductsApiService(sl()));
   sl.registerSingleton<ShopsApiService>(ShopsApiService(sl()));
+  sl.registerSingleton<OrdersApiService>(OrdersApiService(sl()));
 
   sl.registerSingleton<ProductRepository>(ProductRepositoryImpl());
   sl.registerSingleton<CategoryRepository>(CategoryRepositoryImpl());
@@ -69,6 +77,7 @@ Future<void> initializeDependencies() async {
       CartItemRepositoryLocalImpl(storage: storage));
   sl.registerSingleton<CardRepositoryLocal>(
       CardRepositoryLocalImpl(storage: storage));
+  sl.registerSingleton<OrderRepository>(OrderRepositoryImpl());
 
   sl.registerFactory<RemoteCategoryBloc>(() => RemoteCategoryBloc(sl()));
   sl.registerFactory<RemoteProductBloc>(() => RemoteProductBloc(sl()));
@@ -87,6 +96,8 @@ Future<void> initializeDependencies() async {
       () => CartItemsLocalBloc(sl(), sl(), sl(), sl()));
   sl.registerFactory<CardLocalBloc>(
       () => CardLocalBloc(sl(), sl(), sl(), sl()));
+  sl.registerFactory<RemoteOrdersBloc>(
+      () => RemoteOrdersBloc(sl(), sl(), sl()));
 
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
   sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
@@ -110,4 +121,7 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<UpdateCardUseCase>(UpdateCardUseCase(sl()));
   sl.registerSingleton<RemoveCardUseCase>(RemoveCardUseCase(sl()));
   sl.registerSingleton<GetCardsUseCase>(GetCardsUseCase(sl()));
+  sl.registerSingleton<GetOrdersUseCase>(GetOrdersUseCase(sl()));
+  sl.registerSingleton<CreateOrdersUseCase>(CreateOrdersUseCase(sl()));
+  sl.registerSingleton<PayOrderUseCase>(PayOrderUseCase(sl()));
 }

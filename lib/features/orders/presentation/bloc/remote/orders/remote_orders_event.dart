@@ -10,3 +10,14 @@ sealed class RemoteOrdersEvent extends Equatable {
 class GetOrders extends RemoteOrdersEvent {
   const GetOrders();
 }
+
+class CreateOrder extends RemoteOrdersEvent {
+  final CheckoutData checkoutData;
+  const CreateOrder(this.checkoutData);
+}
+
+class PayOrder extends RemoteOrdersEvent {
+  final String orderId;
+  final CardEntity cardEntity;
+  const PayOrder(this.orderId, this.cardEntity);
+}
