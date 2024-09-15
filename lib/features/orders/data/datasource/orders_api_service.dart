@@ -1,4 +1,3 @@
-import 'package:coffee_start/features/card/domain/entities/card.dart';
 import 'package:coffee_start/features/orders/data/models/orders.dart';
 import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:dio/dio.dart';
@@ -19,8 +18,4 @@ abstract class OrdersApiService {
   })
   Future<retrofit.HttpResponse<String>> createOrder(
       @retrofit.Body() CheckoutData checkoutData);
-
-  @retrofit.POST('/order/pay')
-  Future<retrofit.HttpResponse<bool>> payOrder(
-      @retrofit.Body() CardEntity cardEntity, String orderId);
 }

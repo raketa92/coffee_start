@@ -1,6 +1,9 @@
 import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.dart';
 import 'package:coffee_start/features/home/main_layout.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_stepper.dart';
+import 'package:coffee_start/features/orders/domain/entities/order.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/checkout_stepper.dart';
+import 'package:coffee_start/features/orders/presentation/pages/order_details.dart';
+import 'package:coffee_start/features/orders/presentation/pages/orders_list.dart';
 import 'package:coffee_start/features/products/presentation/pages/product_details.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_by_category.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_liked.dart';
@@ -40,7 +43,11 @@ class AppRoutes {
         return _materialRoute(const LikedProductsList());
 
       case ordersRoute:
-        return _materialRoute(const Text("orders"));
+        return _materialRoute(const OrdersList());
+
+      case orderDetails:
+        final OrderEntity order = settings.arguments as OrderEntity;
+        return _materialRoute(OrderDetails(order: order));
 
       case cartRoute:
         return _materialRoute(const CartItemsList());

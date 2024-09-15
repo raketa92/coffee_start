@@ -53,10 +53,7 @@ class _OrdersApiService implements OrdersApiService {
       CheckoutData checkoutData) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{
-      r'Content-Type': 'application/json',
-      r'Custom-Header': 'your_custom_value',
-    };
+    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(checkoutData.toJson());
@@ -70,38 +67,6 @@ class _OrdersApiService implements OrdersApiService {
             .compose(
               _dio.options,
               '/order',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = _result.data!;
-    final httpResponse = retrofit.HttpResponse(value, _result);
-    return httpResponse;
-  }
-
-  @override
-  Future<retrofit.HttpResponse<bool>> payOrder(
-    CardEntity cardEntity,
-    String orderId,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(cardEntity.toJson());
-    final _result = await _dio
-        .fetch<bool>(_setStreamType<retrofit.HttpResponse<bool>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    )
-            .compose(
-              _dio.options,
-              '/order/pay',
               queryParameters: queryParameters,
               data: _data,
             )

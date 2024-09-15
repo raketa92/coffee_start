@@ -1,10 +1,10 @@
 import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/orders/remote_orders_bloc.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout.dart';
-import 'package:coffee_start/features/orders/presentation/pages/contact_info.dart';
-import 'package:coffee_start/features/orders/presentation/pages/order_complete.dart';
-import 'package:coffee_start/features/orders/presentation/pages/sms_confirmation.dart';
-import 'package:coffee_start/features/orders/presentation/pages/summary.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/checkout.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/contact_info.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/order_complete.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/sms_confirmation.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/summary.dart';
 import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

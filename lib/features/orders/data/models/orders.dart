@@ -1,5 +1,5 @@
+import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:coffee_start/features/orders/domain/entities/order.dart';
-import 'package:coffee_start/features/products/domain/entities/product.dart';
 
 class OrderModel extends OrderEntity {
   const OrderModel(
@@ -11,8 +11,8 @@ class OrderModel extends OrderEntity {
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     var productsFromJson = json['products'] as List;
-    List<ProductEntity> products = productsFromJson
-        .map((product) => ProductEntity.fromJson(product))
+    List<CartItemProductEntity> products = productsFromJson
+        .map((product) => CartItemProductEntity.fromJson(product))
         .toList();
 
     return OrderModel(

@@ -66,7 +66,7 @@ class _MainLayoutState extends State<MainLayout> {
             onTap: () {
               Navigator.pushNamed(
                 context,
-                shopsRoute,
+                ordersRoute,
               );
             },
             child: const ListTile(
