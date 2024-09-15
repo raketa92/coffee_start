@@ -7,3 +7,5 @@ class PaymentMethods {
   static const String card = 'card';
   static const String cash = 'cash';
 }
+
+enum OrderStatuses { pending, completed, canceled }

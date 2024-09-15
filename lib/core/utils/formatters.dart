@@ -1,3 +1,5 @@
+import 'package:coffee_start/core/constants/constants.dart';
+
 String formatCardNumber(String cardNumber) {
   String result = "";
   for (var i = 0; i < cardNumber.length; i++) {
@@ -20,4 +22,17 @@ String formatCardDate(int month, int year) {
     result = "0$month/$year";
   }
   return result;
+}
+
+String getOrderStatus(OrderStatuses status) {
+  switch (status) {
+    case OrderStatuses.pending:
+      return 'pending';
+    case OrderStatuses.completed:
+      return 'completed';
+    case OrderStatuses.canceled:
+      return 'canceled';
+    default:
+      return 'unknown status';
+  }
 }

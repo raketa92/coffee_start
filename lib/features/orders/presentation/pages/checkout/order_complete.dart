@@ -51,7 +51,7 @@ class OrderCompletePage extends StatelessWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                             context,
                             ordersRoute,
                           );

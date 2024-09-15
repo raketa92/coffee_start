@@ -1,5 +1,5 @@
+import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
-import 'package:coffee_start/features/products/domain/entities/product.dart';
 import 'package:equatable/equatable.dart';
 
 class OrderEntity extends Equatable {
@@ -8,13 +8,17 @@ class OrderEntity extends Equatable {
   final double rating;
   final double totalPrice;
   final List<CartItemProductEntity> products;
+  final OrderStatuses status;
+  final DateTime date;
 
   const OrderEntity(
       {required this.id,
       required this.shopName,
       required this.totalPrice,
       required this.rating,
-      required this.products});
+      required this.products,
+      required this.status,
+      required this.date});
 
   @override
   List<Object?> get props => [id, shopName, totalPrice, rating];
@@ -29,6 +33,9 @@ class OrderEntity extends Equatable {
         totalPrice: json['totalPrice'],
         shopName: json['name'],
         rating: json['rating'],
-        products: products);
+        products: products,
+        status: OrderStatuses.values
+            .firstWhere((e) => e.toString().split('.').last == json['status']),
+        date: json['date']);
   }
 }

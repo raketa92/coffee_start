@@ -1,3 +1,4 @@
+import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:coffee_start/features/orders/data/datasource/orders_api_service.dart';
 import 'package:coffee_start/features/orders/data/models/orders.dart';
@@ -53,9 +54,11 @@ class MockOrdersApiService implements OrdersApiService {
                   rating: 4,
                   ingredients: ['shocolate']),
             )
-          ]),
+          ],
+          status: OrderStatuses.pending,
+          date: DateTime.now()),
       OrderModel(
-          id: orderId,
+          id: orderId2,
           shopName: 'Shop 2',
           rating: 4.5,
           totalPrice: 22,
@@ -84,7 +87,9 @@ class MockOrdersApiService implements OrdersApiService {
                   rating: 4,
                   ingredients: ['shocolate']),
             )
-          ]),
+          ],
+          status: OrderStatuses.completed,
+          date: DateTime.now()),
     ];
 
     return HttpResponse(

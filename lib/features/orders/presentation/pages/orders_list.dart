@@ -1,3 +1,5 @@
+import 'package:coffee_start/core/constants/constants.dart';
+import 'package:coffee_start/core/utils/formatters.dart';
 import 'package:coffee_start/features/orders/domain/entities/order.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/orders/remote_orders_bloc.dart';
 import 'package:coffee_start/features/orders/presentation/pages/order_details.dart';
@@ -79,7 +81,7 @@ class OrderListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedDate =
-        DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now());
+        DateFormat('dd.MM.yyyy – kk:mm').format(DateTime.now());
     return ListTile(
       leading: Icon(Icons.shopping_bag, color: Colors.blue[700], size: 30),
       title: Text(
@@ -90,15 +92,18 @@ class OrderListItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Total: \$${order.totalPrice.toStringAsFixed(2)} (${order.id})',
+            'Total: ${order.totalPrice.toStringAsFixed(2)} TMT (${getOrderStatus(order.status)})',
             style: TextStyle(
-              color: order.id == 'Complete' ? Colors.green : Colors.grey,
+              fontSize: 16,
+              color: order.status == OrderStatuses.completed
+                  ? Colors.green
+                  : Colors.grey,
             ),
           ),
           const SizedBox(height: 4), // Add some space
           Text(
             'Date: $formattedDate',
-            style: const TextStyle(color: Colors.black54, fontSize: 12),
+            style: const TextStyle(color: Colors.black54, fontSize: 15),
           ),
         ],
       ),
