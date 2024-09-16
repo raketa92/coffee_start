@@ -1,3 +1,4 @@
+import 'package:coffee_start/features/card/presentation/pages/cards_list.dart';
 import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.dart';
 import 'package:coffee_start/features/home/main_layout.dart';
 import 'package:coffee_start/features/orders/domain/entities/order.dart';
@@ -55,6 +56,9 @@ class AppRoutes {
       case checkoutRoute:
         final int shopId = settings.arguments as int;
         return _materialRoute(CheckoutStepper(shopId: shopId));
+
+      case cardsRoute:
+        return _materialRoute(const CardsList());
 
       // case orderCompleteRoute:
       //   return _materialRoute(const OrderCompletePage());

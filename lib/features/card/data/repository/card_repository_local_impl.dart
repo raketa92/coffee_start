@@ -34,32 +34,20 @@ class CardRepositoryLocalImpl implements CardRepositoryLocal {
       }
     }
     final mockCards = [
-      const CardEntity(
+      CardEntity(
           cardNumber: "1234123412341234",
           name: "Mr Test",
           month: 8,
           year: 2028,
           cvv: 123),
-      const CardEntity(
-          cardNumber: "9876987698769876",
-          name: "Mr Test2",
-          month: 11,
-          year: 2032,
-          cvv: 345),
-      const CardEntity(
-          cardNumber: "9876987698769867",
-          name: "Mr Test2",
-          month: 12,
-          year: 2032,
-          cvv: 987)
     ];
     return mockCards;
   }
 
   @override
-  Future<void> removeCard(CardEntity cardEntity) async {
+  Future<void> removeCard(String cardNumber) async {
     final cards = await getCards();
-    cards.removeWhere((element) => element.cardNumber == cardEntity.cardNumber);
+    cards.removeWhere((element) => element.cardNumber == cardNumber);
 
     await saveCards(cards);
   }

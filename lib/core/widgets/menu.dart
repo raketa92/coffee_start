@@ -1,5 +1,5 @@
 import 'package:coffee_start/features/card/domain/entities/card.dart';
-import 'package:coffee_start/features/card/presentation/pages/cards_list.dart';
+import 'package:coffee_start/features/card/presentation/pages/cards_list_dropdown.dart';
 import 'package:flutter/material.dart';
 
 class MenuWidget extends StatelessWidget {
@@ -35,7 +35,7 @@ class MenuWidget extends StatelessWidget {
             ),
           ],
         ),
-        child: CardsList(
+        child: CardsListDropdown(
           showDeleteIcon: false,
           onCardSelected: onCardSelected,
           toggleDropdown: toggleDropdown,

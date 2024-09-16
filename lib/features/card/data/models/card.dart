@@ -1,7 +1,7 @@
 import 'package:coffee_start/features/card/domain/entities/card.dart';
 
 class CardModel extends CardEntity {
-  const CardModel(
+  CardModel(
       {required super.cardNumber,
       required super.year,
       required super.month,

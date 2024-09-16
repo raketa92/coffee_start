@@ -1,6 +1,6 @@
 import 'package:coffee_start/core/constants/constants.dart';
 
-String formatCardNumber(String cardNumber) {
+String formatCardNumber(String cardNumber, {String separator = '*'}) {
   String result = "";
   for (var i = 0; i < cardNumber.length; i++) {
     int index = i + 1;

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:coffee_start/features/card/data/models/card.dart';
 import 'package:coffee_start/features/card/domain/entities/card.dart';
 import 'package:coffee_start/features/card/domain/usecases/add_card.dart';
@@ -67,22 +66,18 @@ class CardLocalBloc extends Bloc<CardLocalEvent, CardLocalState>
   }
 
   FutureOr<void> onAddCard(AddCard event, Emitter<CardLocalState> emit) async {
-    if (state is CardsLocalLoaded) {
-      final currentState = state as CardsLocalLoaded;
-      await _addCardUseCase(params: event.card);
-      final updatedCards = await _getCardsUseCase();
-      emit(currentState.copyWith(cards: updatedCards));
-    }
+    emit(CardsLocalLoading());
+    await _addCardUseCase(params: event.card);
+    final updatedCards = await _getCardsUseCase();
+    emit(CardsLocalLoaded(cards: updatedCards));
   }
 
   FutureOr<void> onRemoveCard(
       RemoveCard event, Emitter<CardLocalState> emit) async {
-    if (state is CardsLocalLoaded) {
-      final currentState = state as CardsLocalLoaded;
-      await _removeCardUseCase(params: event.card);
-      final updatedCards = await _getCardsUseCase();
-      emit(currentState.copyWith(cards: updatedCards));
-    }
+    emit(CardsLocalLoading());
+    await _removeCardUseCase(params: event.cardNumber);
+    final updatedCards = await _getCardsUseCase();
+    emit(CardsLocalLoaded(cards: updatedCards));
   }
 
   FutureOr<void> onUpdateCard(

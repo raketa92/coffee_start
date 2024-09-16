@@ -4,6 +4,7 @@ import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.da
 import 'package:coffee_start/features/home/home.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_liked.dart';
 import 'package:coffee_start/features/shops/presentation/pages/shops_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainLayout extends StatefulWidget {
@@ -74,9 +75,17 @@ class _MainLayoutState extends State<MainLayout> {
               title: Text("Orders"),
             ),
           ),
-          const ListTile(
-            leading: Icon(Icons.payment_outlined),
-            title: Text("Cards"),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                cardsRoute,
+              );
+            },
+            child: const ListTile(
+              leading: Icon(Icons.payment_outlined),
+              title: Text("Cards"),
+            ),
           ),
           const ListTile(
             leading: Icon(Icons.location_on_outlined),

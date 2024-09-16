@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
 class CardEntity extends Equatable {
-  final String cardNumber;
-  final int month;
-  final int year;
-  final String name;
-  final int cvv;
+  String cardNumber;
+  int month;
+  int year;
+  String name;
+  int cvv;
 
-  const CardEntity(
+  CardEntity(
       {required this.cardNumber,
       required this.month,
       required this.name,
@@ -15,7 +15,7 @@ class CardEntity extends Equatable {
       required this.cvv});
 
   @override
-  List<Object?> get props => [cardNumber, month, year, name];
+  List<Object?> get props => [cardNumber, month, year, name, cvv];
 
   factory CardEntity.fromJson(Map<String, dynamic> json) {
     return CardEntity(

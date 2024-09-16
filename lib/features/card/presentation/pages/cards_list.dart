@@ -1,20 +1,13 @@
 import 'package:coffee_start/core/utils/formatters.dart';
 import 'package:coffee_start/features/card/domain/entities/card.dart';
 import 'package:coffee_start/features/card/presentation/bloc/local/card/card_local_bloc.dart';
+import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CardsList extends StatelessWidget {
-  CardsList(
-      {super.key,
-      required this.showDeleteIcon,
-      required this.onCardSelected,
-      required this.toggleDropdown});
-  final bool showDeleteIcon;
-  final Function(CardEntity) onCardSelected;
-  void Function() toggleDropdown;
+  const CardsList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,67 +24,80 @@ class CardsList extends StatelessWidget {
         );
       }
       if (state is CardsLocalLoaded) {
-        return cardsContainer(state);
+        final cards = state.cards;
+        return cardsContainer(cards, context);
       }
       return const SizedBox();
     });
   }
 
-  Widget cardsContainer(CardsLocalLoaded state) {
-    final cards = state.cards;
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(fit: FlexFit.loose, child: _cardsList(cards)),
-          ElevatedButton(onPressed: () {}, child: const Text('Add Card'))
-        ],
+  Widget cardsContainer(List<CardEntity> cards, BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cards'),
       ),
-    );
-  }
-
-  Widget _cardsList(List<CardEntity> cards) {
-    return ListView.separated(
-      shrinkWrap: true,
-      separatorBuilder: (BuildContext context, int index) => const SizedBox(
-        height: 6,
-      ),
-      itemCount: cards.length,
-      itemBuilder: (context, index) {
-        final card = cards[index];
-        final name = card.name;
-        final cardNumber = card.cardNumber;
-        final month = card.month;
-        final year = card.year;
-        return GestureDetector(
-          onTap: () {
-            onCardSelected(card);
-            toggleDropdown();
-          },
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ListView.builder(
+        itemCount: cards.length,
+        itemBuilder: (context, index) {
+          final card = cards[index];
+          return Card(
+            margin: const EdgeInsets.all(10),
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+              leading: const Icon(Icons.credit_card_outlined),
+              title: Text(formatCardNumber(card.cardNumber)),
+              subtitle: Text('Expires: ${card.month}/${card.year}'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _cardNumberAndName(name, cardNumber),
-                  Text(formatCardDate(month, year)),
-                  if (showDeleteIcon) const Icon(Icons.delete),
+                  Text(card.name),
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      _showDeleteConfirmationDialog(card.cardNumber, context);
+                    },
+                  ),
                 ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
-  _cardNumberAndName(String name, String cardNumber) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [Text(formatCardNumber(cardNumber)), Text(name)],
+  void _deleteCard(String cardNumber) {
+    sl<CardLocalBloc>().add(RemoveCard(cardNumber));
+  }
+
+  Future<void> _showDeleteConfirmationDialog(
+      String cardNumber, BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Card'),
+          content: const Text('Are you sure you want to delete this card?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () {
+                _deleteCard(cardNumber); // Delete the card
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

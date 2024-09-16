@@ -8,4 +8,5 @@ const String ordersRoute = '/orders';
 const String orderDetails = '/order_details';
 const String cartRoute = '/cart';
 const String checkoutRoute = '/checkout';
+const String cardsRoute = '/cards';
 // const String orderCompleteRoute = '/order_complete';

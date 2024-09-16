@@ -22,8 +22,8 @@ class AddCard extends CardLocalEvent {
 }
 
 class RemoveCard extends CardLocalEvent {
-  final CardEntity card;
-  const RemoveCard(this.card);
+  final String cardNumber;
+  const RemoveCard(this.cardNumber);
 }
 
 class UpdateCard extends CardLocalEvent {
