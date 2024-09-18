@@ -31,7 +31,7 @@ class CardLocalBloc extends Bloc<CardLocalEvent, CardLocalState>
   CardLocalState? fromJson(Map<String, dynamic> json) {
     try {
       final cards = (json['cards'] as List)
-          .map((item) => CardModel.fromJson(item).toEntity())
+          .map((item) => CardModel.fromJson(item))
           .toList();
       return CardsLocalLoaded(cards: cards);
     } catch (_) {
@@ -74,10 +74,12 @@ class CardLocalBloc extends Bloc<CardLocalEvent, CardLocalState>
 
   FutureOr<void> onRemoveCard(
       RemoveCard event, Emitter<CardLocalState> emit) async {
-    emit(CardsLocalLoading());
-    await _removeCardUseCase(params: event.cardNumber);
-    final updatedCards = await _getCardsUseCase();
-    emit(CardsLocalLoaded(cards: updatedCards));
+    if (state is CardsLocalLoaded) {
+      final currentState = state as CardsLocalLoaded;
+      await _removeCardUseCase(params: event.cardNumber);
+      final updatedCards = await _getCardsUseCase();
+      emit(currentState.copyWith(cards: updatedCards));
+    }
   }
 
   FutureOr<void> onUpdateCard(

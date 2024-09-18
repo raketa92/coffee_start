@@ -4,7 +4,6 @@ import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.da
 import 'package:coffee_start/features/home/home.dart';
 import 'package:coffee_start/features/products/presentation/pages/products_liked.dart';
 import 'package:coffee_start/features/shops/presentation/pages/shops_list.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainLayout extends StatefulWidget {

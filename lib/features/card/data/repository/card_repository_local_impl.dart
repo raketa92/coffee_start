@@ -33,15 +33,7 @@ class CardRepositoryLocalImpl implements CardRepositoryLocal {
         return [];
       }
     }
-    final mockCards = [
-      CardEntity(
-          cardNumber: "1234123412341234",
-          name: "Mr Test",
-          month: 8,
-          year: 2028,
-          cvv: 123),
-    ];
-    return mockCards;
+    return [];
   }
 
   @override
@@ -62,9 +54,13 @@ class CardRepositoryLocalImpl implements CardRepositoryLocal {
   }
 
   Future<void> saveCards(List<CardEntity> cards) async {
-    final List<Map<String, dynamic>> cardsJson =
-        cards.map((item) => CardModel.fromEntity(item).toJson()).toList();
-    final jsonString = json.encode(cardsJson);
-    await storage.write(cardsLocalStorageKey, jsonString);
+    try {
+      final List<Map<String, dynamic>> cardsJson =
+          cards.map((item) => CardModel.fromEntity(item).toJson()).toList();
+      final jsonString = json.encode(cardsJson);
+      await storage.write(cardsLocalStorageKey, jsonString);
+    } catch (e) {
+      print('Error saving cards: $e');
+    }
   }
 }

@@ -5,7 +5,7 @@ String formatCardNumber(String cardNumber, {String separator = '*'}) {
   for (var i = 0; i < cardNumber.length; i++) {
     int index = i + 1;
     if (index > 4 && index < 13) {
-      result += "*";
+      result += separator;
     } else {
       result += cardNumber[i];
     }

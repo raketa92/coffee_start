@@ -5,53 +5,76 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddCardPage extends StatefulWidget {
-  const AddCardPage({super.key});
+class EditCardPage extends StatefulWidget {
+  final CardEntity card;
+  const EditCardPage({super.key, required this.card});
 
   @override
-  State<AddCardPage> createState() => _AddCardPageState();
+  State<EditCardPage> createState() => _EditCardPageState();
 }
 
-class _AddCardPageState extends State<AddCardPage> {
+class _EditCardPageState extends State<EditCardPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _cardNumberController = TextEditingController();
   final TextEditingController _monthController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  late CardEntity card;
 
   @override
   void initState() {
     super.initState();
+    _cardNumberController.text =
+        _formatInitialCardNumber(widget.card.cardNumber);
+    _monthController.text = widget.card.month.toString().padLeft(2, '0');
+    _yearController.text = widget.card.year.toString();
+    _firstNameController.text = widget.card.name.split(' ').first;
+    _lastNameController.text = widget.card.name.split(' ').length > 1
+        ? widget.card.name.split(' ').last
+        : '';
+
     _cardNumberController.addListener(() {
       setState(() {
         _formatCardNumber(_cardNumberController.text);
       });
     });
-
     _monthController.addListener(() {
       setState(() {});
     });
-
     _yearController.addListener(() {
       setState(() {});
     });
-
     _firstNameController.addListener(() {
       setState(() {});
     });
-
     _lastNameController.addListener(() {
       setState(() {});
     });
   }
 
-  _formatCardNumber(String input) {
+  @override
+  void dispose() {
+    _cardNumberController.dispose();
+    _monthController.dispose();
+    _yearController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    super.dispose();
+  }
+
+  _formatCardNumber(String input, {String separator = '*'}) {
     String formatted = input.replaceAllMapped(RegExp(r".{1,4}"), (match) {
       return '${match.group(0)}';
     });
-    return formatCardNumber(formatted);
+    return formatCardNumber(formatted, separator: separator);
+  }
+
+  String _formatInitialCardNumber(String cardNumber) {
+    cardNumber = cardNumber.replaceAll(' ', '');
+    String formatted = cardNumber.replaceAllMapped(RegExp(r".{1,4}"), (match) {
+      return '${match.group(0)} ';
+    }).trim();
+    return formatted;
   }
 
   @override
@@ -221,11 +244,9 @@ class _AddCardPageState extends State<AddCardPage> {
           ),
           Text(
             'Expiry: ${_monthController.text.isEmpty ? 'MM' : _monthController.text}/${_yearController.text.isEmpty ? 'YY' : _yearController.text}',
-            // 'Expiry: $_month/$_year',
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
           Text(
-            // _cardHolderName,
             '${_firstNameController.text} ${_lastNameController.text}'
                     .trim()
                     .isEmpty
@@ -242,19 +263,19 @@ class _AddCardPageState extends State<AddCardPage> {
     return ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          card = CardEntity(
+          final updatedCard = CardEntity(
               cardNumber: _cardNumberController.text.replaceAll(' ', ''),
               month: int.parse(_monthController.text),
               year: int.parse(_yearController.text),
               name: '${_firstNameController.text} ${_lastNameController.text}',
               cvv: 000);
-          context.read<CardLocalBloc>().add(AddCard(card));
-          Navigator.pop(
-            context,
-          );
+
+          // Dispatch update event
+          context.read<CardLocalBloc>().add(UpdateCard(updatedCard));
+          Navigator.pop(context);
         }
       },
-      child: const Text('Add Card'),
+      child: const Text('Save Card'),
     );
   }
 }

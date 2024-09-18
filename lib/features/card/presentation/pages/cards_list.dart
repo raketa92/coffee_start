@@ -1,7 +1,8 @@
 import 'package:coffee_start/core/utils/formatters.dart';
 import 'package:coffee_start/features/card/domain/entities/card.dart';
 import 'package:coffee_start/features/card/presentation/bloc/local/card/card_local_bloc.dart';
-import 'package:coffee_start/injection_container.dart';
+import 'package:coffee_start/features/card/presentation/pages/add_card.dart';
+import 'package:coffee_start/features/card/presentation/pages/edit_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +36,21 @@ class CardsList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cards'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: 'Open shopping cart',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddCardPage()),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: cards.length,
@@ -47,13 +63,24 @@ class CardsList extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditCardPage(
+                            card: card,
+                          )),
+                );
+              },
               leading: const Icon(Icons.credit_card_outlined),
               title: Text(formatCardNumber(card.cardNumber)),
               subtitle: Text('Expires: ${card.month}/${card.year}'),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(card.name),
+                  Text(card.name.length > 14
+                      ? card.name.substring(0, 11)
+                      : card.name),
                   IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () {
@@ -69,8 +96,8 @@ class CardsList extends StatelessWidget {
     );
   }
 
-  void _deleteCard(String cardNumber) {
-    sl<CardLocalBloc>().add(RemoveCard(cardNumber));
+  void _deleteCard(String cardNumber, BuildContext context) {
+    context.read<CardLocalBloc>().add(RemoveCard(cardNumber));
   }
 
   Future<void> _showDeleteConfirmationDialog(
@@ -91,7 +118,7 @@ class CardsList extends StatelessWidget {
             TextButton(
               child: const Text('Delete'),
               onPressed: () {
-                _deleteCard(cardNumber); // Delete the card
+                _deleteCard(cardNumber, context); // Delete the card
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
