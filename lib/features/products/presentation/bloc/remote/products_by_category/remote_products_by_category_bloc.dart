@@ -21,7 +21,7 @@ class RemoteProductsByCategoryBloc
   void onGetProductsByCategory(GetProductsByCategory event,
       Emitter<RemoteProductsByCategoryState> emit) async {
     final dataState =
-        await _getProductsByCategoryUseCase(params: event.categoryId);
+        await _getProductsByCategoryUseCase(params: event.categoryGuid);
     if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
       emit(RemoteProductsByCategoryLoaded(dataState.data!));
     } else if (dataState is DataFailed) {

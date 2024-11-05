@@ -4,7 +4,7 @@ import 'package:coffee_start/features/orders/domain/entities/order.dart';
 
 class OrderModel extends OrderEntity {
   const OrderModel(
-      {required super.id,
+      {required super.guid,
       required super.shopName,
       required super.rating,
       required super.totalPrice,
@@ -19,7 +19,7 @@ class OrderModel extends OrderEntity {
         .toList();
 
     return OrderModel(
-        id: (json['id']),
+        guid: (json['guid']),
         totalPrice: json['image'],
         shopName: json['name'],
         rating: json['rating'],

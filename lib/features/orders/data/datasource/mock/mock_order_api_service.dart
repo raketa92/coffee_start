@@ -25,7 +25,7 @@ class MockOrdersApiService implements OrdersApiService {
     final String orderId2 = DateTime.now().microsecondsSinceEpoch.toString();
     final List<OrderModel> orders = [
       OrderModel(
-          id: orderId,
+          guid: orderId,
           shopName: 'Shop 1',
           rating: 4.5,
           totalPrice: 22,
@@ -58,7 +58,7 @@ class MockOrdersApiService implements OrdersApiService {
           status: OrderStatuses.pending,
           date: DateTime.now()),
       OrderModel(
-          id: orderId2,
+          guid: orderId2,
           shopName: 'Shop 2',
           rating: 4.5,
           totalPrice: 22,

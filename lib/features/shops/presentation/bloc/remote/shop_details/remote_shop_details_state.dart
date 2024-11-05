@@ -12,7 +12,7 @@ final class RemoteShopDetailsInitial extends RemoteShopDetailsState {}
 final class RemoteShopDetailsLoading extends RemoteShopDetailsState {}
 
 final class RemoteShopDetailsLoaded extends RemoteShopDetailsState {
-  final ShopProductsEntity shop;
+  final ShopEntity shop;
   const RemoteShopDetailsLoaded(this.shop);
 
   @override

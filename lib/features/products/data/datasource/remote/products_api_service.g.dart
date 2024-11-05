@@ -113,21 +113,21 @@ class _ProductsApiService implements ProductsApiService {
   }
 
   @override
-  Future<HttpResponse<ProductsByCategoryModel>> getProductsByCategory(
-      int categoryId) async {
+  Future<HttpResponse<ApiResponseList<ProductModel>>> getProductsByShop(
+      String shopGuid) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'shopGuid': shopGuid};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<ProductsByCategoryModel>>(Options(
+        _setStreamType<HttpResponse<ApiResponseList<ProductModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/product?categoryGuid=${categoryId}',
+              '/product',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -136,7 +136,42 @@ class _ProductsApiService implements ProductsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ProductsByCategoryModel.fromJson(_result.data!);
+    final value = ApiResponseList<ProductModel>.fromJson(
+      _result.data!,
+      (json) => ProductModel.fromJson(json as Map<String, dynamic>),
+    );
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<ApiResponseList<ProductModel>>> getProductsByCategory(
+      String categoryGuid) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'categoryGuid': categoryGuid};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponseList<ProductModel>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/product',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ApiResponseList<ProductModel>.fromJson(
+      _result.data!,
+      (json) => ProductModel.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

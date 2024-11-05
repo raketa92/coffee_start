@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutForm extends StatefulWidget {
-  final int shopId;
+  final String shopGuid;
   final CheckoutData checkoutData;
   const CheckoutForm(
-      {super.key, required this.shopId, required this.checkoutData});
+      {super.key, required this.shopGuid, required this.checkoutData});
 
   @override
   State<CheckoutForm> createState() => _CheckoutFormState();
@@ -21,7 +21,7 @@ class _CheckoutFormState extends State<CheckoutForm> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<CartItemsLocalBloc>()..add(GetCartItemByShop(widget.shopId)),
+          sl<CartItemsLocalBloc>()..add(GetCartItemByShop(widget.shopGuid)),
       child: BlocBuilder<CartItemsLocalBloc, CartItemsLocalState>(
           builder: (context, state) {
         if (state is CartItemsLocalLoading) {

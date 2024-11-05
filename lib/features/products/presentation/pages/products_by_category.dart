@@ -1,4 +1,3 @@
-import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/core/widgets/product_block.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_category/remote_products_by_category_bloc.dart';
@@ -8,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductsByCategory extends StatefulWidget {
-  final int categoryId;
+  final String categoryGuid;
   final String categoryName;
   const ProductsByCategory(
-      {super.key, required this.categoryId, required this.categoryName});
+      {super.key, required this.categoryGuid, required this.categoryName});
 
   @override
   State<ProductsByCategory> createState() => _ProductsByCategoryState();
@@ -22,7 +21,7 @@ class _ProductsByCategoryState extends State<ProductsByCategory> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<RemoteProductsByCategoryBloc>()
-        ..add(GetProductsByCategory(widget.categoryId)),
+        ..add(GetProductsByCategory(widget.categoryGuid)),
       child: BlocBuilder<RemoteProductsByCategoryBloc,
           RemoteProductsByCategoryState>(builder: (context, state) {
         if (state is RemoteProductsByCategoryLoading) {

@@ -50,14 +50,13 @@ class _ShopsApiService implements ShopsApiService {
   }
 
   @override
-  Future<HttpResponse<ApiResponse<ShopProductsModel>>> getShop(
-      String shopGuid) async {
+  Future<HttpResponse<ApiResponse<ShopModel>>> getShop(String shopGuid) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<ApiResponse<ShopProductsModel>>>(Options(
+        _setStreamType<HttpResponse<ApiResponse<ShopModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -73,9 +72,9 @@ class _ShopsApiService implements ShopsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ApiResponse<ShopProductsModel>.fromJson(
+    final value = ApiResponse<ShopModel>.fromJson(
       _result.data!,
-      (json) => ShopProductsModel.fromJson(json as Map<String, dynamic>),
+      (json) => ShopModel.fromJson(json as Map<String, dynamic>),
     );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;

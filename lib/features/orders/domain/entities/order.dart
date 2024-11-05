@@ -3,7 +3,7 @@ import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:equatable/equatable.dart';
 
 class OrderEntity extends Equatable {
-  final String id;
+  final String guid;
   final String shopName;
   final double rating;
   final double totalPrice;
@@ -12,7 +12,7 @@ class OrderEntity extends Equatable {
   final DateTime date;
 
   const OrderEntity(
-      {required this.id,
+      {required this.guid,
       required this.shopName,
       required this.totalPrice,
       required this.rating,
@@ -21,7 +21,7 @@ class OrderEntity extends Equatable {
       required this.date});
 
   @override
-  List<Object?> get props => [id, shopName, totalPrice, rating];
+  List<Object?> get props => [guid, shopName, totalPrice, rating];
 
   factory OrderEntity.fromJson(Map<String, dynamic> json) {
     var productsFromJson = json['products'] as List;
@@ -29,7 +29,7 @@ class OrderEntity extends Equatable {
         .map((product) => CartItemProductEntity.fromJson(product))
         .toList();
     return OrderEntity(
-        id: json['id'],
+        guid: json['guid'],
         totalPrice: json['totalPrice'],
         shopName: json['name'],
         rating: json['rating'],

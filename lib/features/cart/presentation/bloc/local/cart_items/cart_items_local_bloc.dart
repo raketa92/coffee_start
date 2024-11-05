@@ -174,7 +174,7 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
     if (state is CartItemsLocalLoaded) {
       final currentState = state as CartItemsLocalLoaded;
       final result = currentState.cartItems
-          .where((element) => element.shopGuid == event.shopId)
+          .where((element) => element.shopGuid == event.shopGuid)
           .firstOrNull;
       if (result != null) {
         emit(CartItemLocalLoaded(cartItem: result));

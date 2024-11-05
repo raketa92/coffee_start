@@ -68,12 +68,12 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<DataState<List<ProductEntity>>> getProductsByCategory(
-      int categoryId) async {
+      String categoryGuid) async {
     try {
       final httpResponse =
-          await _productsApiService.getProductsByCategory(categoryId);
+          await _productsApiService.getProductsByCategory(categoryGuid);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data.products);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,
@@ -90,6 +90,26 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<DataState<ProductEntity>> getProduct(String productGuid) async {
     try {
       final httpResponse = await _productsApiService.getProduct(productGuid);
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data.result);
+      } else {
+        return DataFailed(DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: httpResponse.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<List<ProductEntity>>> getProductsByShop(
+      String shopGuid) async {
+    try {
+      final httpResponse =
+          await _productsApiService.getProductsByShop(shopGuid);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
         return DataSuccess(httpResponse.data.result);
       } else {

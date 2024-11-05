@@ -32,7 +32,7 @@ class ProductModel extends ProductEntity {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': guid,
+      'guid': guid,
       'name': name,
       'image': image,
       'price': price.toString(),

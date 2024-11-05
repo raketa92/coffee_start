@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckoutStepper extends StatefulWidget {
-  final int shopId;
-  const CheckoutStepper({super.key, required this.shopId});
+  final String shopGuid;
+  const CheckoutStepper({super.key, required this.shopGuid});
 
   @override
   State<CheckoutStepper> createState() => _CheckoutStepperState();
@@ -105,8 +105,8 @@ class _CheckoutStepperState extends State<CheckoutStepper> {
             overflow: TextOverflow.ellipsis,
           ),
           isActive: currentStep == 0,
-          content:
-              CheckoutForm(shopId: widget.shopId, checkoutData: _checkoutData)),
+          content: CheckoutForm(
+              shopGuid: widget.shopGuid, checkoutData: _checkoutData)),
       Step(
           state: currentStep > 1 ? StepState.complete : StepState.indexed,
           title: Text(

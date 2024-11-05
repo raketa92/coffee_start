@@ -22,10 +22,10 @@ class AppRoutes {
 
       case productsByCategoryRoute:
         final arguments = settings.arguments as Map<String, dynamic>;
-        final int categoryId = arguments['categoryId'];
+        final String categoryGuid = arguments['categoryGuid'];
         final String categoryName = arguments['categoryName'];
         return _materialRoute(ProductsByCategory(
-          categoryId: categoryId,
+          categoryGuid: categoryGuid,
           categoryName: categoryName,
         ));
 
@@ -54,8 +54,8 @@ class AppRoutes {
         return _materialRoute(const CartItemsList());
 
       case checkoutRoute:
-        final int shopId = settings.arguments as int;
-        return _materialRoute(CheckoutStepper(shopId: shopId));
+        final String shopGuid = settings.arguments as String;
+        return _materialRoute(CheckoutStepper(shopGuid: shopGuid));
 
       case cardsRoute:
         return _materialRoute(const CardsList());

@@ -18,7 +18,7 @@ class CartItemModel extends CartItemEntity {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'shopId': shopGuid,
+      'shopGuid': shopGuid,
       'products': products.map((product) => product.toJson()).toList(),
       'totalPrice': totalPrice,
     };

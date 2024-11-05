@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:coffee_start/core/resources/data_state.dart';
-import 'package:coffee_start/features/shops/domain/entities/shop_products.dart';
+import 'package:coffee_start/features/shops/domain/entities/shop.dart';
 import 'package:coffee_start/features/shops/domain/usecases/get_shop_details.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';

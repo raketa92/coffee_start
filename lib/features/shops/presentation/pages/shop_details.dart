@@ -3,6 +3,8 @@ import 'package:coffee_start/core/cache/custom_cache_manager.dart';
 import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/core/widgets/product_block.dart';
+import 'package:coffee_start/features/products/domain/entities/product.dart';
+import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_shop/remote_products_by_shop_bloc.dart';
 import 'package:coffee_start/features/shops/presentation/bloc/remote/shop_details/remote_shop_details_bloc.dart';
 import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,20 +22,40 @@ class ShopDetails extends StatefulWidget {
 class _ShopDetailsState extends State<ShopDetails> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          sl<RemoteShopDetailsBloc>()..add(GetShopDetails(widget.shopGuid)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              sl<RemoteShopDetailsBloc>()..add(GetShopDetails(widget.shopGuid)),
+        ),
+        BlocProvider(
+          create: (context) => sl<RemoteProductsByShopBloc>()
+            ..add(GetProductsByShop(widget.shopGuid)),
+        ),
+      ],
       child: BlocBuilder<RemoteShopDetailsBloc, RemoteShopDetailsState>(
-          builder: (context, state) {
-        if (state is RemoteShopDetailsLoading) {
+          builder: (context, shopState) {
+        if (shopState is RemoteShopDetailsLoading) {
           return const Center(child: CupertinoActivityIndicator());
         }
-        if (state is RemoteShopDetailsError) {
+        if (shopState is RemoteShopDetailsError) {
           return const Center(child: Icon(Icons.refresh));
         }
 
-        if (state is RemoteShopDetailsLoaded) {
-          return shopsListView(state);
+        if (shopState is RemoteShopDetailsLoaded) {
+          return BlocBuilder<RemoteProductsByShopBloc,
+              RemoteProductsByShopState>(builder: (context, productState) {
+            if (productState is RemoteProductsByShopLoading) {
+              return const Center(child: CupertinoActivityIndicator());
+            }
+            if (productState is RemoteProductsByShopError) {
+              return const Center(child: Icon(Icons.error));
+            }
+            if (productState is RemoteProductsByShopLoaded) {
+              return shopsListView(shopState, productState.products);
+            }
+            return Container();
+          });
         }
 
         return Container();
@@ -41,10 +63,11 @@ class _ShopDetailsState extends State<ShopDetails> {
     );
   }
 
-  Widget shopsListView(RemoteShopDetailsLoaded state) {
+  Widget shopsListView(
+      RemoteShopDetailsLoaded state, List<ProductEntity> products) {
     return Scaffold(
       appBar: _appBar(state.shop.name),
-      body: _body(state),
+      body: _body(state, products),
       // bottomNavigationBar: const GoogleBottomNavigation(),
     );
   }
@@ -55,7 +78,7 @@ class _ShopDetailsState extends State<ShopDetails> {
     );
   }
 
-  _body(RemoteShopDetailsLoaded state) {
+  _body(RemoteShopDetailsLoaded state, List<ProductEntity> products) {
     final shop = state.shop;
     final image = shop.image;
     final imageUrl = '$shopImageUrl/$image';
@@ -109,9 +132,9 @@ class _ShopDetailsState extends State<ShopDetails> {
                     crossAxisSpacing: 2,
                     mainAxisSpacing: 2,
                     childAspectRatio: 3 / 4),
-                itemCount: state.shop.products.length,
+                itemCount: products.length,
                 itemBuilder: (context, index) {
-                  final product = state.shop.products[index];
+                  final product = products[index];
                   return Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: GestureDetector(

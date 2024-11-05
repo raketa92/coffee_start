@@ -35,12 +35,14 @@ import 'package:coffee_start/features/products/domain/usecases/get_popular_produ
 import 'package:coffee_start/features/products/domain/usecases/get_product.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_products.dart';
 import 'package:coffee_start/features/products/domain/usecases/get_products_by_category.dart';
+import 'package:coffee_start/features/products/domain/usecases/get_products_by_shop.dart';
 import 'package:coffee_start/features/products/domain/usecases/remove_liked_product.dart';
 import 'package:coffee_start/features/products/presentation/bloc/local/liked_products/liked_products_local_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/new_products/remote_new_products_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/popular_products/remote_popular_products_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/product_details/remote_product_details_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_category/remote_products_by_category_bloc.dart';
+import 'package:coffee_start/features/products/presentation/bloc/remote/products_by_shop/remote_products_by_shop_bloc.dart';
 import 'package:coffee_start/features/products/presentation/bloc/remote/remote_product_bloc.dart';
 import 'package:coffee_start/features/shops/data/datasource/shops_api_service.dart';
 import 'package:coffee_start/features/shops/data/repository/shop_repository_impl.dart';
@@ -85,6 +87,8 @@ Future<void> initializeDependencies() async {
   sl.registerFactory<RemoteNewProductsBloc>(() => RemoteNewProductsBloc(sl()));
   sl.registerFactory<RemoteProductsByCategoryBloc>(
       () => RemoteProductsByCategoryBloc(sl()));
+  sl.registerFactory<RemoteProductsByShopBloc>(
+      () => RemoteProductsByShopBloc(sl()));
   sl.registerFactory<RemoteProductDetailsBloc>(
       () => RemoteProductDetailsBloc(sl()));
   sl.registerFactory<RemoteShopsBloc>(() => RemoteShopsBloc(sl()));
@@ -104,6 +108,8 @@ Future<void> initializeDependencies() async {
       GetPopularProductsUseCase(sl()));
   sl.registerSingleton<GetProductsByCategoryUseCase>(
       GetProductsByCategoryUseCase(sl()));
+  sl.registerSingleton<GetProductsByShopUseCase>(
+      GetProductsByShopUseCase(sl()));
   sl.registerSingleton<GetProductUseCase>(GetProductUseCase(sl()));
   sl.registerSingleton<GetShopsUseCase>(GetShopsUseCase(sl()));
   sl.registerSingleton<GetShopDetailsUseCase>(GetShopDetailsUseCase(sl()));
