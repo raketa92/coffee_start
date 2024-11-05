@@ -13,11 +13,11 @@ class ShopRepositoryImpl implements ShopRepository {
   ShopRepositoryImpl() : _shopsApiService = ApiServiceFactory.shopApiService;
 
   @override
-  Future<DataState<ShopProductsEntity>> getShop(int shopId) async {
+  Future<DataState<ShopProductsEntity>> getShop(String shopGuid) async {
     try {
-      final httpResponse = await _shopsApiService.getShop(shopId);
+      final httpResponse = await _shopsApiService.getShop(shopGuid);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,
@@ -35,7 +35,7 @@ class ShopRepositoryImpl implements ShopRepository {
     try {
       final httpResponse = await _shopsApiService.getShops();
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,

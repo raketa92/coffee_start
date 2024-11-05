@@ -17,7 +17,7 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final httpResponse = await _productsApiService.getProducts();
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,
@@ -35,7 +35,7 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final httpResponse = await _productsApiService.getNewProducts();
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,
@@ -53,7 +53,7 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       final httpResponse = await _productsApiService.getPopularProducts();
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,
@@ -87,11 +87,11 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<DataState<ProductEntity>> getProduct(int productId) async {
+  Future<DataState<ProductEntity>> getProduct(String productGuid) async {
     try {
-      final httpResponse = await _productsApiService.getProduct(productId);
+      final httpResponse = await _productsApiService.getProduct(productGuid);
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,

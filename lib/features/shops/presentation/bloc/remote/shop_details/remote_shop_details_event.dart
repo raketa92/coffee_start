@@ -8,6 +8,6 @@ sealed class RemoteShopDetailsEvent extends Equatable {
 }
 
 class GetShopDetails extends RemoteShopDetailsEvent {
-  final int shopId;
-  const GetShopDetails(this.shopId);
+  final String shopGuid;
+  const GetShopDetails(this.shopGuid);
 }

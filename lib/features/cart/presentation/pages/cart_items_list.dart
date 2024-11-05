@@ -52,16 +52,16 @@ class _CartItemsListState extends State<CartItemsList> {
           itemCount: state.cartItems.length,
           itemBuilder: (context, index) {
             final cartItem = state.cartItems[index];
-            final shopId = cartItem.shopId;
-            final name = cartItem.shopId;
+            final shopGuid = cartItem.shopGuid;
+            final name = cartItem.shopGuid;
             final products = cartItem.products;
             final cartItemTotalPrice = cartItem.totalPrice;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _shopHeader(shopId),
+                _shopHeader(shopGuid),
                 _productList(products, cartItem),
-                _shopTotalPriceAndCheckout(cartItemTotalPrice, shopId),
+                _shopTotalPriceAndCheckout(cartItemTotalPrice, shopGuid),
                 const Divider(
                   thickness: 1,
                 ),
@@ -103,7 +103,7 @@ class _CartItemsListState extends State<CartItemsList> {
       required CartItemEntity cartItem}) {
     final totalPriceOfProduct = cartItemProductEntity.quantity * price;
     final cartParams = CartParams(
-        shopId: cartItem.shopId,
+        shopGuid: cartItem.shopGuid,
         product: CartItemProductEntity(product: cartItemProductEntity.product));
     return BlocBuilder<CartItemsLocalBloc, CartItemsLocalState>(
       builder: (cartItemsLocalcontext, state) {
@@ -156,10 +156,10 @@ class _CartItemsListState extends State<CartItemsList> {
     );
   }
 
-  Widget _shopHeader(int shopId) {
+  Widget _shopHeader(String shopGuid) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Text('Shop #$shopId',
+      child: Text('Shop #$shopGuid',
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
     );
   }
@@ -172,7 +172,7 @@ class _CartItemsListState extends State<CartItemsList> {
         final name = productEntity.name;
         final price = productEntity.price;
         final image = productEntity.image;
-        final imageUrl = '$apiBaseUrl/$image';
+        final imageUrl = '$productImageUrl/$image';
         return Card(
           child: Column(
             children: [
@@ -192,7 +192,7 @@ class _CartItemsListState extends State<CartItemsList> {
     );
   }
 
-  Widget _shopTotalPriceAndCheckout(double totalPrice, int shopId) {
+  Widget _shopTotalPriceAndCheckout(double totalPrice, String shopGuid) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -201,7 +201,7 @@ class _CartItemsListState extends State<CartItemsList> {
           Text('Total: $totalPrice TMT', style: const TextStyle(fontSize: 16)),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushNamed(context, checkoutRoute, arguments: shopId);
+              Navigator.pushNamed(context, checkoutRoute, arguments: shopGuid);
             },
             child: const Text('Checkout'),
           ),

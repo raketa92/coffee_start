@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShopDetails extends StatefulWidget {
-  final int shopId;
-  const ShopDetails({super.key, required this.shopId});
+  final String shopGuid;
+  const ShopDetails({super.key, required this.shopGuid});
 
   @override
   State<ShopDetails> createState() => _ShopDetailsState();
@@ -22,7 +22,7 @@ class _ShopDetailsState extends State<ShopDetails> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<RemoteShopDetailsBloc>()..add(GetShopDetails(widget.shopId)),
+          sl<RemoteShopDetailsBloc>()..add(GetShopDetails(widget.shopGuid)),
       child: BlocBuilder<RemoteShopDetailsBloc, RemoteShopDetailsState>(
           builder: (context, state) {
         if (state is RemoteShopDetailsLoading) {
@@ -58,7 +58,7 @@ class _ShopDetailsState extends State<ShopDetails> {
   _body(RemoteShopDetailsLoaded state) {
     final shop = state.shop;
     final image = shop.image;
-    final imageUrl = '$apiBaseUrl/$image';
+    final imageUrl = '$shopImageUrl/$image';
     final rating = shop.rating;
     return Column(
       children: [
@@ -117,7 +117,7 @@ class _ShopDetailsState extends State<ShopDetails> {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, productDetailsRoute,
-                              arguments: product.id);
+                              arguments: product.guid);
                         },
                         child: ProductBlock(product: product),
                       ));

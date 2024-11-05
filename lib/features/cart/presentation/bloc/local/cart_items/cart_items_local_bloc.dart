@@ -76,7 +76,7 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
       final currentState = state as CartItemsLocalLoaded;
       await _addToCartUseCase(
           params: CartParams(
-              shopId: event.cartParams.shopId,
+              shopGuid: event.cartParams.shopGuid,
               product: event.cartParams.product));
       final updatedCartItems = await _getCartItemsUseCase();
       emit(currentState.copyWith(cartItems: updatedCartItems));
@@ -89,7 +89,7 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
       final currentState = state as CartItemsLocalLoaded;
       await _removeFromCartUseCase(
           params: CartParams(
-              shopId: event.cartParams.shopId,
+              shopGuid: event.cartParams.shopGuid,
               product: event.cartParams.product));
       final updatedCartItems = await _getCartItemsUseCase();
       emit(currentState.copyWith(cartItems: updatedCartItems));
@@ -102,10 +102,10 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
       final currentState = state as CartItemsLocalLoaded;
       final updatedCartItems = currentState.cartItems.map((item) {
         return CartItemEntity(
-            shopId: item.shopId,
+            shopGuid: item.shopGuid,
             products: item.products.map((productEntity) {
-              if (productEntity.product.id ==
-                  event.cartItemProduct.product.id) {
+              if (productEntity.product.guid ==
+                  event.cartItemProduct.product.guid) {
                 return CartItemProductEntity(
                     product: productEntity.product,
                     quantity: productEntity.quantity + 1);
@@ -117,7 +117,7 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
                 (sum, item) =>
                     sum +
                     item.product.price *
-                        (item.product.id == event.cartItemProduct.product.id
+                        (item.product.guid == event.cartItemProduct.product.guid
                             ? item.quantity + 1
                             : item.quantity)));
       }).toList();
@@ -132,9 +132,9 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
       final currentState = state as CartItemsLocalLoaded;
       final updatedCartItems = currentState.cartItems.map((item) {
         if (item.products.any((productEntity) =>
-            productEntity.product.id == event.cartItemProduct.product.id)) {
+            productEntity.product.guid == event.cartItemProduct.product.guid)) {
           final updatedProducts = item.products.map((product) {
-            if (product.product.id == event.cartItemProduct.product.id) {
+            if (product.product.guid == event.cartItemProduct.product.guid) {
               return CartItemProductEntity(
                   product: product.product,
                   quantity: product.quantity > 1
@@ -148,7 +148,7 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
           });
 
           return CartItemEntity(
-              shopId: item.shopId,
+              shopGuid: item.shopGuid,
               products: updatedProducts,
               totalPrice: newTotalPrice);
         }
@@ -174,7 +174,7 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
     if (state is CartItemsLocalLoaded) {
       final currentState = state as CartItemsLocalLoaded;
       final result = currentState.cartItems
-          .where((element) => element.shopId == event.shopId)
+          .where((element) => element.shopGuid == event.shopId)
           .firstOrNull;
       if (result != null) {
         emit(CartItemLocalLoaded(cartItem: result));

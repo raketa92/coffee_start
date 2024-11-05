@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetails extends StatefulWidget {
-  final int productId;
-  const ProductDetails({super.key, required this.productId});
+  final String productGuid;
+  const ProductDetails({super.key, required this.productGuid});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -24,7 +24,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<RemoteProductDetailsBloc>()..add(GetProduct(widget.productId)),
+          sl<RemoteProductDetailsBloc>()..add(GetProduct(widget.productGuid)),
       child: BlocBuilder<RemoteProductDetailsBloc, RemoteProductDetailsState>(
           builder: (context, state) {
         if (state is RemoteProductDetailsLoading) {
@@ -58,8 +58,8 @@ class _ProductDetailsState extends State<ProductDetails> {
             if (state is CartItemsLocalLoaded) {
               try {
                 matchingCartItem = state.cartItems.firstWhere((item) =>
-                    item.products.any(
-                        (itemProduct) => itemProduct.product.id == product.id));
+                    item.products.any((itemProduct) =>
+                        itemProduct.product.guid == product.guid));
                 isAdded = true;
               } catch (e) {
                 matchingCartItem = null;
@@ -76,7 +76,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               onPressed: () {
                 if (isAdded && matchingCartItem != null) {
                   final cartParams = CartParams(
-                      shopId: product.shopId,
+                      shopGuid: product.shopGuid,
                       product: CartItemProductEntity(product: product));
                   cartItemsLocalcontext
                       .read<CartItemsLocalBloc>()
@@ -85,7 +85,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   final newCartItemProduct =
                       CartItemProductEntity(product: product);
                   final cartParams = CartParams(
-                      shopId: product.shopId, product: newCartItemProduct);
+                      shopGuid: product.shopGuid, product: newCartItemProduct);
                   cartItemsLocalcontext
                       .read<CartItemsLocalBloc>()
                       .add(AddToCart(cartParams));
@@ -121,7 +121,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   _productBody(ProductEntity product) {
-    final imageUrl = '$apiBaseUrl/${product.image}';
+    final imageUrl = '$productImageUrl/${product.image}';
     final name = product.name;
     final price = product.price;
     final rating = product.rating;

@@ -6,5 +6,5 @@ abstract class ProductRepository {
   Future<DataState<List<ProductEntity>>> getNewProducts();
   Future<DataState<List<ProductEntity>>> getPopularProducts();
   Future<DataState<List<ProductEntity>>> getProductsByCategory(int categoryId);
-  Future<DataState<ProductEntity>> getProduct(int productId);
+  Future<DataState<ProductEntity>> getProduct(String productGuid);
 }

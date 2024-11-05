@@ -3,7 +3,7 @@ import 'package:coffee_start/features/shops/domain/entities/shop_products.dart';
 
 class ShopProductsModel extends ShopProductsEntity {
   const ShopProductsModel(
-      {required super.id,
+      {required super.guid,
       required super.image,
       required super.name,
       required super.rating,
@@ -16,7 +16,7 @@ class ShopProductsModel extends ShopProductsEntity {
         .toList();
 
     return ShopProductsModel(
-        id: int.parse(json['id']),
+        guid: json['guid'],
         image: json['image'],
         name: json['name'],
         rating: json['rating'],

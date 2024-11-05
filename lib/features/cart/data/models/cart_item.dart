@@ -2,13 +2,13 @@ import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 
 class CartItemModel extends CartItemEntity {
   const CartItemModel(
-      {required super.shopId,
+      {required super.shopGuid,
       required super.products,
       required super.totalPrice});
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) {
     return CartItemModel(
-        shopId: json['shopId'],
+        shopGuid: json['shopGuid'],
         products: (json['products'] as List)
             .map((item) => CartItemProductEntity.fromJson(item))
             .toList(),
@@ -18,7 +18,7 @@ class CartItemModel extends CartItemEntity {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'shopId': shopId,
+      'shopId': shopGuid,
       'products': products.map((product) => product.toJson()).toList(),
       'totalPrice': totalPrice,
     };
@@ -26,13 +26,13 @@ class CartItemModel extends CartItemEntity {
 
   static CartItemModel fromEntity(CartItemEntity entity) {
     return CartItemModel(
-        shopId: entity.shopId,
+        shopGuid: entity.shopGuid,
         products: entity.products,
         totalPrice: entity.totalPrice);
   }
 
   CartItemEntity toEntity() {
     return CartItemEntity(
-        shopId: shopId, products: products, totalPrice: totalPrice);
+        shopGuid: shopGuid, products: products, totalPrice: totalPrice);
   }
 }

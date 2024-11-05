@@ -1,42 +1,39 @@
 import 'package:equatable/equatable.dart';
 
 class ProductEntity extends Equatable {
-  final int id;
+  final String guid;
   final String name;
   final String image;
   final double price;
-  final int categoryId;
-  final int shopId;
+  final String categoryGuid;
+  final String shopGuid;
   final double rating;
   final List<String> ingredients;
 
   const ProductEntity(
-      {required this.id,
+      {required this.guid,
       required this.name,
       required this.image,
       required this.price,
-      required this.categoryId,
-      required this.shopId,
+      required this.categoryGuid,
+      required this.shopGuid,
       required this.rating,
       required this.ingredients});
 
   @override
   List<Object?> get props =>
-      [id, name, image, price, categoryId, shopId, rating, ingredients];
+      [guid, name, image, price, categoryGuid, shopGuid, rating, ingredients];
 
   factory ProductEntity.fromJson(Map<String, dynamic> json) {
     return ProductEntity(
-        id: json['id'] is int ? json['id'] : int.parse(json['id']),
+        guid: json['guid'],
         name: json['name'],
         image: json['image'],
         price: json['price'] is String
             ? double.parse(json['price'])
             : json['price'].toDouble(),
-        categoryId: json['categoryId'] is int
-            ? json['categoryId']
-            : int.parse(json['categoryId']),
-        shopId:
-            json['shopId'] is int ? json['shopId'] : int.parse(json['shopId']),
+        categoryGuid: json['categoryGuid'],
+        shopGuid: json['shopGuid'],
         rating: json['rating'] is String
             ? double.parse(json['rating'])
             : json['rating'].toDouble(),
@@ -47,12 +44,12 @@ class ProductEntity extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'guid': guid,
       'name': name,
       'image': image,
       'price': price,
-      'categoryId': categoryId,
-      'shopId': shopId,
+      'categoryGuid': categoryGuid,
+      'shopGuid': shopGuid,
       'rating': rating,
       'ingredients': ingredients,
     };

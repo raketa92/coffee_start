@@ -20,7 +20,7 @@ class RemoteShopDetailsBloc
 
   void onGetShopDetails(
       GetShopDetails event, Emitter<RemoteShopDetailsState> emit) async {
-    final dataState = await _getShopDetailsUseCase(params: event.shopId);
+    final dataState = await _getShopDetailsUseCase(params: event.shopGuid);
     if (dataState is DataSuccess) {
       emit(RemoteShopDetailsLoaded(dataState.data!));
     } else if (dataState is DataFailed) {

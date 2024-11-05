@@ -1,3 +1,4 @@
+import 'package:coffee_start/core/api_response/api_response.dart';
 import 'package:coffee_start/features/shops/data/models/shop.dart';
 import 'package:coffee_start/features/shops/data/models/shop_products.dart';
 import 'package:dio/dio.dart';
@@ -9,9 +10,10 @@ part 'shops_api_service.g.dart';
 abstract class ShopsApiService {
   factory ShopsApiService(Dio dio) = _ShopsApiService;
 
-  @GET('/shops')
-  Future<HttpResponse<List<ShopModel>>> getShops();
+  @GET('/shop')
+  Future<HttpResponse<ApiResponseList<ShopModel>>> getShops();
 
-  @GET('/shop-products/{shopId}')
-  Future<HttpResponse<ShopProductsModel>> getShop(@Path("shopId") int shopId);
+  @GET('/shop/{shopGuid}')
+  Future<HttpResponse<ApiResponse<ShopProductsModel>>> getShop(
+      @Path("shopGuid") String shopGuid);
 }

@@ -19,20 +19,20 @@ class _CategoriesApiService implements CategoriesApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<List<CategoryModel>>> getCategories() async {
+  Future<HttpResponse<ApiResponseList<CategoryModel>>> getCategories() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<HttpResponse<List<CategoryModel>>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponseList<CategoryModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/categories',
+              '/category',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -41,9 +41,10 @@ class _CategoriesApiService implements CategoriesApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => CategoryModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = ApiResponseList<CategoryModel>.fromJson(
+      _result.data!,
+      (json) => CategoryModel.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

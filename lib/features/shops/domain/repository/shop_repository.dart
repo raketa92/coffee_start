@@ -4,5 +4,5 @@ import 'package:coffee_start/features/shops/domain/entities/shop_products.dart';
 
 abstract class ShopRepository {
   Future<DataState<List<ShopEntity>>> getShops();
-  Future<DataState<ShopProductsEntity>> getShop(int shopId);
+  Future<DataState<ShopProductsEntity>> getShop(String shopGuid);
 }

@@ -2,28 +2,25 @@ import 'package:coffee_start/features/products/domain/entities/product.dart';
 
 class ProductModel extends ProductEntity {
   const ProductModel(
-      {required super.id,
+      {required super.guid,
       required super.name,
       required super.image,
       required super.price,
-      required super.categoryId,
-      required super.shopId,
+      required super.categoryGuid,
+      required super.shopGuid,
       required super.rating,
       required super.ingredients});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-        id: json['id'] is int ? json['id'] : int.parse(json['id']),
+        guid: json['guid'],
         name: json['name'],
         image: json['image'],
         price: json['price'] is String
             ? double.parse(json['price'])
             : json['price'].toDouble(),
-        categoryId: json['categoryId'] is int
-            ? json['categoryId']
-            : int.parse(json['categoryId']),
-        shopId:
-            json['shopId'] is int ? json['shopId'] : int.parse(json['shopId']),
+        categoryGuid: json['categoryGuid'],
+        shopGuid: json['shopGuid'],
         rating: json['rating'] is String
             ? double.parse(json['rating'])
             : json['rating'].toDouble(),
@@ -35,12 +32,12 @@ class ProductModel extends ProductEntity {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': guid,
       'name': name,
       'image': image,
       'price': price.toString(),
-      'categoryId': categoryId,
-      'shopId': shopId,
+      'categoryId': categoryGuid,
+      'shopId': shopGuid,
       'rating': rating.toString(),
       'ingredients': ingredients
     };
@@ -48,12 +45,12 @@ class ProductModel extends ProductEntity {
 
   static ProductModel fromEntity(ProductEntity entity) {
     return ProductModel(
-        id: entity.id,
+        guid: entity.guid,
         name: entity.name,
         image: entity.image,
         price: entity.price,
-        categoryId: entity.categoryId,
-        shopId: entity.shopId,
+        categoryGuid: entity.categoryGuid,
+        shopGuid: entity.shopGuid,
         rating: entity.rating,
         ingredients: entity.ingredients);
   }

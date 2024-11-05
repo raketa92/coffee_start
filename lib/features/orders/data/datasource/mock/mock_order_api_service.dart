@@ -33,24 +33,24 @@ class MockOrdersApiService implements OrdersApiService {
             CartItemProductEntity(
               quantity: 2,
               product: ProductEntity(
-                  id: 1,
+                  guid: "1",
                   name: 'Cappucino',
                   image: 'cappucino.jpg',
                   price: 25,
-                  categoryId: 1,
-                  shopId: 1,
+                  categoryGuid: "1",
+                  shopGuid: "1",
                   rating: 4,
                   ingredients: ['caramel syrup', 'fruit syrup']),
             ),
             CartItemProductEntity(
               quantity: 1,
               product: ProductEntity(
-                  id: 2,
+                  guid: "2",
                   name: 'Glace',
                   image: 'glace.jpg',
                   price: 30,
-                  categoryId: 2,
-                  shopId: 1,
+                  categoryGuid: "2",
+                  shopGuid: "1",
                   rating: 4,
                   ingredients: ['shocolate']),
             )
@@ -66,24 +66,24 @@ class MockOrdersApiService implements OrdersApiService {
             CartItemProductEntity(
               quantity: 2,
               product: ProductEntity(
-                  id: 1,
+                  guid: "1",
                   name: 'Cappucino',
                   image: 'cappucino.jpg',
                   price: 25,
-                  categoryId: 1,
-                  shopId: 1,
+                  categoryGuid: "1",
+                  shopGuid: "1",
                   rating: 4,
                   ingredients: ['caramel syrup', 'fruit syrup']),
             ),
             CartItemProductEntity(
               quantity: 1,
               product: ProductEntity(
-                  id: 2,
+                  guid: "2",
                   name: 'Glace',
                   image: 'glace.jpg',
                   price: 30,
-                  categoryId: 2,
-                  shopId: 1,
+                  categoryGuid: "2",
+                  shopGuid: "1",
                   rating: 4,
                   ingredients: ['shocolate']),
             )

@@ -64,7 +64,7 @@ class _ShopsListState extends State<ShopsList> {
           itemBuilder: (context, index) {
             final shop = state.shops[index];
             final image = shop.image;
-            final imageUrl = '$apiBaseUrl/$image';
+            final imageUrl = '$shopImageUrl/$image';
             final name = shop.name;
             final rating = shop.rating;
             return Padding(
@@ -72,7 +72,7 @@ class _ShopsListState extends State<ShopsList> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, shopDetailsRoute,
-                        arguments: shop.id);
+                        arguments: shop.guid);
                   },
                   child:
                       ShopBlock(imageUrl: imageUrl, name: name, rating: rating),

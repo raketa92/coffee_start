@@ -32,7 +32,7 @@ class ProductRepositoryLocalImpl implements ProductRepositoryLocal {
   @override
   Future<void> removeLikedProduct(ProductEntity product) async {
     final likedProducts = await getLikedProducts();
-    likedProducts.removeWhere((element) => element.id == product.id);
+    likedProducts.removeWhere((element) => element.guid == product.guid);
     await _saveLikedProducts(likedProducts);
   }
 

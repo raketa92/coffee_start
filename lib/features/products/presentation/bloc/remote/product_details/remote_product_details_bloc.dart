@@ -20,7 +20,7 @@ class RemoteProductDetailsBloc
 
   void onGetProduct(
       GetProduct event, Emitter<RemoteProductDetailsState> emit) async {
-    final dataState = await _getProductUseCase(params: event.productId);
+    final dataState = await _getProductUseCase(params: event.productGuid);
     if (dataState is DataSuccess) {
       emit(RemoteProductDetailsLoaded(dataState.data!));
     } else if (dataState is DataFailed) {

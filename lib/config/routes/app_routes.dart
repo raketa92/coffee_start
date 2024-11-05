@@ -30,15 +30,15 @@ class AppRoutes {
         ));
 
       case productDetailsRoute:
-        final int productId = settings.arguments as int;
-        return _materialRoute(ProductDetails(productId: productId));
+        final String productId = settings.arguments as String;
+        return _materialRoute(ProductDetails(productGuid: productId));
 
       case shopsRoute:
         return _materialRoute(const ShopsList());
 
       case shopDetailsRoute:
-        final int shopId = settings.arguments as int;
-        return _materialRoute(ShopDetails(shopId: shopId));
+        final String shopGuid = settings.arguments as String;
+        return _materialRoute(ShopDetails(shopGuid: shopGuid));
 
       case favouritesRoute:
         return _materialRoute(const LikedProductsList());

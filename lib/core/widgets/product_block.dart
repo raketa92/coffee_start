@@ -13,7 +13,7 @@ class ProductBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final image = product.image;
-    final imageUrl = '$apiBaseUrl/$image';
+    final imageUrl = '$productImageUrl/$image';
     return SizedBox(
       width: 160,
       child: Column(
@@ -47,7 +47,7 @@ class ProductBlock extends StatelessWidget {
                       builder: (likedProductContext, state) {
                         final isLiked = state is LikedProductsLoaded &&
                             state.likedProducts
-                                .any((element) => element.id == product.id);
+                                .any((element) => element.guid == product.guid);
                         return GestureDetector(
                             onTap: () {
                               if (isLiked) {

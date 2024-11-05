@@ -8,6 +8,6 @@ sealed class RemoteProductDetailsEvent extends Equatable {
 }
 
 class GetProduct extends RemoteProductDetailsEvent {
-  final int productId;
-  const GetProduct(this.productId);
+  final String productGuid;
+  const GetProduct(this.productGuid);
 }

@@ -4,12 +4,12 @@ import 'package:coffee_start/features/shops/domain/entities/shop_products.dart';
 import 'package:coffee_start/features/shops/domain/repository/shop_repository.dart';
 
 class GetShopDetailsUseCase
-    implements UseCase<DataState<ShopProductsEntity>, int> {
+    implements UseCase<DataState<ShopProductsEntity>, String> {
   final ShopRepository _shopRepository;
   GetShopDetailsUseCase(this._shopRepository);
 
   @override
-  Future<DataState<ShopProductsEntity>> call({int? params}) {
+  Future<DataState<ShopProductsEntity>> call({String? params}) {
     if (params == null) {
       throw ArgumentError('params cannot be null');
     }

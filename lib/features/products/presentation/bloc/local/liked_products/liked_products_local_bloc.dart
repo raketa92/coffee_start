@@ -83,7 +83,7 @@ class LikedProductsLocalBloc
       final currentState = state as LikedProductsLoaded;
       final updatedProducts =
           List<ProductEntity>.from(currentState.likedProducts)
-            ..removeWhere((product) => product.id == event.likedProduct.id);
+            ..removeWhere((product) => product.guid == event.likedProduct.guid);
       await _removeLikedProductUseCase(params: event.likedProduct);
       emit(currentState.copyWith(likedProducts: updatedProducts));
     }

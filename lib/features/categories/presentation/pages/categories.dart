@@ -57,12 +57,12 @@ class Categories extends StatelessWidget {
                 itemCount: state.categories.length,
                 itemBuilder: (context, index) {
                   final category = state.categories[index];
-                  final imageUrl = '$apiBaseUrl/${category.iconUrl}';
+                  final imageUrl = '$categoryImageUrl/${category.iconUrl}';
                   return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, productsByCategoryRoute,
                           arguments: {
-                            'categoryId': category.id,
+                            'categoryId': category.guid,
                             'categoryName': category.name
                           });
                     },

@@ -15,10 +15,10 @@ class CartItemRepositoryLocalImpl implements CartItemRepositoryLocal {
   @override
   Future<void> addToCart(CartParams cartParams) async {
     final cartItems = await getCartItems();
-    final shopId = cartParams.shopId;
+    final shopId = cartParams.shopGuid;
     final cartItemProduct = cartParams.product;
 
-    final index = cartItems.indexWhere((element) => element.shopId == shopId);
+    final index = cartItems.indexWhere((element) => element.shopGuid == shopId);
 
     if (index != -1) {
       final existingCartItem = cartItems[index];
@@ -26,8 +26,8 @@ class CartItemRepositoryLocalImpl implements CartItemRepositoryLocal {
       final updatedCartProducts =
           List<CartItemProductEntity>.from(existingCartItem.products);
 
-      final productIndex = updatedCartProducts
-          .indexWhere((item) => item.product.id == cartItemProduct.product.id);
+      final productIndex = updatedCartProducts.indexWhere(
+          (item) => item.product.guid == cartItemProduct.product.guid);
 
       if (productIndex != -1) {
         final currentCartProduct = updatedCartProducts[productIndex];
@@ -39,7 +39,7 @@ class CartItemRepositoryLocalImpl implements CartItemRepositoryLocal {
       }
 
       cartItems[index] = CartItemModel.fromEntity(CartItemEntity(
-        shopId: existingCartItem.shopId,
+        shopGuid: existingCartItem.shopGuid,
         products: updatedCartProducts,
         totalPrice: updatedCartProducts.fold(
           0.0,
@@ -48,7 +48,7 @@ class CartItemRepositoryLocalImpl implements CartItemRepositoryLocal {
       ));
     } else {
       cartItems.add(CartItemModel.fromEntity(CartItemEntity(
-        shopId: shopId,
+        shopGuid: shopId,
         products: [cartItemProduct],
         totalPrice: cartItemProduct.product.price * cartItemProduct.quantity,
       )));
@@ -77,23 +77,24 @@ class CartItemRepositoryLocalImpl implements CartItemRepositoryLocal {
   @override
   Future<void> removeFromCart(CartParams cartParams) async {
     final cartItems = await getCartItems();
-    final shopId = cartParams.shopId;
+    final shopId = cartParams.shopGuid;
     final cartItemproduct = cartParams.product;
 
-    final index = cartItems.indexWhere((element) => element.shopId == shopId);
+    final index = cartItems.indexWhere((element) => element.shopGuid == shopId);
 
     if (index != -1) {
       final existingCartItem = cartItems[index];
 
-      final updatedCartProducts = List<CartItemProductEntity>.from(
-          existingCartItem.products)
-        ..removeWhere((item) => item.product.id == cartItemproduct.product.id);
+      final updatedCartProducts =
+          List<CartItemProductEntity>.from(existingCartItem.products)
+            ..removeWhere(
+                (item) => item.product.guid == cartItemproduct.product.guid);
 
       if (updatedCartProducts.isEmpty) {
         cartItems.removeAt(index);
       } else {
         final cartItemModel = CartItemModel.fromEntity(CartItemEntity(
-            shopId: existingCartItem.shopId,
+            shopGuid: existingCartItem.shopGuid,
             products: updatedCartProducts,
             totalPrice: updatedCartProducts.fold(
                 0.0, (sum, item) => sum + item.product.price * item.quantity)));

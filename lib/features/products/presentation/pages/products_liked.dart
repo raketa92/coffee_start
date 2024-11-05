@@ -66,7 +66,7 @@ class _LikedProductsListState extends State<LikedProductsList> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, productDetailsRoute,
-                        arguments: product.id);
+                        arguments: product.guid);
                   },
                   child: ProductBlock(product: product),
                 ));

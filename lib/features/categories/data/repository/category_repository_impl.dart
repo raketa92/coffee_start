@@ -19,7 +19,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
     try {
       final httpResponse = await _categoriesApiService.getCategories();
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,

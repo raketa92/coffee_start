@@ -2,14 +2,14 @@ import 'package:coffee_start/features/shops/domain/entities/shop.dart';
 
 class ShopModel extends ShopEntity {
   const ShopModel(
-      {required super.id,
+      {required super.guid,
       required super.image,
       required super.name,
       required super.rating});
 
   factory ShopModel.fromJson(Map<String, dynamic> json) {
     return ShopModel(
-        id: json['id'] is int ? json['id'] : int.parse(json['id']),
+        guid: json['guid'],
         image: json['image'],
         name: json['name'],
         rating: json['rating']);

@@ -2,10 +2,10 @@
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 
 class CartParams {
-  final int shopId;
+  final String shopGuid;
   final CartItemProductEntity product;
   CartParams({
-    required this.shopId,
+    required this.shopGuid,
     required this.product,
   });
 }

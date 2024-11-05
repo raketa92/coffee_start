@@ -19,20 +19,20 @@ class _ProductsApiService implements ProductsApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<List<ProductModel>>> getProducts() async {
+  Future<HttpResponse<ApiResponseList<ProductModel>>> getProducts() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<HttpResponse<List<ProductModel>>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponseList<ProductModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/products',
+              '/product',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -41,28 +41,29 @@ class _ProductsApiService implements ProductsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => ProductModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = ApiResponseList<ProductModel>.fromJson(
+      _result.data!,
+      (json) => ProductModel.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<List<ProductModel>>> getNewProducts() async {
+  Future<HttpResponse<ApiResponseList<ProductModel>>> getNewProducts() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<HttpResponse<List<ProductModel>>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponseList<ProductModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/products-new',
+              '/product?isNew=true',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -71,28 +72,30 @@ class _ProductsApiService implements ProductsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => ProductModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = ApiResponseList<ProductModel>.fromJson(
+      _result.data!,
+      (json) => ProductModel.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }
 
   @override
-  Future<HttpResponse<List<ProductModel>>> getPopularProducts() async {
+  Future<HttpResponse<ApiResponseList<ProductModel>>>
+      getPopularProducts() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<HttpResponse<List<ProductModel>>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponseList<ProductModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/products-popular',
+              '/product?isPopular=true',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -101,9 +104,10 @@ class _ProductsApiService implements ProductsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    var value = _result.data!
-        .map((dynamic i) => ProductModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+    final value = ApiResponseList<ProductModel>.fromJson(
+      _result.data!,
+      (json) => ProductModel.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }
@@ -123,7 +127,7 @@ class _ProductsApiService implements ProductsApiService {
     )
             .compose(
               _dio.options,
-              '/products-by-category/${categoryId}',
+              '/product?categoryGuid=${categoryId}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -138,20 +142,21 @@ class _ProductsApiService implements ProductsApiService {
   }
 
   @override
-  Future<HttpResponse<ProductModel>> getProduct(int productId) async {
+  Future<HttpResponse<ApiResponse<ProductModel>>> getProduct(
+      String productGuid) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<ProductModel>>(Options(
+        _setStreamType<HttpResponse<ApiResponse<ProductModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/products/${productId}',
+              '/product/${productGuid}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -160,7 +165,10 @@ class _ProductsApiService implements ProductsApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = ProductModel.fromJson(_result.data!);
+    final value = ApiResponse<ProductModel>.fromJson(
+      _result.data!,
+      (json) => ProductModel.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

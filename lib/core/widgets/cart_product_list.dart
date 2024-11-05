@@ -22,7 +22,7 @@ class CartProductList extends StatelessWidget {
         itemBuilder: (context, index) {
           final productName = products[index].product.name;
           final image = products[index].product.image;
-          final imageUrl = '$apiBaseUrl/$image';
+          final imageUrl = '$productImageUrl/$image';
           final quantity = products[index].quantity;
           final price = products[index].product.price;
           final totalProductPrice = price * quantity;

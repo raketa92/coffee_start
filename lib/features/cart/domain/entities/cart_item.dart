@@ -2,41 +2,43 @@ import 'package:coffee_start/features/products/domain/entities/product.dart';
 import 'package:equatable/equatable.dart';
 
 class CartItemEntity extends Equatable {
-  final int shopId;
+  final String shopGuid;
   final List<CartItemProductEntity> products;
   final double totalPrice;
 
   const CartItemEntity(
-      {required this.shopId, required this.products, required this.totalPrice});
+      {required this.shopGuid,
+      required this.products,
+      required this.totalPrice});
 
   @override
-  List<Object?> get props => [shopId, products, totalPrice];
+  List<Object?> get props => [shopGuid, products, totalPrice];
 
   factory CartItemEntity.fromJson(Map<String, dynamic> json) {
     final products = (json['products'] as List)
         .map((product) => CartItemProductEntity.fromJson(product))
         .toList();
     return CartItemEntity(
-        shopId: json['shopId'],
+        shopGuid: json['shopGuid'],
         products: products,
         totalPrice: _calculateTotalPrice(products));
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'shopId': shopId,
+      'shopGuid': shopGuid,
       'products': products.map((product) => product.toJson()).toList(),
       'totalPrice': totalPrice,
     };
   }
 
   CartItemEntity copyWith({
-    int? shopId,
+    String? shopGuid,
     List<CartItemProductEntity>? products,
     double? totalPrice,
   }) {
     return CartItemEntity(
-        shopId: shopId ?? this.shopId,
+        shopGuid: shopGuid ?? this.shopGuid,
         products: products ?? this.products,
         totalPrice:
             totalPrice ?? _calculateTotalPrice(products ?? this.products));
