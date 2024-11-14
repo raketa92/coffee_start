@@ -87,10 +87,10 @@ class CartItemsLocalBloc extends Bloc<CartItemsLocalEvent, CartItemsLocalState>
       RemoveFromCart event, Emitter<CartItemsLocalState> emit) async {
     if (state is CartItemsLocalLoaded) {
       final currentState = state as CartItemsLocalLoaded;
-      await _removeFromCartUseCase(
-          params: CartParams(
-              shopGuid: event.cartParams.shopGuid,
-              product: event.cartParams.product));
+      for (var item in event.cartParams) {
+        await _removeFromCartUseCase(
+            params: CartParams(shopGuid: item.shopGuid, product: item.product));
+      }
       final updatedCartItems = await _getCartItemsUseCase();
       emit(currentState.copyWith(cartItems: updatedCartItems));
     }

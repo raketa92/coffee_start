@@ -11,6 +11,8 @@ final class RemoteNewProductsInitial extends RemoteNewProductsState {}
 
 final class RemoteNewProductsLoading extends RemoteNewProductsState {}
 
+final class RemoteNewProductsLoadedEmpty extends RemoteNewProductsState {}
+
 final class RemoteNewProductsLoaded extends RemoteNewProductsState {
   final List<ProductEntity> products;
   const RemoteNewProductsLoaded(this.products);

@@ -16,8 +16,8 @@ class CreateOrder extends RemoteOrdersEvent {
   const CreateOrder(this.checkoutData);
 }
 
-class PayOrder extends RemoteOrdersEvent {
-  final String orderId;
-  final CardEntity cardEntity;
-  const PayOrder(this.orderId, this.cardEntity);
+class ConfirmSmsOrder extends RemoteOrdersEvent {
+  final String sms;
+  final String orderNumber;
+  const ConfirmSmsOrder(this.sms, this.orderNumber);
 }

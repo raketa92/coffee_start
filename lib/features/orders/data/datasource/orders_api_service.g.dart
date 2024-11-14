@@ -50,13 +50,12 @@ class _OrdersApiService implements OrdersApiService {
 
   @override
   Future<retrofit.HttpResponse<String>> createOrder(
-      CheckoutData checkoutData) async {
+      CreateOrderDto createOrderDto) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(checkoutData.toJson());
+    final _data = createOrderDto;
     final _result = await _dio
         .fetch<String>(_setStreamType<retrofit.HttpResponse<String>>(Options(
       method: 'POST',
@@ -67,6 +66,39 @@ class _OrdersApiService implements OrdersApiService {
             .compose(
               _dio.options,
               '/order',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = _result.data!;
+    final httpResponse = retrofit.HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<retrofit.HttpResponse<String>> confirmSmsOrder(
+    String orderNumber,
+    String sms,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = sms;
+    final _result = await _dio
+        .fetch<String>(_setStreamType<retrofit.HttpResponse<String>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/json',
+    )
+            .compose(
+              _dio.options,
+              '/order/${orderNumber}/sms',
               queryParameters: queryParameters,
               data: _data,
             )

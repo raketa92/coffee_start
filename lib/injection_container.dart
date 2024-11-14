@@ -20,8 +20,10 @@ import 'package:coffee_start/features/categories/presentation/remote/bloc/remote
 import 'package:coffee_start/features/orders/data/datasource/orders_api_service.dart';
 import 'package:coffee_start/features/orders/data/repository/orders_repository_impl.dart';
 import 'package:coffee_start/features/orders/domain/repository/order_repository.dart';
+import 'package:coffee_start/features/orders/domain/usecases/confirm_sms_order.dart';
 import 'package:coffee_start/features/orders/domain/usecases/create_order.dart';
 import 'package:coffee_start/features/orders/domain/usecases/get_orders.dart';
+import 'package:coffee_start/features/orders/presentation/bloc/remote/checkout/local_checkout_bloc.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/orders/remote_orders_bloc.dart';
 import 'package:coffee_start/features/products/data/datasource/remote/products_api_service.dart';
 import 'package:coffee_start/features/products/data/repository/product_repository_impl.dart';
@@ -99,7 +101,9 @@ Future<void> initializeDependencies() async {
       () => CartItemsLocalBloc(sl(), sl(), sl(), sl()));
   sl.registerFactory<CardLocalBloc>(
       () => CardLocalBloc(sl(), sl(), sl(), sl()));
-  sl.registerFactory<RemoteOrdersBloc>(() => RemoteOrdersBloc(sl(), sl()));
+  sl.registerFactory<RemoteOrdersBloc>(
+      () => RemoteOrdersBloc(sl(), sl(), sl()));
+  sl.registerFactory<LocalCheckoutBloc>(() => LocalCheckoutBloc(storage));
 
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
   sl.registerSingleton<GetProductsUseCase>(GetProductsUseCase(sl()));
@@ -127,4 +131,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetCardsUseCase>(GetCardsUseCase(sl()));
   sl.registerSingleton<GetOrdersUseCase>(GetOrdersUseCase(sl()));
   sl.registerSingleton<CreateOrdersUseCase>(CreateOrdersUseCase(sl()));
+  sl.registerSingleton<ConfirmSmsOrderUseCase>(ConfirmSmsOrderUseCase(sl()));
 }

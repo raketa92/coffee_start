@@ -1,15 +1,16 @@
 import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
+import 'package:coffee_start/features/orders/data/datasource/dto/createOrderDto.dart';
 import 'package:coffee_start/features/orders/data/datasource/orders_api_service.dart';
 import 'package:coffee_start/features/orders/data/models/orders.dart';
-import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:coffee_start/features/products/domain/entities/product.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/dio.dart';
 
 class MockOrdersApiService implements OrdersApiService {
   @override
-  Future<HttpResponse<String>> createOrder(CheckoutData checkoutData) async {
+  Future<HttpResponse<String>> createOrder(
+      CreateOrderDto createOrderDto) async {
     final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
     return HttpResponse(
         orderId,
@@ -98,5 +99,11 @@ class MockOrdersApiService implements OrdersApiService {
             data: orders,
             statusCode: 200,
             requestOptions: RequestOptions(path: '/order')));
+  }
+
+  @override
+  Future<HttpResponse<String>> confirmSmsOrder(String orderNumber, String sms) {
+    // TODO: implement confirmSmsOrder
+    throw UnimplementedError();
   }
 }

@@ -14,6 +14,9 @@ class NewProductsList extends StatelessWidget {
       if (state is RemoteNewProductsLoading) {
         return const Center(child: CupertinoActivityIndicator());
       }
+      if (state is RemoteNewProductsLoadedEmpty) {
+        return const SizedBox();
+      }
       if (state is RemoteNewProductsError) {
         return const Center(child: Icon(Icons.refresh));
       }

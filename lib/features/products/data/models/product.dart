@@ -36,8 +36,8 @@ class ProductModel extends ProductEntity {
       'name': name,
       'image': image,
       'price': price.toString(),
-      'categoryId': categoryGuid,
-      'shopId': shopGuid,
+      'categoryGuid': categoryGuid,
+      'shopGuid': shopGuid,
       'rating': rating.toString(),
       'ingredients': ingredients
     };

@@ -1,15 +1,8 @@
-import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:flutter/material.dart';
 
 class SmsConfirmationForm extends StatefulWidget {
-  final VoidCallback onConfirmed;
   final GlobalKey<FormState> formKey;
-  final CheckoutData checkoutData;
-  const SmsConfirmationForm(
-      {super.key,
-      required this.onConfirmed,
-      required this.checkoutData,
-      required this.formKey});
+  const SmsConfirmationForm({super.key, required this.formKey});
 
   static var smsCodeController = TextEditingController();
 
@@ -32,7 +25,6 @@ class _SmsConfirmationFormState extends State<SmsConfirmationForm> {
           const SizedBox(height: 10),
           TextFormField(
             onChanged: (value) {
-              widget.checkoutData.smsCode = value;
               widget.formKey.currentState!.validate();
             },
             controller: SmsConfirmationForm.smsCodeController,

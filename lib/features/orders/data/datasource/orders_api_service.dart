@@ -1,3 +1,4 @@
+import 'package:coffee_start/features/orders/data/datasource/dto/createOrderDto.dart';
 import 'package:coffee_start/features/orders/data/models/orders.dart';
 import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:dio/dio.dart';
@@ -17,5 +18,13 @@ abstract class OrdersApiService {
     'Content-Type': 'application/json',
   })
   Future<retrofit.HttpResponse<String>> createOrder(
-      @retrofit.Body() CheckoutData checkoutData);
+      @retrofit.Body() CreateOrderDto createOrderDto);
+
+  @retrofit.POST('/order/{orderNumber}/sms')
+  @retrofit.Headers({
+    'Content-Type': 'application/json',
+  })
+  Future<retrofit.HttpResponse<String>> confirmSmsOrder(
+      @retrofit.Path("orderNumber") String orderNumber,
+      @retrofit.Body() String sms);
 }

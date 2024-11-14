@@ -1,7 +1,6 @@
 import 'package:coffee_start/core/api_service/network_interceptors.dart';
 import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/features/categories/data/datasources/remote/categories_api_service.dart';
-import 'package:coffee_start/features/orders/data/datasource/mock/mock_order_api_service.dart';
 import 'package:coffee_start/features/orders/data/datasource/orders_api_service.dart';
 import 'package:coffee_start/features/products/data/datasource/remote/products_api_service.dart';
 import 'package:coffee_start/features/shops/data/datasource/shops_api_service.dart';
@@ -15,11 +14,8 @@ class ApiServiceFactory {
 
   static final CategoriesApiService categoriesApiService =
       CategoriesApiService(_dio);
-  // static final MockCategoriesApiService categoriesApiService =
-  //     MockCategoriesApiService();
 
   static final ProductsApiService productsApiService = ProductsApiService(_dio);
   static final ShopsApiService shopApiService = ShopsApiService(_dio);
-  // static final OrdersApiService ordersApiService = OrdersApiService(_dio);
-  static final MockOrdersApiService ordersApiService = MockOrdersApiService();
+  static final OrdersApiService ordersApiService = OrdersApiService(_dio);
 }

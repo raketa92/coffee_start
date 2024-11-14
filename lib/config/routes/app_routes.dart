@@ -2,7 +2,7 @@ import 'package:coffee_start/features/card/presentation/pages/cards_list.dart';
 import 'package:coffee_start/features/cart/presentation/pages/cart_items_list.dart';
 import 'package:coffee_start/features/home/main_layout.dart';
 import 'package:coffee_start/features/orders/domain/entities/order.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout/checkout_stepper.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout_state/checkout_stepper_state.dart';
 import 'package:coffee_start/features/orders/presentation/pages/order_details.dart';
 import 'package:coffee_start/features/orders/presentation/pages/orders_list.dart';
 import 'package:coffee_start/features/products/presentation/pages/product_details.dart';
@@ -55,7 +55,7 @@ class AppRoutes {
 
       case checkoutRoute:
         final String shopGuid = settings.arguments as String;
-        return _materialRoute(CheckoutStepper(shopGuid: shopGuid));
+        return _materialRoute(CheckoutStepperState(shopGuid: shopGuid));
 
       case cardsRoute:
         return _materialRoute(const CardsList());

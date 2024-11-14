@@ -22,7 +22,7 @@ class AddToCart extends CartItemsLocalEvent {
 }
 
 class RemoveFromCart extends CartItemsLocalEvent {
-  final CartParams cartParams;
+  final List<CartParams> cartParams;
   const RemoveFromCart(this.cartParams);
 }
 

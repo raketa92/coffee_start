@@ -39,7 +39,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           return productDetailsBlock(product);
         }
 
-        return Container();
+        return const Center(child: Icon(Icons.refresh));
       }),
     );
   }
@@ -80,7 +80,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       product: CartItemProductEntity(product: product));
                   cartItemsLocalcontext
                       .read<CartItemsLocalBloc>()
-                      .add(RemoveFromCart(cartParams));
+                      .add(RemoveFromCart([cartParams]));
                 } else {
                   final newCartItemProduct =
                       CartItemProductEntity(product: product);

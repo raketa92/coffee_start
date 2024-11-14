@@ -5,6 +5,9 @@ import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:coffee_start/features/cart/domain/usecases/cart_params.dart';
 import 'package:coffee_start/features/cart/presentation/bloc/local/cart_items/cart_items_local_bloc.dart';
+import 'package:coffee_start/features/shops/domain/entities/shop.dart';
+import 'package:coffee_start/features/shops/presentation/bloc/remote/shops/remote_shops_bloc.dart';
+import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,33 +22,55 @@ class CartItemsList extends StatefulWidget {
 class _CartItemsListState extends State<CartItemsList> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartItemsLocalBloc, CartItemsLocalState>(
-        builder: (context, state) {
-      if (state is CartItemsLocalLoading) {
-        return const Center(child: CupertinoActivityIndicator());
-      }
-      if (state is CartItemsLocalError) {
-        return const Center(child: Icon(Icons.refresh));
-      }
+    return BlocProvider(
+      create: (context) => sl<RemoteShopsBloc>()..add(const GetShops()),
+      child: BlocBuilder<CartItemsLocalBloc, CartItemsLocalState>(
+          builder: (context, cartState) {
+        if (cartState is CartItemsLocalLoading) {
+          return const Center(child: CupertinoActivityIndicator());
+        }
+        if (cartState is CartItemsLocalError) {
+          return const Center(child: Icon(Icons.refresh));
+        }
 
-      if (state is CartItemsLocalLoaded) {
-        return cartItemsListView(state);
-      }
+        if (cartState is CartItemsLocalLoaded) {
+          return BlocBuilder<RemoteShopsBloc, RemoteShopsState>(
+            builder: (context, shopState) {
+              if (shopState is RemoteShopsLoading) {
+                return const Center(child: CupertinoActivityIndicator());
+              }
+              if (shopState is RemoteShopsError) {
+                return const Center(child: Icon(Icons.refresh));
+              }
+              if (shopState is RemoteShopsLoaded) {
+                final cartShopGuids =
+                    cartState.cartItems.map((item) => item.shopGuid).toSet();
+                final cartShops = shopState.shops
+                    .where((shop) => cartShopGuids.contains(shop.guid))
+                    .toList();
+                return cartItemsListView(cartState, cartShops);
+              }
+              return Container();
+            },
+          );
+        }
 
-      return Container();
-    });
+        return Container();
+      }),
+    );
   }
 
-  Widget cartItemsListView(CartItemsLocalLoaded state) {
+  Widget cartItemsListView(
+      CartItemsLocalLoaded state, List<ShopEntity> cartShops) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart', style: TextStyle(fontSize: 18)),
       ),
-      body: _body(state),
+      body: _body(state, cartShops),
     );
   }
 
-  _body(CartItemsLocalLoaded state) {
+  _body(CartItemsLocalLoaded state, List<ShopEntity> cartShops) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: ListView.builder(
@@ -53,13 +78,14 @@ class _CartItemsListState extends State<CartItemsList> {
           itemBuilder: (context, index) {
             final cartItem = state.cartItems[index];
             final shopGuid = cartItem.shopGuid;
-            final name = cartItem.shopGuid;
+            final name =
+                cartShops.firstWhere((item) => item.guid == shopGuid).name;
             final products = cartItem.products;
             final cartItemTotalPrice = cartItem.totalPrice;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _shopHeader(shopGuid),
+                _shopHeader(name),
                 _productList(products, cartItem),
                 _shopTotalPriceAndCheckout(cartItemTotalPrice, shopGuid),
                 const Divider(
@@ -90,9 +116,7 @@ class _CartItemsListState extends State<CartItemsList> {
         const SizedBox(
           width: 10,
         ),
-        const Expanded(
-            child: Text('some long name of a product coffee and snacks',
-                maxLines: 3)),
+        Expanded(child: Text(productName, maxLines: 3)),
       ]),
     );
   }
@@ -122,7 +146,7 @@ class _CartItemsListState extends State<CartItemsList> {
                           onPressed: () {
                             cartItemsLocalcontext
                                 .read<CartItemsLocalBloc>()
-                                .add(RemoveFromCart(cartParams));
+                                .add(RemoveFromCart([cartParams]));
                           },
                         ),
                         IconButton(
@@ -156,10 +180,10 @@ class _CartItemsListState extends State<CartItemsList> {
     );
   }
 
-  Widget _shopHeader(String shopGuid) {
+  Widget _shopHeader(String shopName) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Text('Shop #$shopGuid',
+      child: Text('Shop: $shopName',
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
     );
   }

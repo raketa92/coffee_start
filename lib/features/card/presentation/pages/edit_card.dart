@@ -268,7 +268,8 @@ class _EditCardPageState extends State<EditCardPage> {
               month: int.parse(_monthController.text),
               year: int.parse(_yearController.text),
               name: '${_firstNameController.text} ${_lastNameController.text}',
-              cvv: 000);
+              cvv: 000,
+              cardProvider: "VISA");
 
           // Dispatch update event
           context.read<CardLocalBloc>().add(UpdateCard(updatedCard));

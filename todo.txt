@@ -10,3 +10,24 @@ Alternative Milk Options
 Breakfast Items
 Snacks
 
+checkout input saves to storage on update, not on submit
+
+Order cases
+Click checkout
+Fill address 
+Select cash method
+Click submit (create) order (/order Post)
+Redirect to order details page to see status and ordernumber
+
+———————————————
+
+Click checkout 
+Fill address 
+Select card method and select or add card
+Click submit order and get ordernumber (/order Post)
+Confirm sms submit (/order/:ordernumber/sms Post)
+Redirect to order details page
+
+
+issues:
+if data is saved on client storage and shop or product deleted, then ui crashes because that guids does not exist in db but exist in client storage

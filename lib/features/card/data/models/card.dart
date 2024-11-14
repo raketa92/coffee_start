@@ -1,12 +1,13 @@
 import 'package:coffee_start/features/card/domain/entities/card.dart';
 
 class CardModel extends CardEntity {
-  CardModel(
+  const CardModel(
       {required super.cardNumber,
       required super.year,
       required super.month,
       required super.name,
-      required super.cvv});
+      required super.cvv,
+      required super.cardProvider});
 
   factory CardModel.fromJson(Map<String, dynamic> json) {
     return CardModel(
@@ -14,7 +15,8 @@ class CardModel extends CardEntity {
         year: json['year'],
         month: json['month'],
         name: json['name'],
-        cvv: json['cvv']);
+        cvv: json['cvv'],
+        cardProvider: json['cardProvider']);
   }
 
   @override
@@ -24,7 +26,8 @@ class CardModel extends CardEntity {
       'year': year,
       'month': month,
       'name': name,
-      'cvv': cvv
+      'cvv': cvv,
+      'cardProvider': cardProvider,
     };
   }
 
@@ -34,11 +37,17 @@ class CardModel extends CardEntity {
         year: entity.year,
         month: entity.month,
         name: entity.name,
-        cvv: entity.cvv);
+        cvv: entity.cvv,
+        cardProvider: entity.cardProvider);
   }
 
   CardEntity toEntity() {
     return CardEntity(
-        cardNumber: cardNumber, year: year, month: month, name: name, cvv: cvv);
+        cardNumber: cardNumber,
+        year: year,
+        month: month,
+        name: name,
+        cvv: cvv,
+        cardProvider: cardProvider);
   }
 }

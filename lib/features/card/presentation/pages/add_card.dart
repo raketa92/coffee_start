@@ -247,7 +247,8 @@ class _AddCardPageState extends State<AddCardPage> {
               month: int.parse(_monthController.text),
               year: int.parse(_yearController.text),
               name: '${_firstNameController.text} ${_lastNameController.text}',
-              cvv: 000);
+              cvv: 000,
+              cardProvider: "VISA");
           context.read<CardLocalBloc>().add(AddCard(card));
           Navigator.pop(
             context,

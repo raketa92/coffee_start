@@ -30,9 +30,23 @@ final class RemoteOrdersError extends RemoteOrdersState {
 final class OrderCreated extends RemoteOrdersState {
   final String orderId;
   const OrderCreated(this.orderId);
+
+  @override
+  List<Object> get props => [orderId];
 }
 
-final class OrderPaid extends RemoteOrdersState {
-  final bool paid;
-  const OrderPaid(this.paid);
+final class OrderSmsConfirmed extends RemoteOrdersState {
+  final String sms;
+  const OrderSmsConfirmed(this.sms);
+
+  @override
+  List<Object> get props => [sms];
+}
+
+final class OrderSmsConfirmError extends RemoteOrdersState {
+  final DioException error;
+  const OrderSmsConfirmError(this.error);
+
+  @override
+  List<Object> get props => [error];
 }

@@ -23,6 +23,8 @@ class RemoteNewProductsBloc
     final dataState = await _getNewProductsUseCase();
     if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
       emit(RemoteNewProductsLoaded(dataState.data!));
+    } else if (dataState is DataSuccess && dataState.data!.isEmpty) {
+      emit(RemoteNewProductsLoadedEmpty());
     } else if (dataState is DataFailed) {
       emit(RemoteNewProductsError(dataState.error!));
     } else {
