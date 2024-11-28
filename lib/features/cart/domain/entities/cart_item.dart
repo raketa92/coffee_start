@@ -62,7 +62,7 @@ class CartItemProductEntity extends Equatable {
   factory CartItemProductEntity.fromJson(Map<String, dynamic> json) {
     return CartItemProductEntity(
       quantity: json['quantity'],
-      product: ProductEntity.fromJson(json['product']),
+      product: ProductEntity.fromJson(json['Product']),
     );
   }
 

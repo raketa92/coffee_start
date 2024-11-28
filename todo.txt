@@ -23,9 +23,8 @@ Redirect to order details page to see status and ordernumber
 
 Click checkout 
 Fill address 
-Select card method and select or add card
-Click submit order and get ordernumber (/order Post)
-Confirm sms submit (/order/:ordernumber/sms Post)
+Select card method
+Click submit order and webview opens with bank url, fills card data, sms and webview closed
 Redirect to order details page
 
 

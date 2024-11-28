@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 
 class OrderEntity extends Equatable {
   final String guid;
+  final String? orderNumber;
   final String shopName;
   final double rating;
   final double totalPrice;
@@ -13,6 +14,7 @@ class OrderEntity extends Equatable {
 
   const OrderEntity(
       {required this.guid,
+      this.orderNumber,
       required this.shopName,
       required this.totalPrice,
       required this.rating,
@@ -30,7 +32,9 @@ class OrderEntity extends Equatable {
         .toList();
     return OrderEntity(
         guid: json['guid'],
-        totalPrice: json['totalPrice'],
+        totalPrice: json['totalPrice'] is String
+            ? double.parse(json['totalPrice'])
+            : json['totalPrice'].toDouble(),
         shopName: json['name'],
         rating: json['rating'],
         products: products,

@@ -2,11 +2,8 @@ import 'dart:io';
 
 import 'package:coffee_start/core/api_service/api_service.dart';
 import 'package:coffee_start/core/resources/data_state.dart';
-import 'package:coffee_start/features/card/domain/entities/card.dart';
 import 'package:coffee_start/features/orders/data/datasource/dto/createOrderDto.dart';
-import 'package:coffee_start/features/orders/data/datasource/mock/mock_order_api_service.dart';
 import 'package:coffee_start/features/orders/data/datasource/orders_api_service.dart';
-import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:coffee_start/features/orders/domain/entities/order.dart';
 import 'package:coffee_start/features/orders/domain/repository/order_repository.dart';
 import 'package:coffee_start/features/orders/domain/usecases/confirm_sms_order.dart';
@@ -23,7 +20,7 @@ class OrderRepositoryImpl implements OrderRepository {
     try {
       final httpResponse = await _ordersApiService.getOrders();
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(httpResponse.data.result);
       } else {
         return DataFailed(DioException(
             error: httpResponse.response.statusMessage,

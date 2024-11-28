@@ -1,6 +1,6 @@
+import 'package:coffee_start/core/api_response/api_response.dart';
 import 'package:coffee_start/features/orders/data/datasource/dto/createOrderDto.dart';
 import 'package:coffee_start/features/orders/data/models/orders.dart';
-import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart' as retrofit;
 
@@ -11,7 +11,7 @@ abstract class OrdersApiService {
   factory OrdersApiService(Dio dio) = _OrdersApiService;
 
   @retrofit.GET('/order')
-  Future<retrofit.HttpResponse<List<OrderModel>>> getOrders();
+  Future<retrofit.HttpResponse<ApiResponseList<OrderModel>>> getOrders();
 
   @retrofit.POST('/order')
   @retrofit.Headers({

@@ -32,8 +32,8 @@ class ProductEntity extends Equatable {
         price: json['price'] is String
             ? double.parse(json['price'])
             : json['price'].toDouble(),
-        categoryGuid: json['categoryGuid'],
-        shopGuid: json['shopGuid'],
+        categoryGuid: json['categoryGuid'] ?? '',
+        shopGuid: json['shopGuid'] ?? '',
         rating: json['rating'] is String
             ? double.parse(json['rating'])
             : json['rating'].toDouble(),

@@ -1,3 +1,4 @@
+import 'package:coffee_start/core/api_response/api_response.dart';
 import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:coffee_start/features/orders/data/datasource/dto/createOrderDto.dart';
@@ -21,7 +22,7 @@ class MockOrdersApiService implements OrdersApiService {
   }
 
   @override
-  Future<HttpResponse<List<OrderModel>>> getOrders() async {
+  Future<HttpResponse<ApiResponseList<OrderModel>>> getOrders() async {
     final String orderId = DateTime.now().microsecondsSinceEpoch.toString();
     final String orderId2 = DateTime.now().microsecondsSinceEpoch.toString();
     final List<OrderModel> orders = [
@@ -93,12 +94,13 @@ class MockOrdersApiService implements OrdersApiService {
           date: DateTime.now()),
     ];
 
-    return HttpResponse(
+    final response = HttpResponse(
         orders,
         Response(
             data: orders,
             statusCode: 200,
             requestOptions: RequestOptions(path: '/order')));
+    return response.response.data;
   }
 
   @override

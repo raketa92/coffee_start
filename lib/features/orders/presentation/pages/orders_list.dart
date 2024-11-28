@@ -85,7 +85,7 @@ class OrderListItem extends StatelessWidget {
     return ListTile(
       leading: Icon(Icons.shopping_bag, color: Colors.blue[700], size: 30),
       title: Text(
-        'Order № ${order.guid}',
+        'Order № ${order.orderNumber}',
         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       subtitle: Column(

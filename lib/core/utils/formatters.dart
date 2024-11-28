@@ -32,6 +32,8 @@ String getOrderStatus(OrderStatuses status) {
       return 'completed';
     case OrderStatuses.canceled:
       return 'canceled';
+    case OrderStatuses.inProgress:
+      return 'in progress';
     default:
       return 'unknown status';
   }

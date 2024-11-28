@@ -19,31 +19,33 @@ class _OrdersApiService implements OrdersApiService {
   String? baseUrl;
 
   @override
-  Future<retrofit.HttpResponse<List<OrderModel>>> getOrders() async {
+  Future<retrofit.HttpResponse<ApiResponseList<OrderModel>>> getOrders() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<retrofit.HttpResponse<List<OrderModel>>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<retrofit.HttpResponse<ApiResponseList<OrderModel>>>(
+            Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/order',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    var value = _result.data!
-        .map((dynamic i) => OrderModel.fromJson(i as Map<String, dynamic>))
-        .toList();
+                .compose(
+                  _dio.options,
+                  '/order',
+                  queryParameters: queryParameters,
+                  data: _data,
+                )
+                .copyWith(
+                    baseUrl: _combineBaseUrls(
+                  _dio.options.baseUrl,
+                  baseUrl,
+                ))));
+    final value = ApiResponseList<OrderModel>.fromJson(
+      _result.data!,
+      (json) => OrderModel.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = retrofit.HttpResponse(value, _result);
     return httpResponse;
   }
@@ -55,7 +57,8 @@ class _OrdersApiService implements OrdersApiService {
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
     _headers.removeWhere((k, v) => v == null);
-    final _data = createOrderDto;
+    final _data = <String, dynamic>{};
+    _data.addAll(createOrderDto.toJson());
     final _result = await _dio
         .fetch<String>(_setStreamType<retrofit.HttpResponse<String>>(Options(
       method: 'POST',
