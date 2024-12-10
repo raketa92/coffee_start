@@ -48,7 +48,7 @@ class _CartItemsListState extends State<CartItemsList> {
                 final cartShops = shopState.shops
                     .where((shop) => cartShopGuids.contains(shop.guid))
                     .toList();
-                return cartItemsListView(cartState, cartShops);
+                return _body(cartState, cartShops);
               }
               return Container();
             },
@@ -60,17 +60,7 @@ class _CartItemsListState extends State<CartItemsList> {
     );
   }
 
-  Widget cartItemsListView(
-      CartItemsLocalLoaded state, List<ShopEntity> cartShops) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cart', style: TextStyle(fontSize: 18)),
-      ),
-      body: _body(state, cartShops),
-    );
-  }
-
-  _body(CartItemsLocalLoaded state, List<ShopEntity> cartShops) {
+  Widget _body(CartItemsLocalLoaded state, List<ShopEntity> cartShops) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: ListView.builder(

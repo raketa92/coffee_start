@@ -24,31 +24,14 @@ class _LikedProductsListState extends State<LikedProductsList> {
         return const Center(child: Icon(Icons.refresh));
       }
       if (state is LikedProductsLoaded) {
-        return productsView(state);
+        return _body(state);
       }
 
       return Container();
     });
   }
 
-  Widget productsView(LikedProductsLoaded state) {
-    return Scaffold(
-      appBar: _appBar("Liked"),
-      body: _body(state),
-      // bottomNavigationBar: const GoogleBottomNavigation(),
-    );
-  }
-
-  _appBar(String category) {
-    return AppBar(
-      title: Text(
-        category,
-        style: const TextStyle(fontSize: 18),
-      ),
-    );
-  }
-
-  _body(LikedProductsLoaded state) {
+  Widget _body(LikedProductsLoaded state) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: GridView.builder(

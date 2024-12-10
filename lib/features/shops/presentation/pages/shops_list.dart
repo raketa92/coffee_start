@@ -29,7 +29,7 @@ class _ShopsListState extends State<ShopsList> {
         }
 
         if (state is RemoteShopsLoaded) {
-          return shopsListView(state);
+          return _body(state);
         }
 
         return Container();
@@ -37,21 +37,7 @@ class _ShopsListState extends State<ShopsList> {
     );
   }
 
-  Widget shopsListView(RemoteShopsLoaded state) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body(state),
-      // bottomNavigationBar: const GoogleBottomNavigation(),
-    );
-  }
-
-  _appBar() {
-    return AppBar(
-      title: const Text('Shops', style: TextStyle(fontSize: 18)),
-    );
-  }
-
-  _body(RemoteShopsLoaded state) {
+  Widget _body(RemoteShopsLoaded state) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: GridView.builder(

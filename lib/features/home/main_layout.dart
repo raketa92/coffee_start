@@ -14,6 +14,8 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
+  final List<String> _titles = ['Home', 'Shops', 'Liked Products', 'Cart'];
+
   List<Widget> _screens() {
     return [
       const Home(),
@@ -50,6 +52,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   _buildAppBar(BuildContext context) {
     return AppBar(
+      title: Text(_titles[_selectedIndex]),
       actions: [
         IconButton(
             onPressed: () => {},
