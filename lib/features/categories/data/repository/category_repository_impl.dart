@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:coffee_start/core/api_service/api_service.dart';
 import 'package:coffee_start/core/resources/data_state.dart';
-import 'package:coffee_start/features/categories/data/datasources/mock/mock_categories_api_serivce.dart';
 import 'package:coffee_start/features/categories/data/datasources/remote/categories_api_service.dart';
 import 'package:coffee_start/features/categories/domain/entities/category.dart';
 import 'package:coffee_start/features/categories/domain/repository/category_repository.dart';

@@ -28,16 +28,17 @@ class CartProductList extends StatelessWidget {
           final totalProductPrice = price * quantity;
           return Card(
             child: Padding(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.only(top: 2, right: 2),
               child: Row(
                 children: [
                   _productInfoBlock(
                       productName: productName, imageUrl: imageUrl),
-                  Text("x$quantity"),
+                  Text("x$quantity", style: const TextStyle(fontSize: 18)),
                   const SizedBox(
                     width: 10,
                   ),
-                  Text("$totalProductPrice TMT")
+                  Text("$totalProductPrice TMT",
+                      style: const TextStyle(fontSize: 18))
                 ],
               ),
             ),
@@ -51,8 +52,8 @@ class CartProductList extends StatelessWidget {
         ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(6)),
           child: CachedNetworkImage(
-            height: 60,
-            width: 80,
+            height: 100,
+            width: 110,
             imageUrl: imageUrl,
             cacheManager: CustomCacheManager.getInstance(),
             placeholder: (context, url) => const CircularProgressIndicator(),
@@ -63,7 +64,9 @@ class CartProductList extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        Expanded(child: Text(productName, maxLines: 3)),
+        Expanded(
+            child: Text(productName,
+                style: const TextStyle(fontSize: 18), maxLines: 3)),
       ]),
     );
   }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:coffee_start/features/products/data/models/product.dart';
 import 'package:coffee_start/features/products/domain/entities/product.dart';
 import 'package:coffee_start/features/products/domain/usecases/add_liked_product.dart';

@@ -1,6 +1,4 @@
 import 'package:coffee_start/core/constants/constants.dart';
-import 'package:coffee_start/core/widgets/card_dropdown.dart';
-import 'package:coffee_start/features/card/domain/entities/card.dart';
 import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/checkout/local_checkout_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +20,8 @@ class ContactInfoForm extends StatefulWidget {
 }
 
 class _ContactInfoFormState extends State<ContactInfoForm> {
-  String _paymentMethod = PaymentMethods.cash;
+  String? _paymentMethod;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -37,14 +36,18 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
           }
 
           if (checkoutDataState is LocalCheckoutLoaded) {
+            _paymentMethod ??=
+                checkoutDataState.checkoutData.paymentInfo.paymentMethod;
+            ContactInfoForm.phoneController.text =
+                checkoutDataState.checkoutData.contactInfo.phone;
+            ContactInfoForm.addressController.text =
+                checkoutDataState.checkoutData.contactInfo.address;
             return Form(
               key: widget.formKey,
               child: Column(
                 children: [
                   TextFormField(
                     onChanged: (value) {
-                      // final updatedData = checkoutDataState.checkoutData;
-                      // updatedData.phone = value;
                       widget.checkoutBloc.add(UpdatePhone(value));
                       widget.formKey.currentState!.validate();
                     },
@@ -52,6 +55,7 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter phone';
                       }
+                      return null;
                     },
                     controller: ContactInfoForm.phoneController,
                     keyboardType: TextInputType.number,
@@ -70,8 +74,6 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
                   ),
                   TextFormField(
                     onChanged: (value) {
-                      // final updatedData = checkoutDataState.checkoutData;
-                      // updatedData.address = value;
                       widget.checkoutBloc.add(UpdateAddress(value));
                       widget.formKey.currentState!.validate();
                     },
@@ -79,6 +81,7 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
                       if (value == null || value.isEmpty) {
                         return 'Please enter address';
                       }
+                      return null;
                     },
                     controller: ContactInfoForm.addressController,
                     decoration: InputDecoration(
@@ -91,12 +94,21 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
                   const SizedBox(
                     height: 10,
                   ),
+                  const Divider(
+                    thickness: 2,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   paymentMethods(checkoutDataState),
                   const SizedBox(
                     height: 10,
                   ),
                   if (_paymentMethod == PaymentMethods.card)
-                    cardOptions(checkoutDataState),
+                    const Text(
+                      "You will be redirected to bank website to fill card details",
+                      style: TextStyle(fontSize: 16),
+                    )
                 ],
               ),
             );
@@ -108,76 +120,59 @@ class _ContactInfoFormState extends State<ContactInfoForm> {
   }
 
   Widget paymentMethods(LocalCheckoutLoaded checkoutDataState) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
       children: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _paymentMethod = PaymentMethods.cash;
-              // final updatedData = checkoutDataState.checkoutData;
-              // updatedData.card = null;
-              final paymentInfo =
-                  PaymentInfo(paymentMethod: PaymentMethods.cash, card: null);
-              widget.checkoutBloc.add(UpdatePaymentInfo(paymentInfo));
-            });
-          },
-          child: Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                border: Border.all(color: Colors.black)),
-            child: const Text("Cash"),
+        ListTile(
+          horizontalTitleGap: 0,
+          contentPadding: const EdgeInsets.all(0),
+          title: const Row(
+            children: [
+              Icon(Icons.attach_money_rounded),
+              SizedBox(
+                width: 6,
+              ),
+              Text("Cash", style: TextStyle(fontSize: 18)),
+            ],
           ),
+          leading: Radio(
+              value: PaymentMethods.cash,
+              groupValue: _paymentMethod,
+              onChanged: (String? value) {
+                setState(() {
+                  _paymentMethod = value;
+                  final paymentInfo = PaymentInfo(
+                    paymentMethod: PaymentMethods.cash,
+                  );
+                  widget.checkoutBloc.add(UpdatePaymentInfo(paymentInfo));
+                });
+              }),
         ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _paymentMethod = PaymentMethods.card;
-            });
-          },
-          child: Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                border: Border.all(color: Colors.black)),
-            child: const Text("Card"),
+        ListTile(
+          horizontalTitleGap: 0,
+          contentPadding: const EdgeInsets.all(0),
+          title: const Row(
+            children: [
+              Icon(Icons.credit_card),
+              SizedBox(
+                width: 6,
+              ),
+              Text("Card", style: TextStyle(fontSize: 18)),
+            ],
           ),
+          leading: Radio(
+              value: PaymentMethods.card,
+              groupValue: _paymentMethod,
+              onChanged: (String? value) {
+                setState(() {
+                  _paymentMethod = value;
+                  final paymentInfo = PaymentInfo(
+                    paymentMethod: PaymentMethods.card,
+                  );
+                  widget.checkoutBloc.add(UpdatePaymentInfo(paymentInfo));
+                });
+              }),
         ),
       ],
     );
-  }
-
-  Widget cardOptions(LocalCheckoutLoaded checkoutDataState) {
-    return FormField<CardEntity>(validator: (value) {
-      if (_paymentMethod == PaymentMethods.card &&
-          checkoutDataState.checkoutData.paymentInfo.card == null) {
-        return 'Please select a card';
-      }
-      return null;
-    }, builder: (FormFieldState<CardEntity> state) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CardsDropdownButton(
-              card: checkoutDataState.checkoutData.paymentInfo.card,
-              onCardSelected: (CardEntity card) {
-                setState(() {
-                  // final updatedData = checkoutDataState.checkoutData;
-                  // updatedData.card = card;
-                  final paymentInfo = PaymentInfo(
-                      paymentMethod: PaymentMethods.card, card: card);
-                  widget.checkoutBloc.add(UpdatePaymentInfo(paymentInfo));
-                });
-                widget.formKey.currentState!.validate();
-              }),
-          if (state.hasError)
-            Text(
-              state.errorText ?? '',
-              style: const TextStyle(color: Colors.red),
-            )
-        ],
-      );
-    });
   }
 }

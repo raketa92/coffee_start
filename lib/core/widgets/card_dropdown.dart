@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:coffee_start/core/utils/formatters.dart';
 import 'package:coffee_start/core/widgets/button.dart';
 import 'package:coffee_start/core/widgets/menu.dart';
@@ -7,9 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CardsDropdownButton extends StatefulWidget {
-  CardEntity? card;
+  final CardEntity? card;
   final Function(CardEntity) onCardSelected;
-  CardsDropdownButton({super.key, this.card, required this.onCardSelected});
+  const CardsDropdownButton(
+      {super.key, this.card, required this.onCardSelected});
 
   @override
   State<CardsDropdownButton> createState() => _CardsDropdownButtonState();

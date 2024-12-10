@@ -35,6 +35,14 @@ final class OrderCreated extends RemoteOrdersState {
   List<Object> get props => [orderId];
 }
 
+final class CardPaymentOrderCreated extends RemoteOrdersState {
+  final String paymentUrl;
+  const CardPaymentOrderCreated(this.paymentUrl);
+
+  @override
+  List<Object> get props => [paymentUrl];
+}
+
 final class OrderSmsConfirmed extends RemoteOrdersState {
   final String sms;
   const OrderSmsConfirmed(this.sms);

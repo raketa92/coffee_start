@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:coffee_start/core/resources/data_state.dart';
 import 'package:coffee_start/features/shops/domain/entities/shop.dart';

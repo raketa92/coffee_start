@@ -3,7 +3,7 @@ import 'package:coffee_start/features/card/presentation/pages/cards_list_dropdow
 import 'package:flutter/material.dart';
 
 class MenuWidget extends StatelessWidget {
-  MenuWidget(
+  const MenuWidget(
       {super.key,
       this.width,
       required this.onCardSelected,
@@ -11,7 +11,7 @@ class MenuWidget extends StatelessWidget {
 
   final double? width;
   final Function(CardEntity) onCardSelected;
-  void Function() toggleDropdown;
+  final void Function() toggleDropdown;
 
   @override
   Widget build(BuildContext context) {

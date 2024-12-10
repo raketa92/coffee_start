@@ -21,44 +21,31 @@ class _OrdersListState extends State<OrdersList> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<RemoteOrdersBloc>()..add(const GetOrders()),
-      child: BlocBuilder<RemoteOrdersBloc, RemoteOrdersState>(
-        builder: (context, state) {
-          if (state is RemoteOrdersLoading) {
-            return const Center(child: CupertinoActivityIndicator());
-          }
-          if (state is RemoteOrdersError) {
-            return const Center(child: Icon(Icons.refresh));
-          }
-          if (state is RemoteOrdersLoaded) {
-            final orders = state.orders;
-            if (orders.isEmpty) {
-              return const Center(child: Text('No orders found.'));
+      child: Scaffold(
+        appBar: _appBar(),
+        body: BlocBuilder<RemoteOrdersBloc, RemoteOrdersState>(
+          builder: (context, state) {
+            if (state is RemoteOrdersLoading) {
+              return const Center(child: CupertinoActivityIndicator());
             }
-            return ordersListView(orders);
-          }
-          return Container();
-        },
+            if (state is RemoteOrdersError) {
+              return _errorView();
+            }
+            if (state is RemoteOrdersLoaded) {
+              final orders = state.orders;
+              if (orders.isEmpty) {
+                return _emptyOrdersView();
+              }
+              return ordersListView(orders);
+            }
+            return const Center(child: Text('Something went wrong.'));
+          },
+        ),
       ),
     );
   }
 
   Widget ordersListView(List<OrderEntity> orders) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: _body(orders),
-    );
-  }
-
-  _appBar() {
-    return AppBar(
-      title: const Text(
-        'Orders',
-        style: TextStyle(fontSize: 18),
-      ),
-    );
-  }
-
-  _body(List<OrderEntity> orders) {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: ListView.separated(
@@ -71,6 +58,50 @@ class _OrdersListState extends State<OrdersList> {
                   thickness: 2,
                 ),
             itemCount: orders.length));
+  }
+
+  _appBar() {
+    return AppBar(
+      title: const Text(
+        'Orders',
+        style: TextStyle(fontSize: 18),
+      ),
+    );
+  }
+
+  Widget _emptyOrdersView() {
+    return const Center(
+      child: Text(
+        'No orders found.',
+        style: TextStyle(fontSize: 16, color: Colors.black54),
+      ),
+    );
+  }
+
+  Widget _errorView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error_outline, size: 50, color: Colors.red),
+          const SizedBox(height: 10),
+          const Text(
+            'An error occurred!',
+            style: TextStyle(fontSize: 16, color: Colors.black54),
+          ),
+          TextButton(
+            onPressed: () {
+              // Trigger reload
+              context.read<RemoteOrdersBloc>().add(const GetOrders());
+            },
+            child: const Text(
+              'Retry',
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -1,7 +1,6 @@
 import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/core/widgets/product_block.dart';
 import 'package:coffee_start/features/products/presentation/bloc/local/liked_products/liked_products_local_bloc.dart';
-import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

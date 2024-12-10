@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -143,7 +142,8 @@ class LocalCheckoutBloc extends Bloc<LocalCheckoutEvent, LocalCheckoutState>
     return null;
   }
 
-  void _onUpdatePhone(UpdatePhone event, Emitter<LocalCheckoutState> emit) {
+  void _onUpdatePhone(
+      UpdatePhone event, Emitter<LocalCheckoutState> emit) async {
     final currentState = state;
     if (currentState is LocalCheckoutLoaded) {
       final updatedContactInfo = ContactInfo(
@@ -151,15 +151,20 @@ class LocalCheckoutBloc extends Bloc<LocalCheckoutEvent, LocalCheckoutState>
         address: currentState.checkoutData.contactInfo.address,
       );
 
+      final updatedCheckoutData =
+          currentState.checkoutData.copyWith(contactInfo: updatedContactInfo);
+
       emit(LocalCheckoutLoaded(
-        checkoutData:
-            currentState.checkoutData.copyWith(contactInfo: updatedContactInfo),
+        checkoutData: updatedCheckoutData,
         currentStep: currentState.currentStep,
       ));
+
+      await _saveData(updatedCheckoutData, currentState.currentStep);
     }
   }
 
-  void _onUpdateAddress(UpdateAddress event, Emitter<LocalCheckoutState> emit) {
+  void _onUpdateAddress(
+      UpdateAddress event, Emitter<LocalCheckoutState> emit) async {
     final currentState = state;
     if (currentState is LocalCheckoutLoaded) {
       final updatedContactInfo = ContactInfo(
@@ -167,11 +172,15 @@ class LocalCheckoutBloc extends Bloc<LocalCheckoutEvent, LocalCheckoutState>
         address: event.address,
       );
 
+      final updatedCheckoutData =
+          currentState.checkoutData.copyWith(contactInfo: updatedContactInfo);
+
       emit(LocalCheckoutLoaded(
-        checkoutData:
-            currentState.checkoutData.copyWith(contactInfo: updatedContactInfo),
+        checkoutData: updatedCheckoutData,
         currentStep: currentState.currentStep,
       ));
+
+      await _saveData(updatedCheckoutData, currentState.currentStep);
     }
   }
 

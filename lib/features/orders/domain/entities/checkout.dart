@@ -32,28 +32,24 @@ class ContactInfo {
 
 class PaymentInfo {
   String paymentMethod;
-  CardEntity? card;
 
-  PaymentInfo({this.paymentMethod = PaymentMethods.cash, this.card});
+  PaymentInfo({this.paymentMethod = PaymentMethods.cash});
 
   factory PaymentInfo.fromJson(Map<String, dynamic> json) {
     return PaymentInfo(
       paymentMethod: json['paymentMethod'] ?? '',
-      card: json['card'] != null ? CardEntity.fromJson(json['card']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'paymentMethod': paymentMethod,
-      'card': card?.toJson(),
     };
   }
 
   PaymentInfo copyWith({String? paymentMethod, CardEntity? card}) {
     return PaymentInfo(
       paymentMethod: paymentMethod ?? this.paymentMethod,
-      card: card ?? this.card,
     );
   }
 }
@@ -106,9 +102,9 @@ class CheckoutData {
   factory CheckoutData.fromJson(Map<String, dynamic> json) {
     return CheckoutData(
       shopGuid: json['shopGuid'],
-      contactInfo: ContactInfo.fromJson(json),
-      paymentInfo: PaymentInfo.fromJson(json),
-      orderItemsInfo: OrderItemsInfo.fromJson(json),
+      contactInfo: ContactInfo.fromJson(json['contactInfo'] ?? {}),
+      paymentInfo: PaymentInfo.fromJson(json['paymentInfo'] ?? {}),
+      orderItemsInfo: OrderItemsInfo.fromJson(json['orderItemsInfo'] ?? {}),
     );
   }
 

@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:coffee_start/features/card/domain/entities/card.dart';
-
 class CartProductDto {
   final int quantity;
   final String productGuid;
@@ -21,7 +18,6 @@ class CreateOrderDto {
   String phone;
   String address;
   String paymentMethod;
-  CardEntity? card;
   double totalPrice;
   List<CartProductDto> orderItems;
 
@@ -31,7 +27,6 @@ class CreateOrderDto {
     required this.phone,
     required this.address,
     required this.paymentMethod,
-    this.card,
     required this.totalPrice,
     required this.orderItems,
   });
@@ -44,8 +39,30 @@ class CreateOrderDto {
       'address': address,
       'paymentMethod': paymentMethod,
       'totalPrice': totalPrice,
-      'card': card?.toJson(),
       'orderItems': orderItems.map((item) => item.toJson()).toList()
     };
+  }
+}
+
+class CreateOrderResponseDto {
+  String orderNumber;
+  String status;
+  double totalPrice;
+  String? formUrl;
+
+  CreateOrderResponseDto(
+      {required this.orderNumber,
+      required this.status,
+      required this.totalPrice,
+      this.formUrl});
+
+  factory CreateOrderResponseDto.fromJson(Map<String, dynamic> json) {
+    return CreateOrderResponseDto(
+        orderNumber: json['orderNumber'],
+        status: json['status'],
+        totalPrice: json['totalPrice'] is String
+            ? double.parse(json['totalPrice'])
+            : json['totalPrice'].toDouble(),
+        formUrl: json['formUrl'] ?? '');
   }
 }

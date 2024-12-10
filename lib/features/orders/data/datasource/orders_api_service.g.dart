@@ -51,66 +51,36 @@ class _OrdersApiService implements OrdersApiService {
   }
 
   @override
-  Future<retrofit.HttpResponse<String>> createOrder(
-      CreateOrderDto createOrderDto) async {
+  Future<retrofit.HttpResponse<ApiResponse<CreateOrderResponseDto>>>
+      createOrder(CreateOrderDto createOrderDto) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(createOrderDto.toJson());
-    final _result = await _dio
-        .fetch<String>(_setStreamType<retrofit.HttpResponse<String>>(Options(
+    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
+        retrofit.HttpResponse<ApiResponse<CreateOrderResponseDto>>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: 'application/json',
     )
-            .compose(
-              _dio.options,
-              '/order',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = _result.data!;
-    final httpResponse = retrofit.HttpResponse(value, _result);
-    return httpResponse;
-  }
-
-  @override
-  Future<retrofit.HttpResponse<String>> confirmSmsOrder(
-    String orderNumber,
-    String sms,
-  ) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = sms;
-    final _result = await _dio
-        .fetch<String>(_setStreamType<retrofit.HttpResponse<String>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'application/json',
-    )
-            .compose(
-              _dio.options,
-              '/order/${orderNumber}/sms',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final value = _result.data!;
+        .compose(
+          _dio.options,
+          '/order',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
+    final value = ApiResponse<CreateOrderResponseDto>.fromJson(
+      _result.data!,
+      (json) => CreateOrderResponseDto.fromJson(json as Map<String, dynamic>),
+    );
     final httpResponse = retrofit.HttpResponse(value, _result);
     return httpResponse;
   }

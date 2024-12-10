@@ -1,3 +1,4 @@
+import 'package:coffee_start/core/constants/constants.dart';
 import 'package:coffee_start/features/card/domain/entities/card.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/checkout/local_checkout_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,7 @@ class SummaryForm extends StatelessWidget {
                 children: [
                   const Text(
                     "Order Summary",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   orderDetailRow("Phone:", checkoutData.contactInfo.phone),
@@ -36,13 +37,11 @@ class SummaryForm extends StatelessWidget {
                   const SizedBox(height: 5),
                   orderDetailRow(
                     "Payment Method:",
-                    checkoutData.paymentInfo.card != null ? "Card" : "Cash",
+                    checkoutData.paymentInfo.paymentMethod ==
+                            PaymentMethods.card
+                        ? "Card"
+                        : "Cash",
                   ),
-                  if (checkoutData.paymentInfo.card != null) ...[
-                    const SizedBox(height: 5),
-                    orderDetailRow("Card:",
-                        formatCardDetails(checkoutData.paymentInfo.card!)),
-                  ],
                   const SizedBox(height: 20),
                   orderDetailRow("Total Price:",
                       "${checkoutData.orderItemsInfo.totalPrice.toStringAsFixed(2)} TMT"),
@@ -60,11 +59,11 @@ class SummaryForm extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
         Text(
           value,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 18),
         ),
       ],
     );

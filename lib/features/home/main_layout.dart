@@ -74,18 +74,6 @@ class _MainLayoutState extends State<MainLayout> {
               title: Text("Orders"),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                cardsRoute,
-              );
-            },
-            child: const ListTile(
-              leading: Icon(Icons.payment_outlined),
-              title: Text("Cards"),
-            ),
-          ),
           const ListTile(
             leading: Icon(Icons.location_on_outlined),
             title: Text("Addresses"),

@@ -69,7 +69,7 @@ class CartItemProductEntity extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'quantity': quantity,
-      'product': product.toJson(),
+      'Product': product.toJson(),
     };
   }
 }

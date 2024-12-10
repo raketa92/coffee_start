@@ -5,7 +5,6 @@ import 'package:coffee_start/core/constants/routes.dart';
 import 'package:coffee_start/features/categories/presentation/remote/bloc/remote_category_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Categories extends StatelessWidget {

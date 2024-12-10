@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:coffee_start/features/cart/data/models/cart_item.dart';
 import 'package:coffee_start/features/cart/domain/entities/cart_item.dart';
 import 'package:coffee_start/features/cart/domain/usecases/add_to_cart.dart';

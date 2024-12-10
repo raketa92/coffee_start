@@ -4,11 +4,12 @@ import 'package:coffee_start/features/cart/presentation/bloc/local/cart_items/ca
 import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/checkout/local_checkout_bloc.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/orders/remote_orders_bloc.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_state/order_complete.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_state/checkout.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_state/contact_info.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_state/sms_confirmation.dart';
-import 'package:coffee_start/features/orders/presentation/pages/checkout_state/summary.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/order_complete.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/checkout.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/contact_info.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/payment_webview.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/sms_confirmation.dart';
+import 'package:coffee_start/features/orders/presentation/pages/checkout/summary.dart';
 import 'package:coffee_start/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,6 @@ class CheckoutStepperState extends StatefulWidget {
 
 class _CheckoutStepperStateState extends State<CheckoutStepperState> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _smsFormKey = GlobalKey<FormState>();
   int stepsCount = 3;
   @override
   Widget build(BuildContext context) {
@@ -42,14 +42,17 @@ class _CheckoutStepperStateState extends State<CheckoutStepperState> {
             listener: (context, state) {
               final orderBloc = context.read<RemoteOrdersBloc>();
               final checkoutBloc = context.read<LocalCheckoutBloc>();
-              if (state is OrderCreated) {
+              if (state is CardPaymentOrderCreated) {
+                _resetForms(checkoutBloc);
+                _openPaymentWebview(context, state.paymentUrl);
+                _clearCart(context);
+              } else if (state is OrderCreated) {
                 _resetForms(checkoutBloc);
                 _navigateToOrderComplete(context, orderBloc);
                 _clearCart(context);
               } else if (state is RemoteOrdersError) {
                 _showErrorSnackBar(context, "Order creation failed");
               } else if (state is OrderSmsConfirmed) {
-                _smsFormKey.currentState?.reset();
                 SmsConfirmationForm.smsCodeController.clear();
                 _navigateToOrderComplete(context, orderBloc);
               } else if (state is OrderSmsConfirmError) {
@@ -81,28 +84,71 @@ class _CheckoutStepperStateState extends State<CheckoutStepperState> {
     );
   }
 
-  Container _buildStepper(
+  Widget _buildStepper(
       int currentStep,
       LocalCheckoutBloc checkoutBloc,
       LocalCheckoutLoaded state,
       CheckoutData checkoutData,
       RemoteOrdersBloc orderBloc) {
-    return Container(
-      padding: const EdgeInsets.all(6),
-      child: Stepper(
-        key: ValueKey(currentStep),
-        type: StepperType.horizontal,
-        currentStep: currentStep,
-        onStepCancel: () {
-          if (currentStep > 0) {
-            checkoutBloc.add(UpdateCurrentStep(state.currentStep - 1));
-          }
-        },
-        onStepContinue: () {
-          stepContinue(currentStep, checkoutData, checkoutBloc, orderBloc);
-        },
-        steps: getSteps(currentStep, checkoutData, checkoutBloc),
-      ),
+    final screenWidth = MediaQuery.of(context).size.width;
+    double buttonHeight = 40;
+    return Column(
+      children: [
+        Expanded(
+          child: Stepper(
+            key: ValueKey(currentStep),
+            type: StepperType.horizontal,
+            currentStep: currentStep,
+            controlsBuilder: (BuildContext context, ControlsDetails details) {
+              return const SizedBox.shrink();
+            },
+            steps: getSteps(currentStep, checkoutData, checkoutBloc),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: screenWidth * 0.3,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (currentStep > 0) {
+                      checkoutBloc.add(UpdateCurrentStep(currentStep - 1));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    backgroundColor:
+                        Colors.grey, // Customize cancel button color
+                  ),
+                  child: const Text("Cancel"),
+                ),
+              ),
+              SizedBox(
+                width: screenWidth * 0.3,
+                height: buttonHeight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    stepContinue(
+                        currentStep, checkoutData, checkoutBloc, orderBloc);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text("Continue"),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -113,21 +159,7 @@ class _CheckoutStepperStateState extends State<CheckoutStepperState> {
     } else if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if (currentStep == 3 &&
-          checkoutData.paymentInfo.card != null &&
-          _smsFormKey.currentState != null) {
-        if (!_smsFormKey.currentState!.validate()) {
-          return;
-        }
-        if (_smsFormKey.currentState!.validate()) {
-          _smsFormKey.currentState!.save();
-        }
-      }
-
       if (currentStep < stepsCount - 1) {
-        checkoutBloc.add(UpdateCurrentStep(currentStep + 1));
-      } else if (checkoutData.paymentInfo.card != null &&
-          currentStep < stepsCount - 1) {
         checkoutBloc.add(UpdateCurrentStep(currentStep + 1));
       } else {
         createOrder(checkoutData, orderBloc);
@@ -136,18 +168,11 @@ class _CheckoutStepperStateState extends State<CheckoutStepperState> {
   }
 
   void createOrder(CheckoutData checkoutData, RemoteOrdersBloc orderBloc) {
-    print('Order confirmed');
     orderBloc.add(CreateOrder(checkoutData));
-  }
-
-  void confirmSmsOrder(String sms, String orderNumber) {
-    final orderBloc = sl<RemoteOrdersBloc>();
-    orderBloc.add(ConfirmSmsOrder(sms, orderNumber));
   }
 
   void _resetForms(LocalCheckoutBloc checkoutBloc) {
     _formKey.currentState?.reset();
-    _smsFormKey.currentState?.reset();
     ContactInfoForm.addressController.clear();
     ContactInfoForm.phoneController.clear();
     SmsConfirmationForm.smsCodeController.clear();
@@ -164,6 +189,14 @@ class _CheckoutStepperStateState extends State<CheckoutStepperState> {
           child: const OrderCompletePage(),
         ),
       ),
+    );
+  }
+
+  void _openPaymentWebview(BuildContext context, String paymentUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => PaymentWebView(paymentUrl: paymentUrl)),
     );
   }
 
@@ -229,23 +262,6 @@ class _CheckoutStepperStateState extends State<CheckoutStepperState> {
             checkoutBloc: checkoutBloc,
           )),
     ];
-
-    if (checkoutData.paymentInfo.card != null) {
-      steps.add(
-        Step(
-            state: currentStep > 3 ? StepState.complete : StepState.indexed,
-            title: Text(
-              currentStep == 3 ? "SMS Code" : "",
-              overflow: TextOverflow.ellipsis,
-            ),
-            isActive: currentStep == 3,
-            content: SmsConfirmationForm(
-              formKey: _smsFormKey,
-              // onConfirmed: confirmSmsOrder,
-            )),
-      );
-      stepsCount++;
-    }
 
     if (currentStep >= stepsCount) {
       checkoutBloc.add(UpdateCurrentStep(currentStep - 1));

@@ -71,9 +71,21 @@ class _CheckoutFormState extends State<CheckoutForm> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Text("Summary"),
+          const Text(
+            "Summary",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
           CartProductList(products: item.products),
-          Text("Total: $subTotal TMT"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                "Total: $subTotal TMT",
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
           const SizedBox(
             height: 10,
           ),

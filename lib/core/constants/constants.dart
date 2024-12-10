@@ -12,4 +12,10 @@ class PaymentMethods {
   static const String cash = 'cash';
 }
 
-enum OrderStatuses { pending, completed, canceled, inProgress }
+enum OrderStatuses {
+  pending,
+  completed,
+  canceled,
+  inProgress,
+  waitingClientApproval
+}
