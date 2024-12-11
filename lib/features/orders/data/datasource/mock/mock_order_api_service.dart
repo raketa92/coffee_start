@@ -104,4 +104,11 @@ class MockOrdersApiService implements OrdersApiService {
             requestOptions: RequestOptions(path: '/order')));
     return response.response.data;
   }
+
+  @override
+  Future<HttpResponse<ApiResponseList<OrderModel>>> getOrder(
+      String categoryGuid) {
+    // TODO: implement getOrder
+    throw UnimplementedError();
+  }
 }

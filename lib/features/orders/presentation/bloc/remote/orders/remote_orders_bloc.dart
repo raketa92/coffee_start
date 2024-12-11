@@ -7,6 +7,7 @@ import 'package:coffee_start/features/orders/data/datasource/dto/create_order_dt
 import 'package:coffee_start/features/orders/domain/entities/checkout.dart';
 import 'package:coffee_start/features/orders/domain/entities/order.dart';
 import 'package:coffee_start/features/orders/domain/usecases/create_order.dart';
+import 'package:coffee_start/features/orders/domain/usecases/get_order.dart';
 import 'package:coffee_start/features/orders/domain/usecases/get_orders.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -16,10 +17,13 @@ part 'remote_orders_state.dart';
 
 class RemoteOrdersBloc extends Bloc<RemoteOrdersEvent, RemoteOrdersState> {
   final GetOrdersUseCase _getOrdersUseCase;
+  final GetOrderUseCase _getOrderUseCase;
   final CreateOrdersUseCase _createOrdersUseCase;
-  RemoteOrdersBloc(this._getOrdersUseCase, this._createOrdersUseCase)
+  RemoteOrdersBloc(
+      this._getOrdersUseCase, this._getOrderUseCase, this._createOrdersUseCase)
       : super(RemoteOrdersInitial()) {
     on<GetOrders>(onGetOrders);
+    on<GetOrder>(onGetOrder);
     on<CreateOrder>(onCreateOrder);
   }
 
@@ -34,7 +38,7 @@ class RemoteOrdersBloc extends Bloc<RemoteOrdersEvent, RemoteOrdersState> {
     } else {
       emit(RemoteOrdersError(DioException(
           error: "onGetOrders Unhandled case",
-          requestOptions: RequestOptions(path: 'orders'))));
+          requestOptions: RequestOptions(path: 'order'))));
     }
   }
 
@@ -68,6 +72,21 @@ class RemoteOrdersBloc extends Bloc<RemoteOrdersEvent, RemoteOrdersState> {
     } else {
       emit(RemoteOrdersError(DioException(
           error: "onCreateOrder Unhandled case",
+          requestOptions: RequestOptions(path: 'order'))));
+    }
+  }
+
+  FutureOr<void> onGetOrder(
+      GetOrder event, Emitter<RemoteOrdersState> emit) async {
+    emit(RemoteOrderLoading());
+    final dataState = await _getOrderUseCase(params: event.orderNumber);
+    if (dataState is DataSuccess) {
+      emit(RemoteOrderLoaded(dataState.data!));
+    } else if (dataState is DataFailed) {
+      emit(RemoteOrderError(dataState.error!));
+    } else {
+      emit(RemoteOrderError(DioException(
+          error: "onGetOrders Unhandled case",
           requestOptions: RequestOptions(path: 'order'))));
     }
   }

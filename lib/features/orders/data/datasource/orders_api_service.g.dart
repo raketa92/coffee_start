@@ -19,17 +19,84 @@ class _OrdersApiService implements OrdersApiService {
   String? baseUrl;
 
   @override
-  Future<retrofit.HttpResponse<ApiResponseList<OrderModel>>> getOrders() async {
+  Future<HttpResponse<ApiResponseList<OrderModel>>> getOrders() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<retrofit.HttpResponse<ApiResponseList<OrderModel>>>(
-            Options(
+        _setStreamType<HttpResponse<ApiResponseList<OrderModel>>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/order',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ApiResponseList<OrderModel>.fromJson(
+      _result.data!,
+      (json) => OrderModel.fromJson(json as Map<String, dynamic>),
+    );
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<ApiResponseList<OrderModel>>> getOrder(
+      String categoryGuid) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'orderNumbers': categoryGuid};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponseList<OrderModel>>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/order',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ApiResponseList<OrderModel>.fromJson(
+      _result.data!,
+      (json) => OrderModel.fromJson(json as Map<String, dynamic>),
+    );
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<ApiResponse<CreateOrderResponseDto>>> createOrder(
+      CreateOrderDto createOrderDto) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(createOrderDto.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ApiResponse<CreateOrderResponseDto>>>(
+            Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/json',
     )
                 .compose(
                   _dio.options,
@@ -42,46 +109,11 @@ class _OrdersApiService implements OrdersApiService {
                   _dio.options.baseUrl,
                   baseUrl,
                 ))));
-    final value = ApiResponseList<OrderModel>.fromJson(
-      _result.data!,
-      (json) => OrderModel.fromJson(json as Map<String, dynamic>),
-    );
-    final httpResponse = retrofit.HttpResponse(value, _result);
-    return httpResponse;
-  }
-
-  @override
-  Future<retrofit.HttpResponse<ApiResponse<CreateOrderResponseDto>>>
-      createOrder(CreateOrderDto createOrderDto) async {
-    final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'Content-Type': 'application/json'};
-    _headers.removeWhere((k, v) => v == null);
-    final _data = <String, dynamic>{};
-    _data.addAll(createOrderDto.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<
-        retrofit.HttpResponse<ApiResponse<CreateOrderResponseDto>>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'application/json',
-    )
-        .compose(
-          _dio.options,
-          '/order',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
     final value = ApiResponse<CreateOrderResponseDto>.fromJson(
       _result.data!,
       (json) => CreateOrderResponseDto.fromJson(json as Map<String, dynamic>),
     );
-    final httpResponse = retrofit.HttpResponse(value, _result);
+    final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }
 

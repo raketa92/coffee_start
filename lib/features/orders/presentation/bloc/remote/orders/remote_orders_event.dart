@@ -11,6 +11,11 @@ class GetOrders extends RemoteOrdersEvent {
   const GetOrders();
 }
 
+class GetOrder extends RemoteOrdersEvent {
+  final String orderNumber;
+  const GetOrder(this.orderNumber);
+}
+
 class CreateOrder extends RemoteOrdersEvent {
   final CheckoutData checkoutData;
   const CreateOrder(this.checkoutData);

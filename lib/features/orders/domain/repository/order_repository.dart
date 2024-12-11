@@ -6,4 +6,5 @@ abstract class OrderRepository {
   Future<DataState<List<OrderEntity>>> getOrders();
   Future<DataState<CreateOrderResponseDto>> createOrder(
       CreateOrderDto createOrderDto);
+  Future<DataState<OrderEntity>> getOrder(String orderNumber);
 }

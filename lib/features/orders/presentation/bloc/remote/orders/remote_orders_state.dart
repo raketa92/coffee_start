@@ -27,6 +27,26 @@ final class RemoteOrdersError extends RemoteOrdersState {
   List<Object> get props => [error];
 }
 
+final class RemoteOrderInitial extends RemoteOrdersState {}
+
+final class RemoteOrderLoading extends RemoteOrdersState {}
+
+final class RemoteOrderLoaded extends RemoteOrdersState {
+  final OrderEntity order;
+  const RemoteOrderLoaded(this.order);
+
+  @override
+  List<Object> get props => [order];
+}
+
+final class RemoteOrderError extends RemoteOrdersState {
+  final DioException error;
+  const RemoteOrderError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
 final class OrderCreated extends RemoteOrdersState {
   final String orderId;
   const OrderCreated(this.orderId);

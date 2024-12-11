@@ -21,6 +21,7 @@ import 'package:coffee_start/features/orders/data/datasource/orders_api_service.
 import 'package:coffee_start/features/orders/data/repository/orders_repository_impl.dart';
 import 'package:coffee_start/features/orders/domain/repository/order_repository.dart';
 import 'package:coffee_start/features/orders/domain/usecases/create_order.dart';
+import 'package:coffee_start/features/orders/domain/usecases/get_order.dart';
 import 'package:coffee_start/features/orders/domain/usecases/get_orders.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/checkout/local_checkout_bloc.dart';
 import 'package:coffee_start/features/orders/presentation/bloc/remote/orders/remote_orders_bloc.dart';
@@ -100,7 +101,8 @@ Future<void> initializeDependencies() async {
       () => CartItemsLocalBloc(sl(), sl(), sl(), sl()));
   sl.registerFactory<CardLocalBloc>(
       () => CardLocalBloc(sl(), sl(), sl(), sl()));
-  sl.registerFactory<RemoteOrdersBloc>(() => RemoteOrdersBloc(sl(), sl()));
+  sl.registerFactory<RemoteOrdersBloc>(
+      () => RemoteOrdersBloc(sl(), sl(), sl()));
   sl.registerFactory<LocalCheckoutBloc>(() => LocalCheckoutBloc(storage));
 
   sl.registerSingleton<GetCategoriesUseCase>(GetCategoriesUseCase(sl()));
@@ -128,5 +130,6 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<RemoveCardUseCase>(RemoveCardUseCase(sl()));
   sl.registerSingleton<GetCardsUseCase>(GetCardsUseCase(sl()));
   sl.registerSingleton<GetOrdersUseCase>(GetOrdersUseCase(sl()));
+  sl.registerSingleton<GetOrderUseCase>(GetOrderUseCase(sl()));
   sl.registerSingleton<CreateOrdersUseCase>(CreateOrdersUseCase(sl()));
 }

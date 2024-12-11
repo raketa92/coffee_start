@@ -50,4 +50,22 @@ class OrderRepositoryImpl implements OrderRepository {
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<DataState<OrderEntity>> getOrder(String orderNumber) async {
+    try {
+      final httpResponse = await _ordersApiService.getOrder(orderNumber);
+      if (httpResponse.response.statusCode == HttpStatus.ok) {
+        return DataSuccess(httpResponse.data.result[0]);
+      } else {
+        return DataFailed(DioException(
+            error: httpResponse.response.statusMessage,
+            response: httpResponse.response,
+            type: DioExceptionType.badResponse,
+            requestOptions: httpResponse.response.requestOptions));
+      }
+    } on DioException catch (e) {
+      return DataFailed(e);
+    }
+  }
 }
